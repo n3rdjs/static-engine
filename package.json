@@ -1,0 +1,19 @@
+{
+  "name": "static-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "engine.js",
+  "scripts": {
+    "test": "mocha",
+    "test-index": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  },
+  "dependencies": {
+    "esgraph": "^0.3.0",
+    "esprima": "^4.0.1"
+  }
+}
