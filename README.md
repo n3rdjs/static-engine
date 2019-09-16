@@ -2,3 +2,7 @@
 
 ## Introduction
 
+```
+$npm test
+$npm install
+```
