@@ -8,7 +8,7 @@ let engine = new StaticEngine(code)
 let result = engine.analyze()
 
 var str_ast = JSON.stringify(result.ast, null, 4);
-console.log(str_ast);
+//console.log(str_ast);
 //console.log(result.ast.body[0])
 //console.log(result.ast.body[0].body)
 

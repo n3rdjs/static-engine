@@ -1,6 +1,9 @@
 const Esprima = require('esprima');
 const esgraph = require('esgraph');
 
+var scope = [];
+//var scopenum = 0;
+
 class StaticEngine {
     constructor(code, options) {
         this.code = code;
@@ -14,10 +17,27 @@ class StaticEngine {
 
     analyze() {
         let result = {}
-        let ast = Esprima.parseScript(this.code);
+        //let ast = Esprima.parseScript(this.code);
+        let ast = Esprima.parseScript(this.code, {range: true});
         let cfg = esgraph(ast);
         result.ast = ast;
         result.cfg = cfg;
+
+        let str_ast = JSON.stringify(result.ast, null, 4);
+        console.log(str_ast);
+        let rslt = JSON.parse(str_ast); //only for debugging purpose
+
+        var self = this;
+        self.traverse(rslt, function (node) {
+            if (node.type){ //range -> undefined
+                //console.log(node);
+                //console.log('\n');
+                
+                self.getVariables(node);
+            }
+        });
+
+        console.log(scope);
         return result;
     }
 
@@ -28,15 +48,26 @@ class StaticEngine {
                 let child = node[key];
                 if (typeof child === 'object' && child !== null) {
                     if (Array.isArray(child)) {
-                        child.forEach(function (node) {
-                            traverse(node, func);
-                        });
+                        for (let idx in child) {
+                            this.traverse(child[idx], func);
+                        }
                     }
                     else {
-                        traverse(child, func);
+                        this.traverse(child, func);
                     }
                 }
             }
+        }
+    }
+    
+    getVariables(node){
+        if (node.type == 'Program'){
+            var scopename = node.range[0].toString() + ':' + node.range[1].toString();
+            scope.push({[scopename]: [node.range[0], node.range[1]]});
+            //scopenum += 1;
+        }
+        if (node.type == 'VariableDeclaration'){
+
         }
     }
 }
