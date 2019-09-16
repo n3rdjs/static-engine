@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "esgraph": "^0.3.0",
-    "esprima": "^4.0.1",
-    "fs": "0.0.1-security"
+    "esprima": "^4.0.1"
   }
 }
