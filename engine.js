@@ -30,14 +30,14 @@ class StaticEngine {
         var self = this;
         self.traverse(rslt, function (node) {
             if (node.type){ //range -> undefined
-                //console.log(node);
+                console.log(node);
                 //console.log('\n');
                 
                 self.getVariables(node);
             }
         });
 
-        console.log(scope);
+        //console.log(scope);
         return result;
     }
 
@@ -61,14 +61,21 @@ class StaticEngine {
     }
     
     getVariables(node){
-        if (node.type == 'Program'){
+        if (node.type == 'Program'){ //first global scope
             var scopename = node.range[0].toString() + ':' + node.range[1].toString();
             scope.push({[scopename]: [node.range[0], node.range[1]]});
             //scopenum += 1;
         }
-        if (node.type == 'VariableDeclaration'){
-
+        if (node.type == 'BlockStatement'){
+            var scopename = node.range[0].toString() + ':' + node.range[1].toString();
+            var tmp = scope[scope.length - 1];
+            while(!(tmp[Object.keys(tmp)[0]][0] <= node.range[0] && tmp[Object.keys(tmp)[0]][1] >= node.range[1])){
+                scope.pop();
+                tmp = scope[scope.length - 1];
+            } //pop until range is included in scope
+            scope.push({[scopename]: [node.range[0], node.range[1]]});            
         }
+        console.log(scope);
     }
 }
 
