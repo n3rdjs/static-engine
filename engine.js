@@ -28,7 +28,7 @@ class StaticEngine {
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
-        self.traverse(rslt, function (node) {
+        self.traverse(ast, function (node) {
             if (node.type){ //range -> undefined
                 console.log(node);
                 //console.log('\n');
@@ -74,6 +74,16 @@ class StaticEngine {
                 tmp = scope[scope.length - 1];
             } //pop until range is included in scope
             scope.push({[scopename]: [node.range[0], node.range[1]]});            
+        }
+        if (node.type == 'FunctionDeclaration'){
+            if (node.body.type == 'BlockStatement'){
+                console.log("function block\n");
+            }
+        }
+        if (node.type == 'ArrowFunctionExpression'){
+            if (node.body.type == 'BlockStatement'){
+                console.log("function block\n");
+            }
         }
         console.log(scope);
     }
