@@ -2,9 +2,11 @@ const StaticEngine = require('./engine.js').StaticEngine
 const fs = require('fs');
 
 var code = fs.readFileSync('./input.js').toString();
+
 console.log(code);
 
 let engine = new StaticEngine(code)
+
 let result = engine.analyze()
 
 //console.log(result.ast.body[0])

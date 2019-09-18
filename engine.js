@@ -1,8 +1,13 @@
 const Esprima = require('esprima');
 const esgraph = require('esgraph');
-
-var scope = [];
-//var scopenum = 0;
+var parent_scope_range;
+var scope_array={};
+var scope_num=0;
+function scope(range,type){
+    this.range=range;
+    this.type=type;
+    this.child=[];
+}
 
 class StaticEngine {
     constructor(code, options) {
@@ -14,31 +19,114 @@ class StaticEngine {
         this.real_variable = [];
         this.real_func_scope = [];
     }
-
+    
     analyze() {
         let result = {}
         //let ast = Esprima.parseScript(this.code);
         let ast = Esprima.parseScript(this.code, {range: true});
-        let cfg = esgraph(ast);
+        //let cfg = esgraph(ast);
         result.ast = ast;
-        result.cfg = cfg;
+        //result.cfg = cfg;
 
         let str_ast = JSON.stringify(result.ast, null, 4);
         console.log(str_ast);
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
+        var scope_flag=false;
+        var target_range;
+        var target_type;
         self.traverse(ast, function (node) {
             if (node.type){ //range -> undefined
+                console.log("NODE:");
                 console.log(node);
-                //console.log('\n');
                 
-                self.getVariables(node);
+                scope_flag=false;
+                
+               
+                if(node.type=="BlockStatement"){
+                    target_range=node.range;
+                    target_type=1;
+                    scope_flag=true;
+                }
+
+                /*function x(){
+                    a = 5;
+                }*/ 
+                if (node.type == 'FunctionDeclaration'){
+                    if (node.body.type == 'BlockStatement'){
+                       // console.log(node.body.range);
+                       target_range=node.body.range; 
+                       target_type=1;
+                       scope_flag=true;
+
+                    }
+                }
+
+                /*var a=(m,n)=>{
+                    return m+n;
+                }*/
+                if (node.type == 'VariableDeclaration'){
+                    if (node.declarations[0].init.type == 'ArrowFunctionExpression'){
+                        if (node.declarations[0].init.body.type == 'BlockStatement'){
+                            //console.log(node.declarations[0].init.body.range);
+                            target_range=node.declarations[0].init.body.range;
+                            target_type=2;
+                            scope_flag=true;
+                        }
+                    }
+                }
+
+                /*c=(m,n)=>{
+                    return m+n;
+                }*/
+                if (node.type == 'ExpressionStatement'){
+                    if (node.expression.type== 'AssignmentExpression'){
+                        if (node.expression.right.type == 'ArrowFunctionExpression'){
+                            if(node.expression.right.body.type=='BlockStatement'){
+                                //console.log(node.expression.right.body.range);
+                                target_range=node.expression.right.body.range;
+                                target_type=3;
+                                scope_flag=true;
+                            }
+                            
+                        }
+                    }
+                }
+                if(node.type=="Program"){
+                    target_range=node.range;
+                    target_type=0;
+                    parent_scope_range=target_range;
+                    scope_flag=true;
+                    
+                }
+
+                if(scope_flag==true && !scope_array[target_range]){
+                    scope_array[target_range]=(new scope(target_range, target_type));
+                    if(target_type!=0)self.push_scope(scope_array[parent_scope_range], target_range);
+                }
             }
         });
-
-        //console.log(scope);
+        console.log(scope_array);
+        //let scope_result=JSON.stringify(scope_array[0], null, 4);
+       // console.log(scope_result);
         return result;
+    }
+    
+    push_scope(parent_scope, target_range){
+        if(parent_scope.child.length==0){
+            parent_scope.child.push(scope_array[target_range]);
+            return;
+        }  
+        for (let children of parent_scope.child){
+            if(children.range[0]<=scope_array[target_range].range[0]&&children.range[1]>=scope_array[target_range].range[1])
+            {
+                this.push_scope(children, target_range);
+                return;
+            }
+        }
+        parent_scope.child.push(scope_array[target_range]);
+        return;
     }
 
     traverse(node, func) {
