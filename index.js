@@ -19,9 +19,9 @@ function walk(dir) {
             walk(file);
         } else if(stat.isFile()){ 
             let code = fs.readFileSync(file).toString();
+            console.log(file);
             let engine = new StaticEngine(code);
             let result = engine.analyze();
-            console.log(file);
             console.log(result);
             console.log("");
         }
@@ -33,9 +33,9 @@ try {
         let stat = fs.statSync(filepath);
         if(stat.isFile()) {
             let code = fs.readFileSync(filepath).toString();
+            console.log(filepath);
             let engine = new StaticEngine(code);
             let result = engine.analyze();
-            console.log(filepath);
             console.log(result);
             console.log("");
         }
