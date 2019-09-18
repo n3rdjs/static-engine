@@ -72,33 +72,14 @@ class StaticEngine {
         /*var a=(m,n)=>{
             return m+n;
         }*/
-        if (node.type == 'VariableDeclaration'){
-            if (node.declarations[0].init.type == 'ArrowFunctionExpression'){
-                if (node.declarations[0].init.body.type == 'BlockStatement'){
-                    //console.log(node.declarations[0].init.body.range);
-                    target_range=node.declarations[0].init.body.range;
-                    target_type=2;
-                    scope_flag=true;
-                }
+        if (node.type == 'ArrowFunctionExpression'){
+            if (node.body.type == 'BlockStatement'){
+                target_range=node.body.range;
+                target_type=2;
+                scope_flag=true;
             }
         }
 
-        /*c=(m,n)=>{
-            return m+n;
-        }*/
-        if (node.type == 'ExpressionStatement'){
-            if (node.expression.type== 'AssignmentExpression'){
-                if (node.expression.right.type == 'ArrowFunctionExpression'){
-                    if(node.expression.right.body.type=='BlockStatement'){
-                        //console.log(node.expression.right.body.range);
-                        target_range=node.expression.right.body.range;
-                        target_type=3;
-                        scope_flag=true;
-                    }
-                    
-                }
-            }
-        }
         if(node.type=="Program"){
             target_range=node.range;
             target_type=0;
