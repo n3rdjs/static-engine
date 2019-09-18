@@ -2,7 +2,7 @@ const Esprima = require('esprima');
 const esgraph = require('esgraph');
 var parent_scope_range;
 var scope_array={};
-var scope_num=0;
+
 function scope(range,type){
     this.range=range;
     this.type=type;
@@ -33,78 +33,12 @@ class StaticEngine {
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
-        var scope_flag=false;
-        var target_range;
-        var target_type;
         self.traverse(ast, function (node) {
             if (node.type){ //range -> undefined
                 console.log("NODE:");
                 console.log(node);
+                self.make_scope(node);
                 
-                scope_flag=false;
-                
-               
-                if(node.type=="BlockStatement"){
-                    target_range=node.range;
-                    target_type=1;
-                    scope_flag=true;
-                }
-
-                /*function x(){
-                    a = 5;
-                }*/ 
-                if (node.type == 'FunctionDeclaration'){
-                    if (node.body.type == 'BlockStatement'){
-                       // console.log(node.body.range);
-                       target_range=node.body.range; 
-                       target_type=1;
-                       scope_flag=true;
-
-                    }
-                }
-
-                /*var a=(m,n)=>{
-                    return m+n;
-                }*/
-                if (node.type == 'VariableDeclaration'){
-                    if (node.declarations[0].init.type == 'ArrowFunctionExpression'){
-                        if (node.declarations[0].init.body.type == 'BlockStatement'){
-                            //console.log(node.declarations[0].init.body.range);
-                            target_range=node.declarations[0].init.body.range;
-                            target_type=2;
-                            scope_flag=true;
-                        }
-                    }
-                }
-
-                /*c=(m,n)=>{
-                    return m+n;
-                }*/
-                if (node.type == 'ExpressionStatement'){
-                    if (node.expression.type== 'AssignmentExpression'){
-                        if (node.expression.right.type == 'ArrowFunctionExpression'){
-                            if(node.expression.right.body.type=='BlockStatement'){
-                                //console.log(node.expression.right.body.range);
-                                target_range=node.expression.right.body.range;
-                                target_type=3;
-                                scope_flag=true;
-                            }
-                            
-                        }
-                    }
-                }
-                if(node.type=="Program"){
-                    target_range=node.range;
-                    target_type=0;
-                    parent_scope_range=target_range;
-                    scope_flag=true;
-                    
-                }
-
-                if(scope_flag==true && !scope_array[target_range]){
-                    scope_array[target_range]=(new scope(target_range, target_type));
-                    if(target_type!=0)self.push_scope(scope_array[parent_scope_range], target_range);
-                }
             }
         });
         console.log(scope_array);
@@ -112,7 +46,72 @@ class StaticEngine {
        // console.log(scope_result);
         return result;
     }
-    
+    make_scope(node){
+        var scope_flag=false;
+        var target_range;
+        var target_type;
+        if(node.type=="BlockStatement"){
+            target_range=node.range;
+            target_type=1;
+            scope_flag=true;
+        }
+
+        /*function x(){
+            a = 5;
+        }*/ 
+        if (node.type == 'FunctionDeclaration'){
+            if (node.body.type == 'BlockStatement'){
+                // console.log(node.body.range);
+                target_range=node.body.range; 
+                target_type=1;
+                scope_flag=true;
+
+            }
+        }
+
+        /*var a=(m,n)=>{
+            return m+n;
+        }*/
+        if (node.type == 'VariableDeclaration'){
+            if (node.declarations[0].init.type == 'ArrowFunctionExpression'){
+                if (node.declarations[0].init.body.type == 'BlockStatement'){
+                    //console.log(node.declarations[0].init.body.range);
+                    target_range=node.declarations[0].init.body.range;
+                    target_type=2;
+                    scope_flag=true;
+                }
+            }
+        }
+
+        /*c=(m,n)=>{
+            return m+n;
+        }*/
+        if (node.type == 'ExpressionStatement'){
+            if (node.expression.type== 'AssignmentExpression'){
+                if (node.expression.right.type == 'ArrowFunctionExpression'){
+                    if(node.expression.right.body.type=='BlockStatement'){
+                        //console.log(node.expression.right.body.range);
+                        target_range=node.expression.right.body.range;
+                        target_type=3;
+                        scope_flag=true;
+                    }
+                    
+                }
+            }
+        }
+        if(node.type=="Program"){
+            target_range=node.range;
+            target_type=0;
+            parent_scope_range=target_range;
+            scope_flag=true;
+            
+        }
+
+        if(scope_flag==true && !scope_array[target_range]){
+            scope_array[target_range]=(new scope(target_range, target_type));
+            if(target_type!=0)this.push_scope(scope_array[parent_scope_range], target_range);
+        }
+    }
     push_scope(parent_scope, target_range){
         if(parent_scope.child.length==0){
             parent_scope.child.push(scope_array[target_range]);
