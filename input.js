@@ -18,7 +18,7 @@ this.b = $=>{
     }
 };
 
-class A { constructor() { console.log( this.constructor.constructor("g = 1")() ) } };
+class A { constructor() { console.log( this.constructor.constructor(`g = 1`)() ) } };
 let v = new A();
     
 var a = ((m, n)=>{
@@ -30,6 +30,7 @@ var a = ((m, n)=>{
 })(a, g) + [];
 
 e = { toString : x=>r = 7 } + []
+h = parseInt((this + !0 + !1)[11] + (this + !0 + !1)[2], 16);
 
 c = (m, n)=>{
     return m + n;
