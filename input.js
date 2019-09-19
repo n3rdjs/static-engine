@@ -18,11 +18,9 @@ this.b = $=>{
     }
 };
 
-with (this) 
-    with (this) 
-        with (this)
-            this.g = 9;
-
+class A { constructor() { console.log( this.constructor.constructor("g = 1")() ) } };
+var inst_A = new A();
+    
 var a = ((m, n)=>{
     (function() {
         'use strict';
