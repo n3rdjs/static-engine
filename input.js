@@ -29,6 +29,11 @@ var a = ((m, n)=>{
     return m + n;
 })(a, g) + [];
 
+e = { toString : x=>r = 7 } + []
+
+
 c = (m, n)=>{
     return m + n;
 }
+
+n = c(e, g);
