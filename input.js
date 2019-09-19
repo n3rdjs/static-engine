@@ -19,7 +19,7 @@ this.b = $=>{
 };
 
 class A { constructor() { console.log( this.constructor.constructor("g = 1")() ) } };
-var inst_A = new A();
+let v = new A();
     
 var a = ((m, n)=>{
     (function() {
@@ -30,7 +30,6 @@ var a = ((m, n)=>{
 })(a, g) + [];
 
 e = { toString : x=>r = 7 } + []
-
 
 c = (m, n)=>{
     return m + n;
