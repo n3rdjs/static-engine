@@ -1,12 +1,25 @@
 const Esprima = require('esprima');
 const esgraph = require('esgraph');
-var parent_scope_range;
-var scope_array={};
 
 function scope(range,type){
     this.range=range;
     this.type=type;
     this.child=[];
+    this.variables=[];
+    this.functions=[];
+}
+function variable_info(name,range,type){
+    this.name=name;
+    this.range=range;
+    this.type=type;
+    this.value;
+    this.argument;
+}
+function function_info(name,range, type, argument){
+    this.name=name;
+    this.range=range;
+    this.type=type;
+    this.argument=argument;
 }
 
 class StaticEngine {
@@ -18,6 +31,9 @@ class StaticEngine {
         this.real_func_call = [];
         this.real_variable = [];
         this.real_func_scope = [];
+
+        this.parent_scope_range;
+        this.scope_array={};
     }
     
     analyze() {
@@ -41,11 +57,44 @@ class StaticEngine {
                 
             }
         });
-        console.log(scope_array);
-        //let scope_result=JSON.stringify(scope_array[0], null, 4);
+        console.log(this.scope_array);
+        //let scope_result=JSON.stringify(this.scope_array[0], null, 4);
        // console.log(scope_result);
+
+
+       self.traverse(ast, function (node) {
+        if (node.type){ //range -> undefined
+            self.get_function(node);
+            }
+        });
         return result;
     }
+    get_function(node){
+        var target_range;
+        var found_scope;
+        var self = this;
+        if(node.type=='FunctionDeclaration'){
+            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range);
+            console.log(found_scope);
+            console.log(node);
+        }
+        if(node.type=='ArrowFunctionExpression'){
+            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range);
+            console.log(found_scope);
+            console.log(node);
+        }
+    }
+    find_scope(parent_scope, target_range){
+        for (let children of parent_scope.child){
+            if(children.range[0]<=target_range[0]&&children.range[1]>=target_range[1])
+            {
+                return(this.find_scope(children, target_range));
+                
+            }
+        }
+        return parent_scope;
+    }
+
     make_scope(node){
         var scope_flag=false;
         var target_range;
@@ -83,29 +132,29 @@ class StaticEngine {
         if(node.type=="Program"){
             target_range=node.range;
             target_type=0;
-            parent_scope_range=target_range;
+            this.parent_scope_range=target_range;
             scope_flag=true;
             
         }
 
-        if(scope_flag==true && !scope_array[target_range]){
-            scope_array[target_range]=(new scope(target_range, target_type));
-            if(target_type!=0)this.push_scope(scope_array[parent_scope_range], target_range);
+        if(scope_flag==true && !this.scope_array[target_range]){
+            this.scope_array[target_range]=(new scope(target_range, target_type));
+            if(target_type!=0)this.push_scope(this.scope_array[this.parent_scope_range], target_range);
         }
     }
     push_scope(parent_scope, target_range){
         if(parent_scope.child.length==0){
-            parent_scope.child.push(scope_array[target_range]);
+            parent_scope.child.push(this.scope_array[target_range]);
             return;
         }  
         for (let children of parent_scope.child){
-            if(children.range[0]<=scope_array[target_range].range[0]&&children.range[1]>=scope_array[target_range].range[1])
+            if(children.range[0]<=this.scope_array[target_range].range[0]&&children.range[1]>=this.scope_array[target_range].range[1])
             {
                 this.push_scope(children, target_range);
                 return;
             }
         }
-        parent_scope.child.push(scope_array[target_range]);
+        parent_scope.child.push(this.scope_array[target_range]);
         return;
     }
 
@@ -128,33 +177,7 @@ class StaticEngine {
         }
     }
     
-    getVariables(node){
-        if (node.type == 'Program'){ //first global scope
-            var scopename = node.range[0].toString() + ':' + node.range[1].toString();
-            scope.push({[scopename]: [node.range[0], node.range[1]]});
-            //scopenum += 1;
-        }
-        if (node.type == 'BlockStatement'){
-            var scopename = node.range[0].toString() + ':' + node.range[1].toString();
-            var tmp = scope[scope.length - 1];
-            while(!(tmp[Object.keys(tmp)[0]][0] <= node.range[0] && tmp[Object.keys(tmp)[0]][1] >= node.range[1])){
-                scope.pop();
-                tmp = scope[scope.length - 1];
-            } //pop until range is included in scope
-            scope.push({[scopename]: [node.range[0], node.range[1]]});            
-        }
-        if (node.type == 'FunctionDeclaration'){
-            if (node.body.type == 'BlockStatement'){
-                console.log("function block\n");
-            }
-        }
-        if (node.type == 'ArrowFunctionExpression'){
-            if (node.body.type == 'BlockStatement'){
-                console.log("function block\n");
-            }
-        }
-        console.log(scope);
-    }
+    
 }
 
 exports.StaticEngine = StaticEngine;
