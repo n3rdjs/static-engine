@@ -1,4 +1,7 @@
 {
+    function k(){
+        return 1;
+    }
     a = 4;
 }
 
@@ -11,21 +14,6 @@ function x(){
         d = 5;
     }
 }
-<<<<<<< HEAD
-b=()=>"hello";
-var a=(m,n)=>{
-    {d=5;}
-    function k(){
-        return 2;
-    }
-    return m+n;
-}
-c=(m,n)=>{
-    return m+n;
-}
-
-var a=(m,n)=>"helloworld";
-=======
 
 this.b = $=>{
     with (obj) {
@@ -37,7 +25,7 @@ class A { constructor() { console.log( this.constructor.constructor(`g = 1`)() )
 let v = new A();
     
 var a = ((m, n)=>{
-    (function() {
+    (function t() {
         'use strict';
         d = 5;
     })();
@@ -48,8 +36,13 @@ e = { toString : x=>r = 7 } + []
 h = parseInt((this + !0 + !1)[11] + (this + !0 + !1)[2], 16);
 
 c = (m, n)=>{
+    k=(a,b)=>{
+        function p(a,b){
+            return "ppp";
+        }
+        return 1;
+    }
     return m + n;
 }
 
 n = c(e, g);
->>>>>>> d0ec96b7401357b3871abe78fa62f07bc87d4bca

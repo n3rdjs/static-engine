@@ -4,11 +4,11 @@ const path = require('path');
 
 let filepath = '';
 
-if(process.argv.length < 3) {
-    filepath = './input.js';
+if(process.argv.length == 3) {
+    filepath = './input_folder/'+process.argv[2];
 }
 else {
-    filepath = process.argv[2];
+    console.log("npm index.js [input file_name]")
 }
 function walk(dir) {
     let list = fs.readdirSync(dir);
@@ -22,8 +22,8 @@ function walk(dir) {
             console.log(file);
             let engine = new StaticEngine(code);
             let result = engine.analyze();
-            console.log(result);
-            console.log("");
+            //console.log(result);
+            //console.log("");
         }
     });
 }
@@ -36,8 +36,8 @@ try {
             console.log(filepath);
             let engine = new StaticEngine(code);
             let result = engine.analyze();
-            console.log(result);
-            console.log("");
+            //console.log(result);
+            //console.log("");
         }
         else if(stat.isDirectory()) 
             walk(filepath);
