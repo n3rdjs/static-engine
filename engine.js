@@ -1,7 +1,10 @@
 const Esprima = require('esprima');
 const esgraph = require('esgraph');
 var fs=require("fs");
+
+var variable = [];
 var num=0;
+
 function scope(range,type){
     this.range=range;
     this.type=type;
@@ -9,12 +12,12 @@ function scope(range,type){
     this.variables=[];
     this.functions=[];
 }
-function variable_info(name,range,type){
-    this.name=name;
-    this.range=range;
-    this.type=type;
-    this.value;
-    this.argument;
+function variable_info(name, range, type, value, argument){
+    this.type = type;
+    this.name = name;
+    this.value = value;
+    this.range = range;
+    this.argument = argument;
 }
 function function_info(name,range, type, argument){
     this.name=name;
@@ -48,7 +51,8 @@ class StaticEngine {
         let str_ast = JSON.stringify(result.ast, null, 4);
         fs.writeFile('result_ast.txt', str_ast, function (err) {
             if (err) throw err;
-          }); 
+        }); 
+        console.log(str_ast);
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
@@ -58,16 +62,140 @@ class StaticEngine {
             }
         });
         
-        //let scope_result=JSON.stringify(this.scope_array[0], null, 4);
-       // console.log(scope_result);
-       self.traverse(ast, function (node) {
-        if (node.type){ //range -> undefined
-            self.get_function(node);
+        let scope_result=JSON.stringify(this.scope_array[0], null, 4);
+        console.log(scope_result);
+        self.traverse(ast, function (node) {
+            if (node.type){ //range -> undefined
+                self.get_function(node);
             }
         });
         console.log(this.scope_array);
+
+        self.traverse(ast, function (node) {
+            if (node.type){ //range -> undefined
+                self.get_variable(node);
+            }
+        });
+        
+        //console.log(this.scope_array);
+        //let scope_result=JSON.stringify(this.scope_array, null, 4);
+        //console.log(scope_result);
+        //console.log(variable);
+        for (let i of variable){
+            console.log(i);
+        }
+
+        /*self.traverse(ast, function (node) {
+            if (node.callee){
+                if (node.callee.type == 'Identifier' && node.callee.name == 'Script'){
+                    if (node.arguments[0].type != 'Literal'){
+                        console.log('Script Vulnerable');
+                    }
+                }
+            }
+        });*/
         return result;
     }
+
+    get_variable(node){
+        let data = {
+            name: '',
+            type: '',
+            value: '',
+            use_range: [],
+            argument: []
+        };
+        if (node.type == 'VariableDeclaration'){
+            if (node.declarations[0].type == 'VariableDeclarator'){
+                let node2 = node.declarations[0];
+                if (node2.init == null){ 
+                    //"var a1";
+                    data.name = node2.id.name; //a1
+                    data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                    data.type = node.kind; //var/let/const
+                    
+                } else {
+                    if (node2.init.type == 'Literal'){
+                        //"var a2 = 1; var a2 = 'a';"
+                        data.name = node2.id.name; //a2
+                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        data.type = node.kind; //var/let/const
+                        data.value = node2.init.value;
+                    }
+                    else if (node2.init.type == 'ArrayExpression'){
+                        data.name = node2.id.name; //
+                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        data.type = node.kind; //var/let/const
+                        data.value = node2.init.elements;
+                    }
+                    else if (node2.init.type == 'ObjectExpression'){
+                        //var a5 = {a:1, b:function x(){return a}};
+                        data.name = node2.id.name; //a5
+                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        data.type = node.kind; //var/let/const
+                        data.value = {};
+                        if (node2.init.properties){
+                            for (let i = 0; i < node2.init.properties.length; i++) {
+                                data.value[node2.init.properties[i].key.name] = node2.init.properties[i].value
+                            }
+                            //data.value = node2.init.properties;
+                        }
+                    }
+                    else if (node2.init.type == 'CallExpression'){
+                        //"var a4 = a(1, 2);"
+                        data.name = node2.id.name; //a4
+                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        data.type = node.kind; //var/let/const
+                    }
+                    else if (node2.init.type == 'BinaryExpression'){
+                        //"var a3 = 1 + 2 + x()" --> CallExpression????
+                        data.name = node2.id.name; //a3
+                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        data.type = node.kind; //var/let/const
+                        data.value = "BinaryExpression";
+                        //data.argument <- arguments
+                    }
+                }
+            }
+            variable.push(new variable_info(data.name, data.use_range, data.type, data.value, data.argument));
+        }
+        else if (node.type == 'AssignmentExpression'){
+            if (node.left.type != 'MemberExpression'){
+                // if new key:value??
+
+                // if not??
+            }
+            // find if same identifier name is defined
+            
+            // if doesn't exist
+            if (node.right.type == 'Literal'){
+                data.type = 'global';
+                data.name = node.left.name; //a2
+                data.use_range = this.scope_array[this.parent_scope_range]
+                data.value = node.right.value;
+            }
+            else if (node.right.type == 'ArrayExpression'){
+                data.type = 'global';
+                data.name = node.left.name; //a2
+                data.use_range = this.scope_array[this.parent_scope_range]
+                data.value = node.right.elements;
+            } 
+            else if (node.right.type == 'ObjectExpression'){
+
+            }
+            else if (node.right.type == 'CallExpression'){
+
+            }
+            else if (node.right.type == 'BinaryExpression'){
+
+            }
+            //hoisting?
+
+            //if not hoisted(automatic global)
+            variable.push(new variable_info(data.name, data.use_range, data.type, data.value, data.argument));
+        }        
+    }
+
     get_function(node){
         var target_range;
         var found_scope;
