@@ -62,8 +62,6 @@ class StaticEngine {
             }
         });
         
-        let scope_result=JSON.stringify(this.scope_array[0], null, 4);
-        console.log(scope_result);
         self.traverse(ast, function (node) {
             if (node.type){ //range -> undefined
                 self.get_function(node);
@@ -77,23 +75,10 @@ class StaticEngine {
             }
         });
         
-        //console.log(this.scope_array);
-        //let scope_result=JSON.stringify(this.scope_array, null, 4);
-        //console.log(scope_result);
-        //console.log(variable);
         for (let i of variable){
             console.log(i);
         }
 
-        /*self.traverse(ast, function (node) {
-            if (node.callee){
-                if (node.callee.type == 'Identifier' && node.callee.name == 'Script'){
-                    if (node.arguments[0].type != 'Literal'){
-                        console.log('Script Vulnerable');
-                    }
-                }
-            }
-        });*/
         return result;
     }
 
@@ -111,14 +96,14 @@ class StaticEngine {
                 if (node2.init == null){ 
                     //"var a1";
                     data.name = node2.id.name; //a1
-                    data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                    
                     data.type = node.kind; //var/let/const
                     
                 } else {
                     if (node2.init.type == 'Literal'){
                         //"var a2 = 1; var a2 = 'a';"
                         data.name = node2.id.name; //a2
-                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
                         data.type = node.kind; //var/let/const
                         data.value = node2.init.value;
                     }
@@ -131,7 +116,7 @@ class StaticEngine {
                     else if (node2.init.type == 'ObjectExpression'){
                         //var a5 = {a:1, b:function x(){return a}};
                         data.name = node2.id.name; //a5
-                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
                         data.type = node.kind; //var/let/const
                         data.value = {};
                         if (node2.init.properties){
@@ -144,19 +129,22 @@ class StaticEngine {
                     else if (node2.init.type == 'CallExpression'){
                         //"var a4 = a(1, 2);"
                         data.name = node2.id.name; //a4
-                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
                         data.type = node.kind; //var/let/const
                     }
                     else if (node2.init.type == 'BinaryExpression'){
                         //"var a3 = 1 + 2 + x()" --> CallExpression????
                         data.name = node2.id.name; //a3
-                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
+                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
                         data.type = node.kind; //var/let/const
                         data.value = "BinaryExpression";
                         //data.argument <- arguments
                     }
                 }
             }
+            if (data.type == 'var') data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
+            else data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
+            
             variable.push(new variable_info(data.name, data.use_range, data.type, data.value, data.argument));
         }
         else if (node.type == 'AssignmentExpression'){
@@ -201,30 +189,34 @@ class StaticEngine {
         var found_scope;
         var self = this;
         if(node.type=='FunctionDeclaration'){
-            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range);
+            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
         }
         if(node.type=='ArrowFunctionExpression'){
-            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range);
+            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             if(node.id&&node.id.name)this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
             else this.scope_array[found_scope.range].functions.push(new function_info("NULL_ArrowFunctionExpression", node.range,node.type, node.params));
             
         }
         if(node.type=='FunctionExpression'){
-            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range);
+            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             if(node.id&&node.id.name)this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
             else this.scope_array[found_scope.range].functions.push(new function_info("NULL_FunctionExpression", node.range,node.type, node.params));
         }
     }
-    find_scope(parent_scope, target_range){
+    find_scope(parent_scope, target_range, last_function_scope, scope_type){
         for (let children of parent_scope.child){
             if(children.range[0]<=target_range[0]&&children.range[1]>=target_range[1])
             {
-                return(this.find_scope(children, target_range));
+                if (children.type != 1){ // not BlockStatement
+                    last_function_scope = children;
+                }
+                return(this.find_scope(children, target_range, last_function_scope, scope_type));
                 
             }
         }
-        return parent_scope;
+        if (scope_type == 'block') return parent_scope;
+        else if (scope_type == 'function') return last_function_scope;
     }
 
     make_scope(node){
@@ -244,7 +236,7 @@ class StaticEngine {
             if (node.body.type == 'BlockStatement'){
                 // console.log(node.body.range);
                 target_range=node.body.range; 
-                target_type=1;
+                target_type=2;
                 scope_flag=true;
 
             }
@@ -256,7 +248,7 @@ class StaticEngine {
         if (node.type == 'ArrowFunctionExpression'){
             if (node.body.type == 'BlockStatement'){
                 target_range=node.body.range;
-                target_type=2;
+                target_type=3;
                 scope_flag=true;
             }
         }
@@ -269,7 +261,7 @@ class StaticEngine {
         if (node.type == 'FunctionExpression'){
             if (node.body.type == 'BlockStatement'){
                 target_range=node.body.range;
-                target_type=3;
+                target_type=4;
                 scope_flag=true;
             }
         }

@@ -1,3 +1,8 @@
-var a=(m,n)=>{
-    return m+n;
+function a(x){
+    {
+        let b = 1;
+        var b2 = {};
+    }
+    var c;
+    return x;
 }
