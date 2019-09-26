@@ -70,13 +70,13 @@ class StaticEngine {
                 self.get_function(node, parent_node);
             }
         },ast);
-        console.log(this.scope_array);
 
         self.traverse(ast, function (node,parent_node) {
             if (node.type){ //range -> undefined
                 self.get_variable(node, parent_node);
             }
         },ast);
+        console.log(this.scope_array);
         
         for (let i of variable){
             console.log(i);
@@ -98,7 +98,7 @@ class StaticEngine {
         return result;
     }
 
-    get_variable(node, parent_node){
+    get_variable(node){
         let data = {
             name: '',
             type: '',
@@ -155,22 +155,33 @@ class StaticEngine {
                         data.type = node.kind; //var/let/const
                         data.value = "BinaryExpression";
                         //data.argument <- arguments
+                        //use DFS BFS
+
+                    }
+                    else if (node2.init.type == 'AssignmentExpression'){
+                        
+                    }
+                    else if (node2.init.type == 'FunctionExpression'){
+                        return;
                     }
                 }
             }
             if (data.type == 'var') data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             else data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
             
-            variable.push(new variable_info(data.name, data.use_range, data.type, data.value, data.argument));
+            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
+            this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
         }
         else if (node.type == 'AssignmentExpression'){
             if (node.left.type != 'MemberExpression'){
                 // if new key:value??
 
+                // this??
+
                 // if not??
             }
             // find if same identifier name is defined
-            
+
             // if doesn't exist
             if (node.right.type == 'Literal'){
                 data.type = 'global';
@@ -193,10 +204,14 @@ class StaticEngine {
             else if (node.right.type == 'BinaryExpression'){
 
             }
+            else if (node.right.type == 'FunctionExpression'){
+                return;
+            }
             //hoisting?
 
             //if not hoisted(automatic global)
-            variable.push(new variable_info(data.name, data.use_range, data.type, data.value, data.argument));
+            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
+            //this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
         }        
     }
 
