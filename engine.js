@@ -205,26 +205,7 @@ class StaticEngine {
         var found_scope;
         var self = this;
         var tmp_function;
-        if(node.type=='FunctionDeclaration'){
-            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params, parent_node);
-            this.scope_array[found_scope.range].functions.push(tmp_function);
-            entire_function.push(tmp_function);
-        }
-        if(node.type=='ArrowFunctionExpression'){
-            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            if(node.id&&node.id.name){
-                tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params,parent_node);
-                this.scope_array[found_scope.range].functions.push(tmp_function);
-                entire_function.push(tmp_function);
-            }
-            else {
-                tmp_function=new function_info("NULL_ArrowFunctionExpression", found_scope.range, node.range,node.type, node.params, parent_node);
-                this.scope_array[found_scope.range].functions.push(tmp_function);
-                entire_function.push(tmp_function);
-            }
-        }
-        if(node.type=='FunctionExpression'){
+        if(node.type=='FunctionDeclaration'||node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             if(parent_node.type=='MethodDefinition'){
                 tmp_function=new function_info(parent_node.key.name, found_scope.range, node.range,node.type, node.params, parent_node, parent_node.kind);
@@ -232,13 +213,13 @@ class StaticEngine {
                 entire_function.push(tmp_function);
             }
             else{
-                if(node.id&&node.id.name){
+                if(node.id){
                     tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params, parent_node);
                     this.scope_array[found_scope.range].functions.push(tmp_function);
                     entire_function.push(tmp_function);
                 }
                 else {
-                    tmp_function=new function_info("NULL_FunctionExpression", found_scope.range, node.range,node.type, node.params, parent_node);
+                    tmp_function=new function_info(node.id, found_scope.range, node.range,node.type, node.params, parent_node);
                     this.scope_array[found_scope.range].functions.push(tmp_function);
                     entire_function.push(tmp_function); 
                 }
