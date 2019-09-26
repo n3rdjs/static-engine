@@ -4,7 +4,6 @@ var fs=require("fs");
 
 var variable = [];
 var entire_function=[];
-var num=0;
 
 function scope(range,type){
     this.range=range;
@@ -20,13 +19,14 @@ function variable_info(name, scope, type, value, argument){
     this.scope=scope;
     this.argument = argument;
 }
-function function_info(name,scope,range, type, argument, parent){
+function function_info(name,scope,range, type, argument, parent, method_type='undefined'){
     this.name=name;
     this.scope=scope;
     this.range=range;
     this.type=type;
     this.argument=argument;
     this.parent=parent;
+    this.method_type=method_type;
 }
 
 class StaticEngine {
@@ -83,8 +83,16 @@ class StaticEngine {
             console.log("");
         }
         console.log("#######################################################################");
+        console.log("");
+        let function_num=0;
         for (let i of entire_function){
-            console.log(i);
+            function_num++;
+            console.log("**********  "+function_num+"  Function Info*************");
+            Object.keys(i).forEach(item => {
+                if(item!='parent'){
+                    console.log(item, ":" ,i[item]);
+                }
+            })
             console.log("");
         }
         return result;
@@ -196,31 +204,44 @@ class StaticEngine {
         var target_range;
         var found_scope;
         var self = this;
+        var tmp_function;
         if(node.type=='FunctionDeclaration'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-            entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params, parent_node));
+            tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params, parent_node);
+            this.scope_array[found_scope.range].functions.push(tmp_function);
+            entire_function.push(tmp_function);
         }
         if(node.type=='ArrowFunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             if(node.id&&node.id.name){
-                this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params, parent_node));
+                tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params,parent_node);
+                this.scope_array[found_scope.range].functions.push(tmp_function);
+                entire_function.push(tmp_function);
             }
             else {
-                this.scope_array[found_scope.range].functions.push(new function_info("NULL_ArrowFunctionExpression", node.range,node.type, node.params));
-                entire_function.push(new function_info("NULL_ArrowFunctionExpression", found_scope.range, node.range, node.type, node.params, parent_node));
+                tmp_function=new function_info("NULL_ArrowFunctionExpression", found_scope.range, node.range,node.type, node.params, parent_node);
+                this.scope_array[found_scope.range].functions.push(tmp_function);
+                entire_function.push(tmp_function);
             }
         }
         if(node.type=='FunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            if(node.id&&node.id.name){
-                this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params, parent_node));
+            if(parent_node.type=='MethodDefinition'){
+                tmp_function=new function_info(parent_node.key.name, found_scope.range, node.range,node.type, node.params, parent_node, parent_node.kind);
+                this.scope_array[found_scope.range].functions.push(tmp_function);
+                entire_function.push(tmp_function);
             }
-            else {
-                this.scope_array[found_scope.range].functions.push(new function_info("NULL_FunctionExpression", node.range,node.type, node.params));
-                entire_function.push(new function_info("NULL_FunctionExpression", found_scope.range, node.range, node.type, node.params, parent_node)); 
+            else{
+                if(node.id&&node.id.name){
+                    tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params, parent_node);
+                    this.scope_array[found_scope.range].functions.push(tmp_function);
+                    entire_function.push(tmp_function);
+                }
+                else {
+                    tmp_function=new function_info("NULL_FunctionExpression", found_scope.range, node.range,node.type, node.params, parent_node);
+                    this.scope_array[found_scope.range].functions.push(tmp_function);
+                    entire_function.push(tmp_function); 
+                }
             }
         }
     }
