@@ -2,889 +2,989 @@
     "type": "Program",
     "body": [
         {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a1",
-                        "range": [
-                            4,
-                            6
-                        ]
-                    },
-                    "init": null,
-                    "range": [
-                        4,
-                        6
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                0,
-                7
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a2",
-                        "range": [
-                            14,
-                            16
-                        ]
-                    },
-                    "init": {
-                        "type": "Literal",
-                        "value": 1,
-                        "raw": "1",
-                        "range": [
-                            19,
-                            20
-                        ]
-                    },
-                    "range": [
-                        14,
-                        20
-                    ]
-                }
-            ],
-            "kind": "const",
-            "range": [
-                8,
-                21
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a3",
-                        "range": [
-                            26,
-                            28
-                        ]
-                    },
-                    "init": {
-                        "type": "Literal",
-                        "value": "a",
-                        "raw": "\"a\"",
-                        "range": [
-                            31,
-                            34
-                        ]
-                    },
-                    "range": [
-                        26,
-                        34
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                22,
-                35
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a4",
-                        "range": [
-                            40,
-                            42
-                        ]
-                    },
-                    "init": {
-                        "type": "ObjectExpression",
-                        "properties": [],
-                        "range": [
-                            45,
-                            47
-                        ]
-                    },
-                    "range": [
-                        40,
-                        47
-                    ]
-                }
-            ],
-            "kind": "let",
-            "range": [
-                36,
-                48
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a44",
-                        "range": [
-                            53,
-                            56
-                        ]
-                    },
-                    "init": {
-                        "type": "ObjectExpression",
-                        "properties": [
-                            {
-                                "type": "Property",
-                                "key": {
-                                    "type": "Identifier",
-                                    "name": "a",
-                                    "range": [
-                                        60,
-                                        61
-                                    ]
-                                },
-                                "computed": false,
-                                "value": {
-                                    "type": "Literal",
-                                    "value": 1,
-                                    "raw": "1",
-                                    "range": [
-                                        63,
-                                        64
-                                    ]
-                                },
-                                "kind": "init",
-                                "method": false,
-                                "shorthand": false,
-                                "range": [
-                                    60,
-                                    64
-                                ]
-                            },
-                            {
-                                "type": "Property",
-                                "key": {
-                                    "type": "Identifier",
-                                    "name": "b",
-                                    "range": [
-                                        66,
-                                        67
-                                    ]
-                                },
-                                "computed": false,
-                                "value": {
-                                    "type": "Literal",
-                                    "value": 2,
-                                    "raw": "2",
-                                    "range": [
-                                        69,
-                                        70
-                                    ]
-                                },
-                                "kind": "init",
-                                "method": false,
-                                "shorthand": false,
-                                "range": [
-                                    66,
-                                    70
-                                ]
-                            }
-                        ],
-                        "range": [
-                            59,
-                            71
-                        ]
-                    },
-                    "range": [
-                        53,
-                        71
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                49,
-                72
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a444",
-                        "range": [
-                            77,
-                            81
-                        ]
-                    },
-                    "init": {
-                        "type": "ObjectExpression",
-                        "properties": [
-                            {
-                                "type": "Property",
-                                "key": {
-                                    "type": "Identifier",
-                                    "name": "a",
-                                    "range": [
-                                        90,
-                                        91
-                                    ]
-                                },
-                                "computed": false,
-                                "value": {
-                                    "type": "Literal",
-                                    "value": 1,
-                                    "raw": "1",
-                                    "range": [
-                                        94,
-                                        95
-                                    ]
-                                },
-                                "kind": "init",
-                                "method": false,
-                                "shorthand": false,
-                                "range": [
-                                    90,
-                                    95
-                                ]
-                            },
-                            {
-                                "type": "Property",
-                                "key": {
-                                    "type": "Identifier",
-                                    "name": "b",
-                                    "range": [
-                                        101,
-                                        102
-                                    ]
-                                },
-                                "computed": false,
-                                "value": {
-                                    "type": "FunctionExpression",
-                                    "id": null,
-                                    "params": [
-                                        {
-                                            "type": "Identifier",
-                                            "name": "x",
-                                            "range": [
-                                                114,
-                                                115
-                                            ]
-                                        },
-                                        {
-                                            "type": "Identifier",
-                                            "name": "y",
-                                            "range": [
-                                                117,
-                                                118
-                                            ]
-                                        }
-                                    ],
-                                    "body": {
-                                        "type": "BlockStatement",
-                                        "body": [
-                                            {
-                                                "type": "BlockStatement",
-                                                "body": [
-                                                    {
-                                                        "type": "VariableDeclaration",
-                                                        "declarations": [
-                                                            {
-                                                                "type": "VariableDeclarator",
-                                                                "id": {
-                                                                    "type": "Identifier",
-                                                                    "name": "e",
-                                                                    "range": [
-                                                                        147,
-                                                                        148
-                                                                    ]
-                                                                },
-                                                                "init": {
-                                                                    "type": "ArrayExpression",
-                                                                    "elements": [],
-                                                                    "range": [
-                                                                        151,
-                                                                        153
-                                                                    ]
-                                                                },
-                                                                "range": [
-                                                                    147,
-                                                                    153
-                                                                ]
-                                                            }
-                                                        ],
-                                                        "kind": "let",
-                                                        "range": [
-                                                            143,
-                                                            154
-                                                        ]
-                                                    }
-                                                ],
-                                                "range": [
-                                                    129,
-                                                    165
-                                                ]
-                                            },
-                                            {
-                                                "type": "ReturnStatement",
-                                                "argument": {
-                                                    "type": "BinaryExpression",
-                                                    "operator": "+",
-                                                    "left": {
-                                                        "type": "Identifier",
-                                                        "name": "x",
-                                                        "range": [
-                                                            181,
-                                                            182
-                                                        ]
-                                                    },
-                                                    "right": {
-                                                        "type": "Identifier",
-                                                        "name": "y",
-                                                        "range": [
-                                                            185,
-                                                            186
-                                                        ]
-                                                    },
-                                                    "range": [
-                                                        181,
-                                                        186
-                                                    ]
-                                                },
-                                                "range": [
-                                                    174,
-                                                    187
-                                                ]
-                                            }
-                                        ],
-                                        "range": [
-                                            119,
-                                            193
-                                        ]
-                                    },
-                                    "generator": false,
-                                    "expression": false,
-                                    "async": false,
-                                    "range": [
-                                        105,
-                                        193
-                                    ]
-                                },
-                                "kind": "init",
-                                "method": false,
-                                "shorthand": false,
-                                "range": [
-                                    101,
-                                    193
-                                ]
-                            }
-                        ],
-                        "range": [
-                            84,
-                            195
-                        ]
-                    },
-                    "range": [
-                        77,
-                        195
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                73,
-                195
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a5",
-                        "range": [
-                            200,
-                            202
-                        ]
-                    },
-                    "init": {
-                        "type": "ArrayExpression",
-                        "elements": [
-                            {
-                                "type": "Literal",
-                                "value": 1,
-                                "raw": "1",
-                                "range": [
-                                    206,
-                                    207
-                                ]
-                            },
-                            {
-                                "type": "Literal",
-                                "value": 2,
-                                "raw": "2",
-                                "range": [
-                                    209,
-                                    210
-                                ]
-                            }
-                        ],
-                        "range": [
-                            205,
-                            211
-                        ]
-                    },
-                    "range": [
-                        200,
-                        211
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                196,
-                212
-            ]
-        },
-        {
-            "type": "FunctionDeclaration",
+            "type": "ClassDeclaration",
             "id": {
                 "type": "Identifier",
-                "name": "a",
+                "name": "Person",
                 "range": [
-                    222,
-                    223
+                    6,
+                    12
                 ]
             },
-            "params": [
-                {
-                    "type": "Identifier",
-                    "name": "x",
-                    "range": [
-                        224,
-                        225
-                    ]
-                }
-            ],
+            "superClass": null,
             "body": {
-                "type": "BlockStatement",
+                "type": "ClassBody",
                 "body": [
                     {
-                        "type": "BlockStatement",
-                        "body": [
-                            {
-                                "type": "VariableDeclaration",
-                                "declarations": [
-                                    {
-                                        "type": "VariableDeclarator",
-                                        "id": {
-                                            "type": "Identifier",
-                                            "name": "b",
-                                            "range": [
-                                                246,
-                                                247
-                                            ]
-                                        },
-                                        "init": {
-                                            "type": "Literal",
-                                            "value": 1,
-                                            "raw": "1",
-                                            "range": [
-                                                250,
-                                                251
-                                            ]
-                                        },
-                                        "range": [
-                                            246,
-                                            251
-                                        ]
-                                    }
-                                ],
-                                "kind": "let",
-                                "range": [
-                                    242,
-                                    252
-                                ]
-                            },
-                            {
-                                "type": "VariableDeclaration",
-                                "declarations": [
-                                    {
-                                        "type": "VariableDeclarator",
-                                        "id": {
-                                            "type": "Identifier",
-                                            "name": "b2",
-                                            "range": [
-                                                265,
-                                                267
-                                            ]
-                                        },
-                                        "init": {
-                                            "type": "ObjectExpression",
-                                            "properties": [],
-                                            "range": [
-                                                270,
-                                                272
-                                            ]
-                                        },
-                                        "range": [
-                                            265,
-                                            272
-                                        ]
-                                    }
-                                ],
-                                "kind": "var",
-                                "range": [
-                                    261,
-                                    273
-                                ]
-                            }
-                        ],
-                        "range": [
-                            232,
-                            279
-                        ]
-                    },
-                    {
-                        "type": "VariableDeclaration",
-                        "declarations": [
-                            {
-                                "type": "VariableDeclarator",
-                                "id": {
-                                    "type": "Identifier",
-                                    "name": "c",
-                                    "range": [
-                                        288,
-                                        289
-                                    ]
-                                },
-                                "init": null,
-                                "range": [
-                                    288,
-                                    289
-                                ]
-                            }
-                        ],
-                        "kind": "var",
-                        "range": [
-                            284,
-                            290
-                        ]
-                    },
-                    {
-                        "type": "ReturnStatement",
-                        "argument": {
+                        "type": "MethodDefinition",
+                        "key": {
                             "type": "Identifier",
-                            "name": "x",
+                            "name": "constructor",
                             "range": [
-                                302,
-                                303
+                                17,
+                                28
                             ]
                         },
-                        "range": [
-                            295,
-                            304
-                        ]
-                    }
-                ],
-                "range": [
-                    226,
-                    306
-                ]
-            },
-            "generator": false,
-            "expression": false,
-            "async": false,
-            "range": [
-                213,
-                306
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a6",
-                        "range": [
-                            311,
-                            313
-                        ]
-                    },
-                    "init": {
-                        "type": "BinaryExpression",
-                        "operator": "+",
-                        "left": {
-                            "type": "Literal",
-                            "value": 1,
-                            "raw": "1",
-                            "range": [
-                                316,
-                                317
-                            ]
-                        },
-                        "right": {
-                            "type": "CallExpression",
-                            "callee": {
-                                "type": "Identifier",
-                                "name": "a",
-                                "range": [
-                                    320,
-                                    321
-                                ]
-                            },
-                            "arguments": [
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
                                 {
-                                    "type": "Literal",
-                                    "value": 2,
-                                    "raw": "2",
+                                    "type": "Identifier",
+                                    "name": "name",
                                     "range": [
-                                        322,
-                                        323
+                                        29,
+                                        33
                                     ]
                                 }
                             ],
-                            "range": [
-                                320,
-                                324
-                            ]
-                        },
-                        "range": [
-                            316,
-                            324
-                        ]
-                    },
-                    "range": [
-                        311,
-                        324
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                307,
-                325
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a7",
-                        "range": [
-                            330,
-                            332
-                        ]
-                    },
-                    "init": {
-                        "type": "BinaryExpression",
-                        "operator": "+",
-                        "left": {
-                            "type": "Literal",
-                            "value": 1,
-                            "raw": "1",
-                            "range": [
-                                335,
-                                336
-                            ]
-                        },
-                        "right": {
-                            "type": "CallExpression",
-                            "callee": {
-                                "type": "FunctionExpression",
-                                "id": {
-                                    "type": "Identifier",
-                                    "name": "x",
-                                    "range": [
-                                        348,
-                                        349
-                                    ]
-                                },
-                                "params": [],
-                                "body": {
-                                    "type": "BlockStatement",
-                                    "body": [
-                                        {
-                                            "type": "BlockStatement",
-                                            "body": [
-                                                {
-                                                    "type": "VariableDeclaration",
-                                                    "declarations": [
-                                                        {
-                                                            "type": "VariableDeclarator",
-                                                            "id": {
-                                                                "type": "Identifier",
-                                                                "name": "b3",
-                                                                "range": [
-                                                                    371,
-                                                                    373
-                                                                ]
-                                                            },
-                                                            "init": {
-                                                                "type": "Literal",
-                                                                "value": 1,
-                                                                "raw": "1",
-                                                                "range": [
-                                                                    376,
-                                                                    377
-                                                                ]
-                                                            },
-                                                            "range": [
-                                                                371,
-                                                                377
-                                                            ]
-                                                        }
-                                                    ],
-                                                    "kind": "let",
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "AssignmentExpression",
+                                            "operator": "=",
+                                            "left": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "ThisExpression",
                                                     "range": [
-                                                        367,
-                                                        378
+                                                        41,
+                                                        45
                                                     ]
                                                 },
-                                                {
-                                                    "type": "VariableDeclaration",
-                                                    "declarations": [
-                                                        {
-                                                            "type": "VariableDeclarator",
-                                                            "id": {
-                                                                "type": "Identifier",
-                                                                "name": "b4",
-                                                                "range": [
-                                                                    391,
-                                                                    393
-                                                                ]
-                                                            },
-                                                            "init": {
-                                                                "type": "Literal",
-                                                                "value": 2,
-                                                                "raw": "2",
-                                                                "range": [
-                                                                    396,
-                                                                    397
-                                                                ]
-                                                            },
-                                                            "range": [
-                                                                391,
-                                                                397
-                                                            ]
-                                                        }
-                                                    ],
-                                                    "kind": "var",
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "_name",
                                                     "range": [
-                                                        387,
-                                                        398
+                                                        46,
+                                                        51
+                                                    ]
+                                                },
+                                                "range": [
+                                                    41,
+                                                    51
+                                                ]
+                                            },
+                                            "right": {
+                                                "type": "Identifier",
+                                                "name": "name",
+                                                "range": [
+                                                    54,
+                                                    58
+                                                ]
+                                            },
+                                            "range": [
+                                                41,
+                                                58
+                                            ]
+                                        },
+                                        "range": [
+                                            41,
+                                            59
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    35,
+                                    63
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                28,
+                                63
+                            ]
+                        },
+                        "kind": "constructor",
+                        "static": false,
+                        "range": [
+                            17,
+                            63
+                        ]
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "name",
+                            "range": [
+                                71,
+                                75
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ReturnStatement",
+                                        "argument": {
+                                            "type": "MemberExpression",
+                                            "computed": false,
+                                            "object": {
+                                                "type": "ThisExpression",
+                                                "range": [
+                                                    91,
+                                                    95
+                                                ]
+                                            },
+                                            "property": {
+                                                "type": "Identifier",
+                                                "name": "_name",
+                                                "range": [
+                                                    96,
+                                                    101
+                                                ]
+                                            },
+                                            "range": [
+                                                91,
+                                                101
+                                            ]
+                                        },
+                                        "range": [
+                                            84,
+                                            102
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    78,
+                                    106
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                75,
+                                106
+                            ]
+                        },
+                        "kind": "get",
+                        "static": false,
+                        "range": [
+                            67,
+                            106
+                        ]
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "name",
+                            "range": [
+                                114,
+                                118
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "newName",
+                                    "range": [
+                                        119,
+                                        126
+                                    ]
+                                }
+                            ],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "AssignmentExpression",
+                                            "operator": "=",
+                                            "left": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "ThisExpression",
+                                                    "range": [
+                                                        134,
+                                                        138
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "_name",
+                                                    "range": [
+                                                        139,
+                                                        144
+                                                    ]
+                                                },
+                                                "range": [
+                                                    134,
+                                                    144
+                                                ]
+                                            },
+                                            "right": {
+                                                "type": "Identifier",
+                                                "name": "newName",
+                                                "range": [
+                                                    147,
+                                                    154
+                                                ]
+                                            },
+                                            "range": [
+                                                134,
+                                                154
+                                            ]
+                                        },
+                                        "range": [
+                                            134,
+                                            155
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    128,
+                                    159
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                118,
+                                159
+                            ]
+                        },
+                        "kind": "set",
+                        "static": false,
+                        "range": [
+                            110,
+                            159
+                        ]
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "walk",
+                            "range": [
+                                163,
+                                167
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "Identifier",
+                                                    "name": "console",
+                                                    "range": [
+                                                        176,
+                                                        183
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "log",
+                                                    "range": [
+                                                        184,
+                                                        187
+                                                    ]
+                                                },
+                                                "range": [
+                                                    176,
+                                                    187
+                                                ]
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "BinaryExpression",
+                                                    "operator": "+",
+                                                    "left": {
+                                                        "type": "MemberExpression",
+                                                        "computed": false,
+                                                        "object": {
+                                                            "type": "ThisExpression",
+                                                            "range": [
+                                                                188,
+                                                                192
+                                                            ]
+                                                        },
+                                                        "property": {
+                                                            "type": "Identifier",
+                                                            "name": "_name",
+                                                            "range": [
+                                                                193,
+                                                                198
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            188,
+                                                            198
+                                                        ]
+                                                    },
+                                                    "right": {
+                                                        "type": "Literal",
+                                                        "value": " is walking.",
+                                                        "raw": "' is walking.'",
+                                                        "range": [
+                                                            201,
+                                                            215
+                                                        ]
+                                                    },
+                                                    "range": [
+                                                        188,
+                                                        215
                                                     ]
                                                 }
                                             ],
                                             "range": [
-                                                357,
-                                                404
+                                                176,
+                                                216
                                             ]
                                         },
-                                        {
-                                            "type": "ReturnStatement",
-                                            "argument": {
-                                                "type": "Literal",
-                                                "value": 3,
-                                                "raw": "3",
+                                        "range": [
+                                            176,
+                                            217
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    170,
+                                    221
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                167,
+                                221
+                            ]
+                        },
+                        "kind": "method",
+                        "static": false,
+                        "range": [
+                            163,
+                            221
+                        ]
+                    }
+                ],
+                "range": [
+                    13,
+                    223
+                ]
+            },
+            "range": [
+                0,
+                223
+            ]
+        },
+        {
+            "type": "ClassDeclaration",
+            "id": {
+                "type": "Identifier",
+                "name": "Programmer",
+                "range": [
+                    240,
+                    250
+                ]
+            },
+            "superClass": {
+                "type": "Identifier",
+                "name": "Person",
+                "range": [
+                    259,
+                    265
+                ]
+            },
+            "body": {
+                "type": "ClassBody",
+                "body": [
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "constructor",
+                            "range": [
+                                271,
+                                282
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "name",
+                                    "range": [
+                                        283,
+                                        287
+                                    ]
+                                },
+                                {
+                                    "type": "Identifier",
+                                    "name": "programmingLanguage",
+                                    "range": [
+                                        289,
+                                        308
+                                    ]
+                                }
+                            ],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "Super",
                                                 "range": [
-                                                    416,
-                                                    417
+                                                    316,
+                                                    321
+                                                ]
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "Identifier",
+                                                    "name": "name",
+                                                    "range": [
+                                                        322,
+                                                        326
+                                                    ]
+                                                }
+                                            ],
+                                            "range": [
+                                                316,
+                                                327
+                                            ]
+                                        },
+                                        "range": [
+                                            316,
+                                            328
+                                        ]
+                                    },
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "AssignmentExpression",
+                                            "operator": "=",
+                                            "left": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "ThisExpression",
+                                                    "range": [
+                                                        333,
+                                                        337
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "_programmingLanguage",
+                                                    "range": [
+                                                        338,
+                                                        358
+                                                    ]
+                                                },
+                                                "range": [
+                                                    333,
+                                                    358
+                                                ]
+                                            },
+                                            "right": {
+                                                "type": "Identifier",
+                                                "name": "programmingLanguage",
+                                                "range": [
+                                                    361,
+                                                    380
                                                 ]
                                             },
                                             "range": [
-                                                409,
-                                                417
+                                                333,
+                                                380
                                             ]
-                                        }
-                                    ],
-                                    "range": [
-                                        351,
-                                        419
-                                    ]
-                                },
-                                "generator": false,
-                                "expression": false,
-                                "async": false,
+                                        },
+                                        "range": [
+                                            333,
+                                            381
+                                        ]
+                                    }
+                                ],
                                 "range": [
-                                    339,
-                                    419
+                                    310,
+                                    385
                                 ]
                             },
-                            "arguments": [],
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
                             "range": [
-                                339,
-                                421
+                                282,
+                                385
                             ]
                         },
+                        "kind": "constructor",
+                        "static": false,
                         "range": [
-                            335,
-                            421
+                            271,
+                            385
+                        ]
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "programmingLanguage",
+                            "range": [
+                                393,
+                                412
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ReturnStatement",
+                                        "argument": {
+                                            "type": "MemberExpression",
+                                            "computed": false,
+                                            "object": {
+                                                "type": "ThisExpression",
+                                                "range": [
+                                                    428,
+                                                    432
+                                                ]
+                                            },
+                                            "property": {
+                                                "type": "Identifier",
+                                                "name": "_programmingLanguage",
+                                                "range": [
+                                                    433,
+                                                    453
+                                                ]
+                                            },
+                                            "range": [
+                                                428,
+                                                453
+                                            ]
+                                        },
+                                        "range": [
+                                            421,
+                                            454
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    415,
+                                    458
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                412,
+                                458
+                            ]
+                        },
+                        "kind": "get",
+                        "static": false,
+                        "range": [
+                            389,
+                            458
+                        ]
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "programmingLanguage",
+                            "range": [
+                                466,
+                                485
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "newprogrammingLanguage",
+                                    "range": [
+                                        486,
+                                        508
+                                    ]
+                                }
+                            ],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "AssignmentExpression",
+                                            "operator": "=",
+                                            "left": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "ThisExpression",
+                                                    "range": [
+                                                        516,
+                                                        520
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "_programmingLanguage",
+                                                    "range": [
+                                                        521,
+                                                        541
+                                                    ]
+                                                },
+                                                "range": [
+                                                    516,
+                                                    541
+                                                ]
+                                            },
+                                            "right": {
+                                                "type": "Identifier",
+                                                "name": "newprogrammingLanguage",
+                                                "range": [
+                                                    544,
+                                                    566
+                                                ]
+                                            },
+                                            "range": [
+                                                516,
+                                                566
+                                            ]
+                                        },
+                                        "range": [
+                                            516,
+                                            567
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    510,
+                                    571
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                485,
+                                571
+                            ]
+                        },
+                        "kind": "set",
+                        "static": false,
+                        "range": [
+                            462,
+                            571
+                        ]
+                    },
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "writeCode",
+                            "range": [
+                                575,
+                                584
+                            ]
+                        },
+                        "computed": false,
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [
+                                    {
+                                        "type": "ExpressionStatement",
+                                        "expression": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "Identifier",
+                                                    "name": "console",
+                                                    "range": [
+                                                        593,
+                                                        600
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "log",
+                                                    "range": [
+                                                        601,
+                                                        604
+                                                    ]
+                                                },
+                                                "range": [
+                                                    593,
+                                                    604
+                                                ]
+                                            },
+                                            "arguments": [
+                                                {
+                                                    "type": "BinaryExpression",
+                                                    "operator": "+",
+                                                    "left": {
+                                                        "type": "BinaryExpression",
+                                                        "operator": "+",
+                                                        "left": {
+                                                            "type": "BinaryExpression",
+                                                            "operator": "+",
+                                                            "left": {
+                                                                "type": "MemberExpression",
+                                                                "computed": false,
+                                                                "object": {
+                                                                    "type": "ThisExpression",
+                                                                    "range": [
+                                                                        605,
+                                                                        609
+                                                                    ]
+                                                                },
+                                                                "property": {
+                                                                    "type": "Identifier",
+                                                                    "name": "_name",
+                                                                    "range": [
+                                                                        610,
+                                                                        615
+                                                                    ]
+                                                                },
+                                                                "range": [
+                                                                    605,
+                                                                    615
+                                                                ]
+                                                            },
+                                                            "right": {
+                                                                "type": "Literal",
+                                                                "value": " is coding in ",
+                                                                "raw": "' is coding in '",
+                                                                "range": [
+                                                                    618,
+                                                                    634
+                                                                ]
+                                                            },
+                                                            "range": [
+                                                                605,
+                                                                634
+                                                            ]
+                                                        },
+                                                        "right": {
+                                                            "type": "MemberExpression",
+                                                            "computed": false,
+                                                            "object": {
+                                                                "type": "ThisExpression",
+                                                                "range": [
+                                                                    637,
+                                                                    641
+                                                                ]
+                                                            },
+                                                            "property": {
+                                                                "type": "Identifier",
+                                                                "name": "_programmingLanguage",
+                                                                "range": [
+                                                                    642,
+                                                                    662
+                                                                ]
+                                                            },
+                                                            "range": [
+                                                                637,
+                                                                662
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            605,
+                                                            662
+                                                        ]
+                                                    },
+                                                    "right": {
+                                                        "type": "Literal",
+                                                        "value": ".",
+                                                        "raw": "'.'",
+                                                        "range": [
+                                                            665,
+                                                            668
+                                                        ]
+                                                    },
+                                                    "range": [
+                                                        605,
+                                                        668
+                                                    ]
+                                                }
+                                            ],
+                                            "range": [
+                                                593,
+                                                669
+                                            ]
+                                        },
+                                        "range": [
+                                            593,
+                                            670
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    587,
+                                    674
+                                ]
+                            },
+                            "generator": false,
+                            "expression": false,
+                            "async": false,
+                            "range": [
+                                584,
+                                674
+                            ]
+                        },
+                        "kind": "method",
+                        "static": false,
+                        "range": [
+                            575,
+                            674
+                        ]
+                    }
+                ],
+                "range": [
+                    266,
+                    676
+                ]
+            },
+            "range": [
+                234,
+                676
+            ]
+        },
+        {
+            "type": "VariableDeclaration",
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "type": "Identifier",
+                        "name": "bob",
+                        "range": [
+                            691,
+                            694
+                        ]
+                    },
+                    "init": {
+                        "type": "NewExpression",
+                        "callee": {
+                            "type": "Identifier",
+                            "name": "Person",
+                            "range": [
+                                701,
+                                707
+                            ]
+                        },
+                        "arguments": [
+                            {
+                                "type": "Literal",
+                                "value": "Bob",
+                                "raw": "'Bob'",
+                                "range": [
+                                    708,
+                                    713
+                                ]
+                            }
+                        ],
+                        "range": [
+                            697,
+                            714
                         ]
                     },
                     "range": [
-                        330,
-                        421
+                        691,
+                        714
                     ]
                 }
             ],
             "kind": "let",
             "range": [
-                326,
-                421
+                687,
+                715
             ]
         },
         {
             "type": "ExpressionStatement",
             "expression": {
-                "type": "AssignmentExpression",
-                "operator": "=",
-                "left": {
-                    "type": "Identifier",
-                    "name": "z",
+                "type": "CallExpression",
+                "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                        "type": "Identifier",
+                        "name": "bob",
+                        "range": [
+                            716,
+                            719
+                        ]
+                    },
+                    "property": {
+                        "type": "Identifier",
+                        "name": "walk",
+                        "range": [
+                            720,
+                            724
+                        ]
+                    },
                     "range": [
-                        422,
-                        423
+                        716,
+                        724
                     ]
                 },
-                "right": {
-                    "type": "Literal",
-                    "value": 1,
-                    "raw": "1",
-                    "range": [
-                        426,
-                        427
-                    ]
-                },
+                "arguments": [],
                 "range": [
-                    422,
-                    427
+                    716,
+                    726
                 ]
             },
             "range": [
-                422,
-                428
+                716,
+                727
             ]
         },
         {
@@ -894,97 +994,205 @@
                     "type": "VariableDeclarator",
                     "id": {
                         "type": "Identifier",
-                        "name": "a",
+                        "name": "cory",
                         "range": [
-                            433,
-                            434
+                            742,
+                            746
                         ]
                     },
                     "init": {
-                        "type": "FunctionExpression",
-                        "id": null,
-                        "params": [
+                        "type": "NewExpression",
+                        "callee": {
+                            "type": "Identifier",
+                            "name": "Programmer",
+                            "range": [
+                                753,
+                                763
+                            ]
+                        },
+                        "arguments": [
                             {
-                                "type": "Identifier",
-                                "name": "x",
+                                "type": "Literal",
+                                "value": "Cory",
+                                "raw": "'Cory'",
                                 "range": [
-                                    446,
-                                    447
+                                    764,
+                                    770
                                 ]
                             },
                             {
-                                "type": "Identifier",
-                                "name": "y",
+                                "type": "Literal",
+                                "value": "JavaScript",
+                                "raw": "'JavaScript'",
                                 "range": [
-                                    448,
-                                    449
+                                    772,
+                                    784
                                 ]
                             }
                         ],
-                        "body": {
-                            "type": "BlockStatement",
-                            "body": [
-                                {
-                                    "type": "ReturnStatement",
-                                    "argument": {
-                                        "type": "BinaryExpression",
-                                        "operator": "+",
-                                        "left": {
-                                            "type": "Identifier",
-                                            "name": "x",
-                                            "range": [
-                                                463,
-                                                464
-                                            ]
-                                        },
-                                        "right": {
-                                            "type": "Identifier",
-                                            "name": "y",
-                                            "range": [
-                                                467,
-                                                468
-                                            ]
-                                        },
-                                        "range": [
-                                            463,
-                                            468
-                                        ]
-                                    },
-                                    "range": [
-                                        456,
-                                        468
-                                    ]
-                                }
-                            ],
-                            "range": [
-                                450,
-                                470
-                            ]
-                        },
-                        "generator": false,
-                        "expression": false,
-                        "async": false,
                         "range": [
-                            437,
-                            470
+                            749,
+                            785
                         ]
                     },
                     "range": [
-                        433,
-                        470
+                        742,
+                        785
                     ]
                 }
             ],
-            "kind": "var",
+            "kind": "let",
             "range": [
-                429,
-                470
+                738,
+                786
+            ]
+        },
+        {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                        "type": "Identifier",
+                        "name": "cory",
+                        "range": [
+                            787,
+                            791
+                        ]
+                    },
+                    "property": {
+                        "type": "Identifier",
+                        "name": "walk",
+                        "range": [
+                            792,
+                            796
+                        ]
+                    },
+                    "range": [
+                        787,
+                        796
+                    ]
+                },
+                "arguments": [],
+                "range": [
+                    787,
+                    798
+                ]
+            },
+            "range": [
+                787,
+                799
+            ]
+        },
+        {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                        "type": "Identifier",
+                        "name": "cory",
+                        "range": [
+                            800,
+                            804
+                        ]
+                    },
+                    "property": {
+                        "type": "Identifier",
+                        "name": "writeCode",
+                        "range": [
+                            805,
+                            814
+                        ]
+                    },
+                    "range": [
+                        800,
+                        814
+                    ]
+                },
+                "arguments": [],
+                "range": [
+                    800,
+                    816
+                ]
+            },
+            "range": [
+                800,
+                817
+            ]
+        },
+        {
+            "type": "ExpressionStatement",
+            "expression": {
+                "type": "CallExpression",
+                "callee": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                        "type": "Identifier",
+                        "name": "console",
+                        "range": [
+                            818,
+                            825
+                        ]
+                    },
+                    "property": {
+                        "type": "Identifier",
+                        "name": "log",
+                        "range": [
+                            826,
+                            829
+                        ]
+                    },
+                    "range": [
+                        818,
+                        829
+                    ]
+                },
+                "arguments": [
+                    {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "cory",
+                            "range": [
+                                830,
+                                834
+                            ]
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "name",
+                            "range": [
+                                835,
+                                839
+                            ]
+                        },
+                        "range": [
+                            830,
+                            839
+                        ]
+                    }
+                ],
+                "range": [
+                    818,
+                    840
+                ]
+            },
+            "range": [
+                818,
+                841
             ]
         }
     ],
     "sourceType": "script",
     "range": [
         0,
-        470
+        841
     ]
 }

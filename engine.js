@@ -20,12 +20,13 @@ function variable_info(name, scope, type, value, argument){
     this.scope=scope;
     this.argument = argument;
 }
-function function_info(name,scope,range, type, argument){
+function function_info(name,scope,range, type, argument, parent){
     this.name=name;
     this.scope=scope;
     this.range=range;
     this.type=type;
     this.argument=argument;
+    this.parent=parent;
 }
 
 class StaticEngine {
@@ -58,36 +59,38 @@ class StaticEngine {
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
-        self.traverse(ast, function (node) {
+        self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
-                self.make_scope(node);
+                self.make_scope(node, parent_node);
             }
-        });
+        },ast);
         
-        self.traverse(ast, function (node) {
+        self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
-                self.get_function(node);
+                self.get_function(node, parent_node);
             }
-        });
+        },ast);
         console.log(this.scope_array);
 
-        self.traverse(ast, function (node) {
+        self.traverse(ast, function (node,parent_node) {
             if (node.type){ //range -> undefined
-                self.get_variable(node);
+                self.get_variable(node, parent_node);
             }
-        });
+        },ast);
         
         for (let i of variable){
             console.log(i);
+            console.log("");
         }
         console.log("#######################################################################");
         for (let i of entire_function){
             console.log(i);
+            console.log("");
         }
         return result;
     }
 
-    get_variable(node){
+    get_variable(node, parent_node){
         let data = {
             name: '',
             type: '',
@@ -189,35 +192,35 @@ class StaticEngine {
         }        
     }
 
-    get_function(node){
+    get_function(node, parent_node){
         var target_range;
         var found_scope;
         var self = this;
         if(node.type=='FunctionDeclaration'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-            entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params));
+            entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params, parent_node));
         }
         if(node.type=='ArrowFunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             if(node.id&&node.id.name){
                 this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params));
+                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params, parent_node));
             }
             else {
                 this.scope_array[found_scope.range].functions.push(new function_info("NULL_ArrowFunctionExpression", node.range,node.type, node.params));
-                entire_function.push(new function_info("NULL_ArrowFunctionExpression", found_scope.range, node.range, node.type, node.params));
+                entire_function.push(new function_info("NULL_ArrowFunctionExpression", found_scope.range, node.range, node.type, node.params, parent_node));
             }
         }
         if(node.type=='FunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             if(node.id&&node.id.name){
                 this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params));
+                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params, parent_node));
             }
             else {
                 this.scope_array[found_scope.range].functions.push(new function_info("NULL_FunctionExpression", node.range,node.type, node.params));
-                entire_function.push(new function_info("NULL_FunctionExpression", found_scope.range, node.range, node.type, node.params)); 
+                entire_function.push(new function_info("NULL_FunctionExpression", found_scope.range, node.range, node.type, node.params, parent_node)); 
             }
         }
     }
@@ -236,7 +239,7 @@ class StaticEngine {
         else if (scope_type == 'function') return last_function_scope;
     }
 
-    make_scope(node){
+    make_scope(node, parent_node){
         var scope_flag=false;
         var target_range;
         var target_type;
@@ -282,7 +285,18 @@ class StaticEngine {
                 scope_flag=true;
             }
         }
-        
+        /*
+        class A{
+
+        }
+        */
+       if (node.type == 'ClassDeclaration'){
+            if (node.body.type == 'ClassBody'){
+                target_range=node.body.range;
+                target_type=5;
+                scope_flag=true;
+            }
+        }
         if(node.type=="Program"){
             target_range=node.range;
             target_type=0;
@@ -312,19 +326,21 @@ class StaticEngine {
         return;
     }
 
-    traverse(node, func) {
-        func(node);
+    traverse(node, func, parent_node) {
+        func(node, parent_node);
         for (let key in node) {
             if(node.hasOwnProperty(key)) {
                 let child = node[key];
+               
                 if (typeof child === 'object' && child !== null) {
+                    parent_node=node;
                     if (Array.isArray(child)) {
                         for (let idx in child) {
-                            this.traverse(child[idx], func);
+                            this.traverse(child[idx], func, parent_node);
                         }
                     }
                     else {
-                        this.traverse(child, func);
+                        this.traverse(child, func, parent_node);
                     }
                 }
             }
