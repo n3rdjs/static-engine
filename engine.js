@@ -243,68 +243,25 @@ class StaticEngine {
         var scope_flag=false;
         var target_range;
         var target_type;
-        if(node.type=="BlockStatement"){
+        if(node.type=='BlockStatement'){
             target_range=node.range;
-            target_type=1;
             scope_flag=true;
-        }
-
-        /*function x(){
-            a = 5;
-        }*/ 
-        if (node.type == 'FunctionDeclaration'){
-            if (node.body.type == 'BlockStatement'){
-                // console.log(node.body.range);
-                target_range=node.body.range; 
+            if(parent_node.type=='ArrowFunctionExpression'|| parent_node.type=='FunctionDeclaration' || parent_node.type=='FunctionExpression'){
                 target_type=2;
-                scope_flag=true;
-
             }
+            else target_type=1;
         }
-
-        /*var a=(m,n)=>{
-            return m+n;
-        }*/
-        if (node.type == 'ArrowFunctionExpression'){
-            if (node.body.type == 'BlockStatement'){
-                target_range=node.body.range;
-                target_type=3;
-                scope_flag=true;
-            }
-        }
-        /*
-        (function() {
-            'use strict';
-            console.log('a');
-        })();
-        */
-        if (node.type == 'FunctionExpression'){
-            if (node.body.type == 'BlockStatement'){
-                target_range=node.body.range;
-                target_type=4;
-                scope_flag=true;
-            }
-        }
-        /*
-        class A{
-
-        }
-        */
-       if (node.type == 'ClassDeclaration'){
-            if (node.body.type == 'ClassBody'){
-                target_range=node.body.range;
-                target_type=5;
-                scope_flag=true;
-            }
+        if(node.type=='ClassBody'){
+            target_range=node.range;
+            scope_flag=true;
+            if(parent_node.type=='ClassDeclaration')target_type=3;
         }
         if(node.type=="Program"){
             target_range=node.range;
             target_type=0;
             this.parent_scope_range=target_range;
             scope_flag=true;
-            
         }
-
         if(scope_flag==true && !this.scope_array[target_range]){
             this.scope_array[target_range]=(new scope(target_range, target_type));
             if(target_type!=0)this.push_scope(this.scope_array[this.parent_scope_range], target_range);
