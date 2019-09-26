@@ -3,6 +3,7 @@ const esgraph = require('esgraph');
 var fs=require("fs");
 
 var variable = [];
+var entire_function=[];
 var num=0;
 
 function scope(range,type){
@@ -12,15 +13,16 @@ function scope(range,type){
     this.variables=[];
     this.functions=[];
 }
-function variable_info(name, range, type, value, argument){
+function variable_info(name, scope, type, value, argument){
     this.type = type;
     this.name = name;
     this.value = value;
-    this.range = range;
+    this.scope=scope;
     this.argument = argument;
 }
-function function_info(name,range, type, argument){
+function function_info(name,scope,range, type, argument){
     this.name=name;
+    this.scope=scope;
     this.range=range;
     this.type=type;
     this.argument=argument;
@@ -78,7 +80,10 @@ class StaticEngine {
         for (let i of variable){
             console.log(i);
         }
-
+        console.log("#######################################################################");
+        for (let i of entire_function){
+            console.log(i);
+        }
         return result;
     }
 
@@ -191,17 +196,29 @@ class StaticEngine {
         if(node.type=='FunctionDeclaration'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
+            entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params));
         }
         if(node.type=='ArrowFunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            if(node.id&&node.id.name)this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-            else this.scope_array[found_scope.range].functions.push(new function_info("NULL_ArrowFunctionExpression", node.range,node.type, node.params));
-            
+            if(node.id&&node.id.name){
+                this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
+                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params));
+            }
+            else {
+                this.scope_array[found_scope.range].functions.push(new function_info("NULL_ArrowFunctionExpression", node.range,node.type, node.params));
+                entire_function.push(new function_info("NULL_ArrowFunctionExpression", found_scope.range, node.range, node.type, node.params));
+            }
         }
         if(node.type=='FunctionExpression'){
             found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            if(node.id&&node.id.name)this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
-            else this.scope_array[found_scope.range].functions.push(new function_info("NULL_FunctionExpression", node.range,node.type, node.params));
+            if(node.id&&node.id.name){
+                this.scope_array[found_scope.range].functions.push(new function_info(node.id.name, node.range,node.type, node.params));
+                entire_function.push(new function_info(node.id.name, found_scope.range, node.range, node.type, node.params));
+            }
+            else {
+                this.scope_array[found_scope.range].functions.push(new function_info("NULL_FunctionExpression", node.range,node.type, node.params));
+                entire_function.push(new function_info("NULL_FunctionExpression", found_scope.range, node.range, node.type, node.params)); 
+            }
         }
     }
     find_scope(parent_scope, target_range, last_function_scope, scope_type){
