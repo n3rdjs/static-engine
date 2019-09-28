@@ -116,56 +116,11 @@ class StaticEngine {
                 if (node2.init == null){ 
                     //"var a1";
                     data.name = node2.id.name; //a1
-                    
                     data.type = node.kind; //var/let/const
+                    data.range = node2.range;
                     
                 } else {
-                    if (node2.init.type == 'Literal'){
-                        //"var a2 = 1; var a2 = 'a';"
-                        data.name = node2.id.name; //a2
-                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
-                        data.type = node.kind; //var/let/const
-                        data.value = node2.init.value;
-                    }
-                    else if (node2.init.type == 'ArrayExpression'){
-                        data.name = node2.id.name; //
-                        data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
-                        data.type = node.kind; //var/let/const
-                        data.value = node2.init.elements;
-                    }
-                    else if (node2.init.type == 'ObjectExpression'){
-                        //var a5 = {a:1, b:function x(){return a}};
-                        data.name = node2.id.name; //a5
-                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
-                        data.type = node.kind; //var/let/const
-                        data.value = {};
-                        if (node2.init.properties){
-                            for (let i = 0; i < node2.init.properties.length; i++) {
-                                data.value[node2.init.properties[i].key.name] = node2.init.properties[i].value
-                            }
-                            //data.value = node2.init.properties;
-                        }
-                    }
-                    else if (node2.init.type == 'CallExpression'){
-                        //"var a4 = a(1, 2);"
-                        data.name = node2.id.name; //a4
-                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
-                        data.type = node.kind; //var/let/const
-                    }
-                    else if (node2.init.type == 'BinaryExpression'){
-                        //"var a3 = 1 + 2 + x()" --> CallExpression????
-                        data.name = node2.id.name; //a3
-                        //data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range);
-                        data.type = node.kind; //var/let/const
-                        data.value = "BinaryExpression";
-                        //data.argument <- arguments
-                        //use DFS BFS
-
-                    }
-                    else if (node2.init.type == 'AssignmentExpression'){
-                        
-                    }
-                    else if (node2.init.type == 'FunctionExpression'){
+                    if (node2.init.type == 'FunctionExpression'){
                         data.name=node2.id.name;
                         data.type=node.kind;
                         data.argument=node2.init.params;
@@ -178,7 +133,12 @@ class StaticEngine {
                         data.argument=node2.init.params;
                         data.value='ArrowFunctionExpression';
                         data.range=node2.init.range;
-                        
+                    }
+                    else {
+                        data.name=node2.id.name;
+                        data.type=node.kind;
+                        data.range=node2.init.range;
+                        data.value=node2.init.type;
                     }
                 }
             }
@@ -199,39 +159,14 @@ class StaticEngine {
             // find if same identifier name is defined
 
             // if doesn't exist
-            if (node.right.type == 'Literal'){
-                data.type = 'global';
-                data.name = node.left.name; //a2
-                data.use_range = this.scope_array[this.parent_scope_range]
-                data.value = node.right.value;
-            }
-            else if (node.right.type == 'ArrayExpression'){
-                data.type = 'global';
-                data.name = node.left.name; //a2
-                data.use_range = this.scope_array[this.parent_scope_range]
-                data.value = node.right.elements;
-            } 
-            else if (node.right.type == 'ObjectExpression'){
-
-            }
-            else if (node.right.type == 'CallExpression'){
-
-            }
-            else if (node.right.type == 'BinaryExpression'){
-
-            }
-            else if (node.right.type == 'FunctionExpression'){
-                return;
-            }
-            //hoisting?
-
-            //if not hoisted(automatic global)
-            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
+            data.type = 'global';
+            data.name = node.left.name; //a2
+            data.use_range = this.scope_array[this.parent_scope_range]
+            data.value = node.right.type;
+            data.range = node.right.range;
+            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument, data.range));
             //this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
         }        
-    }
-    handle_binary(node){
-        
     }
     get_function(node, parent_node){
         var self = this;
