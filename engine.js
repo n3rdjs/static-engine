@@ -12,14 +12,16 @@ function scope(range,type){
     this.variables=[];
     this.functions=[];
 }
-function variable_info(name, scope, type, value, argument){
+function variable_info(name, scope, type, value, argument, range){
     this.type = type;
     this.name = name;
     this.value = value;
     this.scope=scope;
     this.argument = argument;
+    this.range=range;
+
 }
-function function_info(name,scope,range, type, argument, parent, method_type='undefined'){
+function function_info(name,scope,range, type, argument, parent, method_type, function_type){
     this.name=name;
     this.scope=scope;
     this.range=range;
@@ -27,6 +29,7 @@ function function_info(name,scope,range, type, argument, parent, method_type='un
     this.argument=argument;
     this.parent=parent;
     this.method_type=method_type;
+    this.function_type=function_type;
 }
 
 class StaticEngine {
@@ -56,6 +59,8 @@ class StaticEngine {
             if (err) throw err;
         }); 
         console.log(str_ast);
+        console.log("#######################################################################");
+        console.log("");
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
@@ -67,17 +72,16 @@ class StaticEngine {
         
         self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
+                self.get_variable(node, parent_node);
                 self.get_function(node, parent_node);
             }
         },ast);
 
-        self.traverse(ast, function (node,parent_node) {
-            if (node.type){ //range -> undefined
-                self.get_variable(node, parent_node);
-            }
-        },ast);
+        console.log("#######################################################################");
+        console.log("");
         console.log(this.scope_array);
-        
+        console.log("#######################################################################");
+        console.log("");
         for (let i of variable){
             console.log(i);
             console.log("");
@@ -162,15 +166,27 @@ class StaticEngine {
                         
                     }
                     else if (node2.init.type == 'FunctionExpression'){
-                        return;
+                        data.name=node2.id.name;
+                        data.type=node.kind;
+                        data.argument=node2.init.params;
+                        data.value='FunctionExpression';
+                        data.range=node2.init.range;
+                    }
+                    else if (node2.init.type == 'ArrowFunctionExpression'){
+                        data.name=node2.id.name;
+                        data.type=node.kind;
+                        data.argument=node2.init.params;
+                        data.value='ArrowFunctionExpression';
+                        data.range=node2.init.range;
+                        
                     }
                 }
             }
             if (data.type == 'var') data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             else data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
             
-            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
-            this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
+            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument, data.range));
+            this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument, data.range));
         }
         else if (node.type == 'AssignmentExpression'){
             if (node.left.type != 'MemberExpression'){
@@ -218,31 +234,48 @@ class StaticEngine {
         
     }
     get_function(node, parent_node){
-        var target_range;
-        var found_scope;
         var self = this;
-        var tmp_function;
+        let data = {
+            name:'',
+            scope:[],
+            range:[],
+            type:'',
+            argument:[],
+            parent:{},
+            method_type:undefined,
+            function_type:undefined
+        };
+        var found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
+      
+        data.scope=found_scope.range;
+        data.range=node.range;
+        data.type=node.type;
+        data.argument=node.params;
+        data.parent=parent_node;
+
         if(node.type=='FunctionDeclaration'||node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
-            found_scope=self.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
+            if(node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
+                variable.filter((item)=>{
+                    if((node.type==item.value)&&node.range==item.range){
+                        data.function_type=item.type;
+                    }
+                })
+            }
             if(parent_node.type=='MethodDefinition'){
-                tmp_function=new function_info(parent_node.key.name, found_scope.range, node.range,node.type, node.params, parent_node, parent_node.kind);
-                this.scope_array[found_scope.range].functions.push(tmp_function);
-                entire_function.push(tmp_function);
+                data.name=parent_node.key.name;
+                data.method_type=parent_node.kind;
             }
             else{
-                if(node.id){
-                    tmp_function=new function_info(node.id.name, found_scope.range, node.range,node.type, node.params, parent_node);
-                    this.scope_array[found_scope.range].functions.push(tmp_function);
-                    entire_function.push(tmp_function);
-                }
-                else {
-                    tmp_function=new function_info(node.id, found_scope.range, node.range,node.type, node.params, parent_node);
-                    this.scope_array[found_scope.range].functions.push(tmp_function);
-                    entire_function.push(tmp_function); 
-                }
+                if(node.id)data.name=node.id.name;
+                else data.name=node.id;
             }
+            var tmp_function=new function_info(data.name, data.scope, data.range, data.type, data.argument, data.parent, data.method_type, data.function_type);
+            this.scope_array[data.scope].functions.push(tmp_function);
+            entire_function.push(tmp_function);
         }
+        
     }
+    
     find_scope(parent_scope, target_range, last_function_scope, scope_type){
         for (let children of parent_scope.child){
             if(children.range[0]<=target_range[0]&&children.range[1]>=target_range[1])
