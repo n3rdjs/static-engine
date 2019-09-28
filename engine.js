@@ -254,13 +254,6 @@ class StaticEngine {
         data.parent=parent_node;
 
         if(node.type=='FunctionDeclaration'||node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
-            if(node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
-                variable.filter((item)=>{
-                    if((node.type==item.value)&&node.range==item.range){
-                        data.function_type=item.type;
-                    }
-                })
-            }
             if(parent_node.type=='MethodDefinition'){
                 data.name=parent_node.key.name;
                 data.method_type=parent_node.kind;
@@ -268,6 +261,14 @@ class StaticEngine {
             else{
                 if(node.id)data.name=node.id.name;
                 else data.name=node.id;
+            }
+            if(node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
+                variable.filter((item)=>{
+                    if((node.type==item.value)&&(node.range==item.range)){
+                        data.function_type=item.type;
+                        data.name=item.name;
+                    }
+                })
             }
             var tmp_function=new function_info(data.name, data.scope, data.range, data.type, data.argument, data.parent, data.method_type, data.function_type);
             this.scope_array[data.scope].functions.push(tmp_function);
