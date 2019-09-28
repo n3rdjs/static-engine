@@ -214,7 +214,9 @@ class StaticEngine {
             //this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
         }        
     }
-
+    handle_binary(node){
+        
+    }
     get_function(node, parent_node){
         var target_range;
         var found_scope;
