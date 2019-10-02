@@ -82,8 +82,13 @@ class StaticEngine {
         console.log(this.scope_array);
         console.log("#######################################################################");
         console.log("");
+        let variable_num = 0;
         for (let i of variable){
-            console.log(i);
+            variable_num++;
+            console.log("**********  "+variable_num+"  Variable Info*************");
+            Object.keys(i).forEach(item =>{
+                console.log(item, ":", i[item]);
+            })
             console.log("");
         }
         console.log("#######################################################################");
@@ -107,12 +112,19 @@ class StaticEngine {
             name: '',
             type: '',
             value: '',
-            use_range: [],
+            scope: [],
             argument: []
         };
         if (node.type == 'VariableDeclaration'){
             if (node.declarations[0].type == 'VariableDeclarator'){
                 let node2 = node.declarations[0];
+
+                //already used global(var_hoisting)
+                let found = this.var_hoisting_fromdeclaration(node);
+                if (found != 0){
+                    return ;
+                }
+
                 if (node2.init == null){ 
                     //"var a1";
                     data.name = node2.id.name; //a1
@@ -142,11 +154,11 @@ class StaticEngine {
                     }
                 }
             }
-            if (data.type == 'var') data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
-            else data.use_range = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
+            if (data.type == 'var') data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
+            else data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
             
-            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument, data.range));
-            this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument, data.range));
+            variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+            this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
         }
         else if (node.type == 'AssignmentExpression'){
             if (node.left.type != 'MemberExpression'){
@@ -157,15 +169,17 @@ class StaticEngine {
                 // if not??
             }
             // find if same identifier name is defined
-
-            // if doesn't exist
-            data.type = 'global';
-            data.name = node.left.name; //a2
-            data.use_range = this.scope_array[this.parent_scope_range]
-            data.value = node.right.type;
-            data.range = node.right.range;
-            variable.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument, data.range));
-            //this.scope_array[data.use_range.range].variables.push(new variable_info(data.name, data.use_range.range, data.type, data.value, data.argument));
+            let found = this.var_if_declared(node);
+            if (found == 0){
+                // if doesn't exist
+                data.type = 'global';
+                data.name = node.left.name; //a2
+                data.scope = this.scope_array[this.parent_scope_range]
+                data.value = node.right.type;
+                data.range = node.right.range;
+                variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+            }
         }        
     }
     get_function(node, parent_node){
@@ -225,6 +239,69 @@ class StaticEngine {
         }
         if (scope_type == 'block') return parent_scope;
         else if (scope_type == 'function') return last_function_scope;
+    }
+
+    var_if_declared(node){
+        let found;
+        for (let i of variable){
+            if (i.name = node.left.name){
+                if (node.range[0] <= i.scope[0] && i.scope[1] <= node.range[1]){
+                    found = i;
+                }
+            }
+        }
+        return found;
+    }
+
+    var_hoisting_fromdeclaration(node){
+        let data = {
+            name: '',
+            type: '',
+            value: '',
+            scope: [],
+            argument: []
+        };
+        let node2 = node.declarations[0];
+        if (node.kind == 'var') data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
+        else data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
+
+        let root = this.scope_array[this.parent_scope_range];
+
+        for (let i of root.variables){
+            if (i.name == node2.id.name && i.type == 'global'){
+
+                if (data.scope.range[0] <= i.range[0] && i.range[1] <= data.scope.range[1]){
+                    i.type = node.kind;
+                
+                    root.variables = root.variables.filter(function(value){
+                        return value != i;
+                    });
+                 
+                    if (node2.init == null){ 
+                        data.name = node2.id.name;
+                        data.type = node.kind;
+                        data.range = node2.range;
+                    } else {
+                        data.name=node2.id.name;
+                        data.type=node.kind;
+                        data.range=node2.init.range;
+                        data.value=node2.init.type;
+                    }
+    
+                    i.scope = data.scope.range;
+                    for (let j of variable){ // assume no duplicates
+                        if (j.name == node2.id.name && j.type == 'global'){
+                            j.type = node.kind;
+                            j.scope = data.scope.range;
+                        }
+                    }
+                    this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                    return data;
+                }
+                
+            }
+        }
+        return 0;
     }
 
     make_scope(node, parent_node){

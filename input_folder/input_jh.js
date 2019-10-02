@@ -34,3 +34,4 @@ z = 1;
 var a = function(x,y){
     return x + y
 }
+let z = 2;
