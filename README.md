@@ -7,4 +7,5 @@
 ```
 $npm test
 $npm install
+$git submodule update --init // TOP 1000 modules in test/resource/modules
 ```

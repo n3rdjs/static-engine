@@ -5,10 +5,10 @@ const path = require('path');
 let filepath = '';
 
 if(process.argv.length == 3) {
-    filepath = './input_folder/'+process.argv[2];
+    filepath = './'+process.argv[2];
 }
 else {
-    console.log("npm index.js [input file_name]")
+    console.log("npm index.js [input file]")
 }
 function walk(dir) {
     let list = fs.readdirSync(dir);
