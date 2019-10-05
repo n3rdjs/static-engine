@@ -32,6 +32,10 @@ function function_info(name,scope,range, type, argument, parent, method_type, fu
     this.function_type=function_type;
 }
 
+function log(a) {
+    console.log(a);
+}
+
 class StaticEngine {
     constructor(code, options) {
         this.code = code;
@@ -44,12 +48,22 @@ class StaticEngine {
 
         this.parent_scope_range;
         this.scope_array={};
+
+        if(options.hasOwnProperty('debug') && options.debug === false) {
+            log = ()=>{};
+        }
     }
     
     analyze() {
         let result = {}
         //let ast = Esprima.parseScript(this.code);
-        let ast = Esprima.parseScript(this.code, {range: true});
+        let ast
+        try {
+            ast = Esprima.parseScript(this.code, {range: true});
+        }
+        catch(e) {
+            throw new Error('esprima error');
+        }
         //let cfg = esgraph(ast);
         result.ast = ast;
         //result.cfg = cfg;
@@ -58,9 +72,9 @@ class StaticEngine {
         fs.writeFile('result_ast.txt', str_ast, function (err) {
             if (err) throw err;
         }); 
-        console.log(str_ast);
-        console.log("#######################################################################");
-        console.log("");
+        log(str_ast);
+        log("#######################################################################");
+        log("");
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
@@ -77,32 +91,32 @@ class StaticEngine {
             }
         },ast);
 
-        console.log("#######################################################################");
-        console.log("");
-        console.log(this.scope_array);
-        console.log("#######################################################################");
-        console.log("");
+        log("#######################################################################");
+        log("");
+        log(this.scope_array);
+        log("#######################################################################");
+        log("");
         let variable_num = 0;
         for (let i of variable){
             variable_num++;
-            console.log("**********  "+variable_num+"  Variable Info*************");
+            log("**********  "+variable_num+"  Variable Info*************");
             Object.keys(i).forEach(item =>{
-                console.log(item, ":", i[item]);
+                log(item, ":", i[item]);
             })
-            console.log("");
+            log("");
         }
-        console.log("#######################################################################");
-        console.log("");
+        log("#######################################################################");
+        log("");
         let function_num=0;
         for (let i of entire_function){
             function_num++;
-            console.log("**********  "+function_num+"  Function Info*************");
+            log("**********  "+function_num+"  Function Info*************");
             Object.keys(i).forEach(item => {
                 if(item!='parent'){
-                    console.log(item, ":" ,i[item]);
+                    log(item, ":" ,i[item]);
                 }
             })
-            console.log("");
+            log("");
         }
         return result;
     }

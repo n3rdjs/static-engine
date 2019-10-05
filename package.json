@@ -4,13 +4,15 @@
   "description": "",
   "main": "engine.js",
   "scripts": {
-    "test": "mocha",
+    "test": "nyc mocha",
     "test-index": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
+    "should": "^13.2.3"
   },
   "dependencies": {
     "esgraph": "^0.3.0",
