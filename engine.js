@@ -32,8 +32,8 @@ function function_info(name,scope,range, type, argument, parent, method_type, fu
     this.function_type=function_type;
 }
 
-function log(a) {
-    console.log(a);
+function log(...a) {
+    console.log(...a);
 }
 
 class StaticEngine {
@@ -49,7 +49,7 @@ class StaticEngine {
         this.parent_scope_range;
         this.scope_array={};
 
-        if(options.hasOwnProperty('debug') && options.debug === false) {
+        if(options && options.hasOwnProperty('debug') && options.debug === false) {
             log = ()=>{};
         }
     }
@@ -86,8 +86,14 @@ class StaticEngine {
         
         self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
-                self.get_variable(node, parent_node);
+                self.get_variable_declaration(node, parent_node);
                 self.get_function(node, parent_node);
+            }
+        },ast);
+
+        self.traverse(ast, function (node, parent_node) {
+            if (node.type){ //range -> undefined
+                self.get_variable_assignment(node, parent_node);
             }
         },ast);
 
@@ -113,7 +119,7 @@ class StaticEngine {
             log("**********  "+function_num+"  Function Info*************");
             Object.keys(i).forEach(item => {
                 if(item!='parent'){
-                    log(item, ":" ,i[item]);
+                    log(item, ":", i[item]);
                 }
             })
             log("");
@@ -121,7 +127,7 @@ class StaticEngine {
         return result;
     }
 
-    get_variable(node){
+    get_variable_declaration(node){
         let data = {
             name: '',
             type: '',
@@ -143,7 +149,7 @@ class StaticEngine {
                     //"var a1";
                     data.name = node2.id.name; //a1
                     data.type = node.kind; //var/let/const
-                    data.range = node2.range;
+                    data.range = [];//node2.range;
                     
                 } else {
                     if (node2.init.type == 'FunctionExpression'){
@@ -163,7 +169,7 @@ class StaticEngine {
                     else {
                         data.name=node2.id.name;
                         data.type=node.kind;
-                        data.range=node2.init.range;
+                        data.range=[];//node2.init.range;
                         data.value=node2.init.type;
                     }
                 }
@@ -173,8 +179,17 @@ class StaticEngine {
             
             variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
             this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
-        }
-        else if (node.type == 'AssignmentExpression'){
+        }      
+    }
+    get_variable_assignment(node){
+        let data = {
+            name: '',
+            type: '',
+            value: '',
+            scope: [],
+            argument: []
+        };
+        if (node.type == 'AssignmentExpression'){
             if (node.left.type != 'MemberExpression'){
                 // if new key:value??
 
@@ -190,12 +205,13 @@ class StaticEngine {
                 data.name = node.left.name; //a2
                 data.scope = this.scope_array[this.parent_scope_range]
                 data.value = node.right.type;
-                data.range = node.right.range;
+                data.range = [];//node.right.range;
                 variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
                 this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
             }
         }        
     }
+    
     get_function(node, parent_node){
         var self = this;
         let data = {
@@ -256,10 +272,10 @@ class StaticEngine {
     }
 
     var_if_declared(node){
-        let found;
+        let found = 0;
         for (let i of variable){
-            if (i.name = node.left.name){
-                if (node.range[0] <= i.scope[0] && i.scope[1] <= node.range[1]){
+            if (i.name == node.left.name){
+                if (node.range[0] >= i.scope[0] && i.scope[1] >= node.range[1]){
                     found = i;
                 }
             }

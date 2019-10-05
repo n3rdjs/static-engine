@@ -1,12 +1,14 @@
-let z = 1;
 function b(){
   {
     a = 1;
   }
 }
 function c(){
+  a = 2;
   var a;
 }
-a = 1;
-var a;
-a = 2;
+function d(a){
+  a = 3;
+  //var a;
+}
+//var a;
