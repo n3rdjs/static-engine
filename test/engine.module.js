@@ -16,9 +16,7 @@ describe('module time test', ()=> {
                     let result = engine.analyze();
                 }
                 catch(e) {
-                    if(e.message === 'esprima error')
-                        done();
-                    else {
+                    if(e.message !== 'esprima error') {
                         console.log(e);
                         assert()
                     }
