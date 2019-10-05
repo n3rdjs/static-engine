@@ -388,7 +388,9 @@ class StaticEngine {
                     parent_node=node;
                     if (Array.isArray(child)) {
                         for (let idx in child) {
-                            this.traverse(child[idx], func, parent_node);
+                            if (typeof child[idx] === 'object' && child[idx] !== null){
+                                this.traverse(child[idx], func, parent_node);
+                            }
                         }
                     }
                     else {
