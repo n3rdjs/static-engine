@@ -5,7 +5,7 @@ const path = require('path');
 let filepath = '';
 
 if(process.argv.length == 3) {
-    filepath = './'+process.argv[2];
+    filepath = process.argv[2];
 }
 else {
     console.log("npm index.js [input file]")
@@ -46,3 +46,4 @@ try {
     console.error(err);
     process.exit(-1);
 }
+

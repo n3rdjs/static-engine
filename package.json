@@ -15,7 +15,10 @@
     "should": "^13.2.3"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.1",
     "esgraph": "^0.3.0",
-    "esprima": "^4.0.1"
+    "esprima": "^4.0.1",
+    "express": "^4.17.1"
   }
 }

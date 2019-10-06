@@ -8,113 +8,434 @@
                     "type": "VariableDeclarator",
                     "id": {
                         "type": "Identifier",
-                        "name": "z",
+                        "name": "StaticEngine",
                         "range": [
-                            4,
-                            5
+                            6,
+                            18
+                        ]
+                    },
+                    "init": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "CallExpression",
+                            "callee": {
+                                "type": "Identifier",
+                                "name": "require",
+                                "range": [
+                                    21,
+                                    28
+                                ]
+                            },
+                            "arguments": [
+                                {
+                                    "type": "Literal",
+                                    "value": "./engine.js",
+                                    "raw": "'./engine.js'",
+                                    "range": [
+                                        29,
+                                        42
+                                    ]
+                                }
+                            ],
+                            "range": [
+                                21,
+                                43
+                            ]
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "StaticEngine",
+                            "range": [
+                                44,
+                                56
+                            ]
+                        },
+                        "range": [
+                            21,
+                            56
+                        ]
+                    },
+                    "range": [
+                        6,
+                        56
+                    ]
+                }
+            ],
+            "kind": "const",
+            "range": [
+                0,
+                56
+            ]
+        },
+        {
+            "type": "VariableDeclaration",
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "type": "Identifier",
+                        "name": "fs",
+                        "range": [
+                            64,
+                            66
+                        ]
+                    },
+                    "init": {
+                        "type": "CallExpression",
+                        "callee": {
+                            "type": "Identifier",
+                            "name": "require",
+                            "range": [
+                                69,
+                                76
+                            ]
+                        },
+                        "arguments": [
+                            {
+                                "type": "Literal",
+                                "value": "fs",
+                                "raw": "'fs'",
+                                "range": [
+                                    77,
+                                    81
+                                ]
+                            }
+                        ],
+                        "range": [
+                            69,
+                            82
+                        ]
+                    },
+                    "range": [
+                        64,
+                        82
+                    ]
+                }
+            ],
+            "kind": "const",
+            "range": [
+                58,
+                83
+            ]
+        },
+        {
+            "type": "VariableDeclaration",
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "type": "Identifier",
+                        "name": "path",
+                        "range": [
+                            91,
+                            95
+                        ]
+                    },
+                    "init": {
+                        "type": "CallExpression",
+                        "callee": {
+                            "type": "Identifier",
+                            "name": "require",
+                            "range": [
+                                98,
+                                105
+                            ]
+                        },
+                        "arguments": [
+                            {
+                                "type": "Literal",
+                                "value": "path",
+                                "raw": "'path'",
+                                "range": [
+                                    106,
+                                    112
+                                ]
+                            }
+                        ],
+                        "range": [
+                            98,
+                            113
+                        ]
+                    },
+                    "range": [
+                        91,
+                        113
+                    ]
+                }
+            ],
+            "kind": "const",
+            "range": [
+                85,
+                114
+            ]
+        },
+        {
+            "type": "VariableDeclaration",
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "id": {
+                        "type": "Identifier",
+                        "name": "filepath",
+                        "range": [
+                            122,
+                            130
                         ]
                     },
                     "init": {
                         "type": "Literal",
-                        "value": 1,
-                        "raw": "1",
+                        "value": "",
+                        "raw": "''",
                         "range": [
-                            8,
-                            9
+                            133,
+                            135
                         ]
                     },
                     "range": [
-                        4,
-                        9
+                        122,
+                        135
                     ]
                 }
             ],
             "kind": "let",
             "range": [
-                0,
-                10
+                118,
+                136
             ]
         },
         {
-            "type": "FunctionDeclaration",
-            "id": {
-                "type": "Identifier",
-                "name": "b",
+            "type": "IfStatement",
+            "test": {
+                "type": "BinaryExpression",
+                "operator": "==",
+                "left": {
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "process",
+                            "range": [
+                                143,
+                                150
+                            ]
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "argv",
+                            "range": [
+                                151,
+                                155
+                            ]
+                        },
+                        "range": [
+                            143,
+                            155
+                        ]
+                    },
+                    "property": {
+                        "type": "Identifier",
+                        "name": "length",
+                        "range": [
+                            156,
+                            162
+                        ]
+                    },
+                    "range": [
+                        143,
+                        162
+                    ]
+                },
+                "right": {
+                    "type": "Literal",
+                    "value": 3,
+                    "raw": "3",
+                    "range": [
+                        166,
+                        167
+                    ]
+                },
                 "range": [
-                    20,
-                    21
+                    143,
+                    167
                 ]
             },
-            "params": [],
-            "body": {
+            "consequent": {
                 "type": "BlockStatement",
                 "body": [
                     {
-                        "type": "BlockStatement",
-                        "body": [
-                            {
-                                "type": "ExpressionStatement",
-                                "expression": {
-                                    "type": "AssignmentExpression",
-                                    "operator": "=",
-                                    "left": {
-                                        "type": "Identifier",
-                                        "name": "a",
+                        "type": "ExpressionStatement",
+                        "expression": {
+                            "type": "AssignmentExpression",
+                            "operator": "=",
+                            "left": {
+                                "type": "Identifier",
+                                "name": "filepath",
+                                "range": [
+                                    176,
+                                    184
+                                ]
+                            },
+                            "right": {
+                                "type": "BinaryExpression",
+                                "operator": "+",
+                                "left": {
+                                    "type": "Literal",
+                                    "value": "./",
+                                    "raw": "'./'",
+                                    "range": [
+                                        187,
+                                        191
+                                    ]
+                                },
+                                "right": {
+                                    "type": "MemberExpression",
+                                    "computed": true,
+                                    "object": {
+                                        "type": "MemberExpression",
+                                        "computed": false,
+                                        "object": {
+                                            "type": "Identifier",
+                                            "name": "process",
+                                            "range": [
+                                                192,
+                                                199
+                                            ]
+                                        },
+                                        "property": {
+                                            "type": "Identifier",
+                                            "name": "argv",
+                                            "range": [
+                                                200,
+                                                204
+                                            ]
+                                        },
                                         "range": [
-                                            33,
-                                            34
+                                            192,
+                                            204
                                         ]
                                     },
-                                    "right": {
+                                    "property": {
                                         "type": "Literal",
-                                        "value": 1,
-                                        "raw": "1",
+                                        "value": 2,
+                                        "raw": "2",
                                         "range": [
-                                            37,
-                                            38
+                                            205,
+                                            206
                                         ]
                                     },
                                     "range": [
-                                        33,
-                                        38
+                                        192,
+                                        207
                                     ]
                                 },
                                 "range": [
-                                    33,
-                                    39
+                                    187,
+                                    207
                                 ]
-                            }
-                        ],
+                            },
+                            "range": [
+                                176,
+                                207
+                            ]
+                        },
                         "range": [
-                            27,
-                            43
+                            176,
+                            208
                         ]
                     }
                 ],
                 "range": [
-                    23,
-                    45
+                    169,
+                    211
                 ]
             },
-            "generator": false,
-            "expression": false,
-            "async": false,
+            "alternate": {
+                "type": "BlockStatement",
+                "body": [
+                    {
+                        "type": "ExpressionStatement",
+                        "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                    "type": "Identifier",
+                                    "name": "console",
+                                    "range": [
+                                        225,
+                                        232
+                                    ]
+                                },
+                                "property": {
+                                    "type": "Identifier",
+                                    "name": "log",
+                                    "range": [
+                                        233,
+                                        236
+                                    ]
+                                },
+                                "range": [
+                                    225,
+                                    236
+                                ]
+                            },
+                            "arguments": [
+                                {
+                                    "type": "Literal",
+                                    "value": "npm index.js [input file]",
+                                    "raw": "\"npm index.js [input file]\"",
+                                    "range": [
+                                        237,
+                                        264
+                                    ]
+                                }
+                            ],
+                            "range": [
+                                225,
+                                265
+                            ]
+                        },
+                        "range": [
+                            225,
+                            265
+                        ]
+                    }
+                ],
+                "range": [
+                    218,
+                    268
+                ]
+            },
             "range": [
-                11,
-                45
+                140,
+                268
             ]
         },
         {
             "type": "FunctionDeclaration",
             "id": {
                 "type": "Identifier",
-                "name": "c",
+                "name": "walk",
                 "range": [
-                    55,
-                    56
+                    279,
+                    283
                 ]
             },
-            "params": [],
+            "params": [
+                {
+                    "type": "Identifier",
+                    "name": "dir",
+                    "range": [
+                        284,
+                        287
+                    ]
+                }
+            ],
             "body": {
                 "type": "BlockStatement",
                 "body": [
@@ -125,133 +446,1317 @@
                                 "type": "VariableDeclarator",
                                 "id": {
                                     "type": "Identifier",
-                                    "name": "a",
+                                    "name": "list",
                                     "range": [
-                                        66,
-                                        67
+                                        300,
+                                        304
                                     ]
                                 },
-                                "init": null,
+                                "init": {
+                                    "type": "CallExpression",
+                                    "callee": {
+                                        "type": "MemberExpression",
+                                        "computed": false,
+                                        "object": {
+                                            "type": "Identifier",
+                                            "name": "fs",
+                                            "range": [
+                                                307,
+                                                309
+                                            ]
+                                        },
+                                        "property": {
+                                            "type": "Identifier",
+                                            "name": "readdirSync",
+                                            "range": [
+                                                310,
+                                                321
+                                            ]
+                                        },
+                                        "range": [
+                                            307,
+                                            321
+                                        ]
+                                    },
+                                    "arguments": [
+                                        {
+                                            "type": "Identifier",
+                                            "name": "dir",
+                                            "range": [
+                                                322,
+                                                325
+                                            ]
+                                        }
+                                    ],
+                                    "range": [
+                                        307,
+                                        326
+                                    ]
+                                },
                                 "range": [
-                                    66,
-                                    67
+                                    300,
+                                    326
                                 ]
                             }
                         ],
-                        "kind": "var",
+                        "kind": "let",
                         "range": [
-                            62,
-                            68
+                            296,
+                            327
+                        ]
+                    },
+                    {
+                        "type": "ExpressionStatement",
+                        "expression": {
+                            "type": "CallExpression",
+                            "callee": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                    "type": "Identifier",
+                                    "name": "list",
+                                    "range": [
+                                        333,
+                                        337
+                                    ]
+                                },
+                                "property": {
+                                    "type": "Identifier",
+                                    "name": "forEach",
+                                    "range": [
+                                        338,
+                                        345
+                                    ]
+                                },
+                                "range": [
+                                    333,
+                                    345
+                                ]
+                            },
+                            "arguments": [
+                                {
+                                    "type": "FunctionExpression",
+                                    "id": null,
+                                    "params": [
+                                        {
+                                            "type": "Identifier",
+                                            "name": "file",
+                                            "range": [
+                                                355,
+                                                359
+                                            ]
+                                        }
+                                    ],
+                                    "body": {
+                                        "type": "BlockStatement",
+                                        "body": [
+                                            {
+                                                "type": "ExpressionStatement",
+                                                "expression": {
+                                                    "type": "AssignmentExpression",
+                                                    "operator": "=",
+                                                    "left": {
+                                                        "type": "Identifier",
+                                                        "name": "file",
+                                                        "range": [
+                                                            372,
+                                                            376
+                                                        ]
+                                                    },
+                                                    "right": {
+                                                        "type": "CallExpression",
+                                                        "callee": {
+                                                            "type": "MemberExpression",
+                                                            "computed": false,
+                                                            "object": {
+                                                                "type": "Identifier",
+                                                                "name": "path",
+                                                                "range": [
+                                                                    379,
+                                                                    383
+                                                                ]
+                                                            },
+                                                            "property": {
+                                                                "type": "Identifier",
+                                                                "name": "join",
+                                                                "range": [
+                                                                    384,
+                                                                    388
+                                                                ]
+                                                            },
+                                                            "range": [
+                                                                379,
+                                                                388
+                                                            ]
+                                                        },
+                                                        "arguments": [
+                                                            {
+                                                                "type": "Identifier",
+                                                                "name": "dir",
+                                                                "range": [
+                                                                    389,
+                                                                    392
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "Identifier",
+                                                                "name": "file",
+                                                                "range": [
+                                                                    394,
+                                                                    398
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "range": [
+                                                            379,
+                                                            399
+                                                        ]
+                                                    },
+                                                    "range": [
+                                                        372,
+                                                        399
+                                                    ]
+                                                },
+                                                "range": [
+                                                    372,
+                                                    400
+                                                ]
+                                            },
+                                            {
+                                                "type": "VariableDeclaration",
+                                                "declarations": [
+                                                    {
+                                                        "type": "VariableDeclarator",
+                                                        "id": {
+                                                            "type": "Identifier",
+                                                            "name": "stat",
+                                                            "range": [
+                                                                414,
+                                                                418
+                                                            ]
+                                                        },
+                                                        "init": {
+                                                            "type": "CallExpression",
+                                                            "callee": {
+                                                                "type": "MemberExpression",
+                                                                "computed": false,
+                                                                "object": {
+                                                                    "type": "Identifier",
+                                                                    "name": "fs",
+                                                                    "range": [
+                                                                        421,
+                                                                        423
+                                                                    ]
+                                                                },
+                                                                "property": {
+                                                                    "type": "Identifier",
+                                                                    "name": "statSync",
+                                                                    "range": [
+                                                                        424,
+                                                                        432
+                                                                    ]
+                                                                },
+                                                                "range": [
+                                                                    421,
+                                                                    432
+                                                                ]
+                                                            },
+                                                            "arguments": [
+                                                                {
+                                                                    "type": "Identifier",
+                                                                    "name": "file",
+                                                                    "range": [
+                                                                        433,
+                                                                        437
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "range": [
+                                                                421,
+                                                                438
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            414,
+                                                            438
+                                                        ]
+                                                    }
+                                                ],
+                                                "kind": "let",
+                                                "range": [
+                                                    410,
+                                                    439
+                                                ]
+                                            },
+                                            {
+                                                "type": "IfStatement",
+                                                "test": {
+                                                    "type": "LogicalExpression",
+                                                    "operator": "&&",
+                                                    "left": {
+                                                        "type": "Identifier",
+                                                        "name": "stat",
+                                                        "range": [
+                                                            453,
+                                                            457
+                                                        ]
+                                                    },
+                                                    "right": {
+                                                        "type": "CallExpression",
+                                                        "callee": {
+                                                            "type": "MemberExpression",
+                                                            "computed": false,
+                                                            "object": {
+                                                                "type": "Identifier",
+                                                                "name": "stat",
+                                                                "range": [
+                                                                    461,
+                                                                    465
+                                                                ]
+                                                            },
+                                                            "property": {
+                                                                "type": "Identifier",
+                                                                "name": "isDirectory",
+                                                                "range": [
+                                                                    466,
+                                                                    477
+                                                                ]
+                                                            },
+                                                            "range": [
+                                                                461,
+                                                                477
+                                                            ]
+                                                        },
+                                                        "arguments": [],
+                                                        "range": [
+                                                            461,
+                                                            479
+                                                        ]
+                                                    },
+                                                    "range": [
+                                                        453,
+                                                        479
+                                                    ]
+                                                },
+                                                "consequent": {
+                                                    "type": "BlockStatement",
+                                                    "body": [
+                                                        {
+                                                            "type": "ExpressionStatement",
+                                                            "expression": {
+                                                                "type": "CallExpression",
+                                                                "callee": {
+                                                                    "type": "Identifier",
+                                                                    "name": "walk",
+                                                                    "range": [
+                                                                        497,
+                                                                        501
+                                                                    ]
+                                                                },
+                                                                "arguments": [
+                                                                    {
+                                                                        "type": "Identifier",
+                                                                        "name": "file",
+                                                                        "range": [
+                                                                            502,
+                                                                            506
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "range": [
+                                                                    497,
+                                                                    507
+                                                                ]
+                                                            },
+                                                            "range": [
+                                                                497,
+                                                                508
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "range": [
+                                                        481,
+                                                        519
+                                                    ]
+                                                },
+                                                "alternate": {
+                                                    "type": "IfStatement",
+                                                    "test": {
+                                                        "type": "CallExpression",
+                                                        "callee": {
+                                                            "type": "MemberExpression",
+                                                            "computed": false,
+                                                            "object": {
+                                                                "type": "Identifier",
+                                                                "name": "stat",
+                                                                "range": [
+                                                                    528,
+                                                                    532
+                                                                ]
+                                                            },
+                                                            "property": {
+                                                                "type": "Identifier",
+                                                                "name": "isFile",
+                                                                "range": [
+                                                                    533,
+                                                                    539
+                                                                ]
+                                                            },
+                                                            "range": [
+                                                                528,
+                                                                539
+                                                            ]
+                                                        },
+                                                        "arguments": [],
+                                                        "range": [
+                                                            528,
+                                                            541
+                                                        ]
+                                                    },
+                                                    "consequent": {
+                                                        "type": "BlockStatement",
+                                                        "body": [
+                                                            {
+                                                                "type": "VariableDeclaration",
+                                                                "declarations": [
+                                                                    {
+                                                                        "type": "VariableDeclarator",
+                                                                        "id": {
+                                                                            "type": "Identifier",
+                                                                            "name": "code",
+                                                                            "range": [
+                                                                                562,
+                                                                                566
+                                                                            ]
+                                                                        },
+                                                                        "init": {
+                                                                            "type": "CallExpression",
+                                                                            "callee": {
+                                                                                "type": "MemberExpression",
+                                                                                "computed": false,
+                                                                                "object": {
+                                                                                    "type": "CallExpression",
+                                                                                    "callee": {
+                                                                                        "type": "MemberExpression",
+                                                                                        "computed": false,
+                                                                                        "object": {
+                                                                                            "type": "Identifier",
+                                                                                            "name": "fs",
+                                                                                            "range": [
+                                                                                                569,
+                                                                                                571
+                                                                                            ]
+                                                                                        },
+                                                                                        "property": {
+                                                                                            "type": "Identifier",
+                                                                                            "name": "readFileSync",
+                                                                                            "range": [
+                                                                                                572,
+                                                                                                584
+                                                                                            ]
+                                                                                        },
+                                                                                        "range": [
+                                                                                            569,
+                                                                                            584
+                                                                                        ]
+                                                                                    },
+                                                                                    "arguments": [
+                                                                                        {
+                                                                                            "type": "Identifier",
+                                                                                            "name": "file",
+                                                                                            "range": [
+                                                                                                585,
+                                                                                                589
+                                                                                            ]
+                                                                                        }
+                                                                                    ],
+                                                                                    "range": [
+                                                                                        569,
+                                                                                        590
+                                                                                    ]
+                                                                                },
+                                                                                "property": {
+                                                                                    "type": "Identifier",
+                                                                                    "name": "toString",
+                                                                                    "range": [
+                                                                                        591,
+                                                                                        599
+                                                                                    ]
+                                                                                },
+                                                                                "range": [
+                                                                                    569,
+                                                                                    599
+                                                                                ]
+                                                                            },
+                                                                            "arguments": [],
+                                                                            "range": [
+                                                                                569,
+                                                                                601
+                                                                            ]
+                                                                        },
+                                                                        "range": [
+                                                                            562,
+                                                                            601
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "kind": "let",
+                                                                "range": [
+                                                                    558,
+                                                                    602
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "ExpressionStatement",
+                                                                "expression": {
+                                                                    "type": "CallExpression",
+                                                                    "callee": {
+                                                                        "type": "MemberExpression",
+                                                                        "computed": false,
+                                                                        "object": {
+                                                                            "type": "Identifier",
+                                                                            "name": "console",
+                                                                            "range": [
+                                                                                616,
+                                                                                623
+                                                                            ]
+                                                                        },
+                                                                        "property": {
+                                                                            "type": "Identifier",
+                                                                            "name": "log",
+                                                                            "range": [
+                                                                                624,
+                                                                                627
+                                                                            ]
+                                                                        },
+                                                                        "range": [
+                                                                            616,
+                                                                            627
+                                                                        ]
+                                                                    },
+                                                                    "arguments": [
+                                                                        {
+                                                                            "type": "Identifier",
+                                                                            "name": "file",
+                                                                            "range": [
+                                                                                628,
+                                                                                632
+                                                                            ]
+                                                                        }
+                                                                    ],
+                                                                    "range": [
+                                                                        616,
+                                                                        633
+                                                                    ]
+                                                                },
+                                                                "range": [
+                                                                    616,
+                                                                    634
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "VariableDeclaration",
+                                                                "declarations": [
+                                                                    {
+                                                                        "type": "VariableDeclarator",
+                                                                        "id": {
+                                                                            "type": "Identifier",
+                                                                            "name": "engine",
+                                                                            "range": [
+                                                                                652,
+                                                                                658
+                                                                            ]
+                                                                        },
+                                                                        "init": {
+                                                                            "type": "NewExpression",
+                                                                            "callee": {
+                                                                                "type": "Identifier",
+                                                                                "name": "StaticEngine",
+                                                                                "range": [
+                                                                                    665,
+                                                                                    677
+                                                                                ]
+                                                                            },
+                                                                            "arguments": [
+                                                                                {
+                                                                                    "type": "Identifier",
+                                                                                    "name": "code",
+                                                                                    "range": [
+                                                                                        678,
+                                                                                        682
+                                                                                    ]
+                                                                                }
+                                                                            ],
+                                                                            "range": [
+                                                                                661,
+                                                                                683
+                                                                            ]
+                                                                        },
+                                                                        "range": [
+                                                                            652,
+                                                                            683
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "kind": "let",
+                                                                "range": [
+                                                                    648,
+                                                                    684
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "VariableDeclaration",
+                                                                "declarations": [
+                                                                    {
+                                                                        "type": "VariableDeclarator",
+                                                                        "id": {
+                                                                            "type": "Identifier",
+                                                                            "name": "result",
+                                                                            "range": [
+                                                                                702,
+                                                                                708
+                                                                            ]
+                                                                        },
+                                                                        "init": {
+                                                                            "type": "CallExpression",
+                                                                            "callee": {
+                                                                                "type": "MemberExpression",
+                                                                                "computed": false,
+                                                                                "object": {
+                                                                                    "type": "Identifier",
+                                                                                    "name": "engine",
+                                                                                    "range": [
+                                                                                        711,
+                                                                                        717
+                                                                                    ]
+                                                                                },
+                                                                                "property": {
+                                                                                    "type": "Identifier",
+                                                                                    "name": "analyze",
+                                                                                    "range": [
+                                                                                        718,
+                                                                                        725
+                                                                                    ]
+                                                                                },
+                                                                                "range": [
+                                                                                    711,
+                                                                                    725
+                                                                                ]
+                                                                            },
+                                                                            "arguments": [],
+                                                                            "range": [
+                                                                                711,
+                                                                                727
+                                                                            ]
+                                                                        },
+                                                                        "range": [
+                                                                            702,
+                                                                            727
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "kind": "let",
+                                                                "range": [
+                                                                    698,
+                                                                    728
+                                                                ]
+                                                            }
+                                                        ],
+                                                        "range": [
+                                                            542,
+                                                            807
+                                                        ]
+                                                    },
+                                                    "alternate": null,
+                                                    "range": [
+                                                        525,
+                                                        807
+                                                    ]
+                                                },
+                                                "range": [
+                                                    449,
+                                                    807
+                                                ]
+                                            }
+                                        ],
+                                        "range": [
+                                            361,
+                                            814
+                                        ]
+                                    },
+                                    "generator": false,
+                                    "expression": false,
+                                    "async": false,
+                                    "range": [
+                                        346,
+                                        814
+                                    ]
+                                }
+                            ],
+                            "range": [
+                                333,
+                                815
+                            ]
+                        },
+                        "range": [
+                            333,
+                            816
                         ]
                     }
                 ],
                 "range": [
-                    58,
-                    70
+                    289,
+                    819
                 ]
             },
             "generator": false,
             "expression": false,
             "async": false,
             "range": [
-                46,
-                70
+                270,
+                819
             ]
         },
         {
-            "type": "ExpressionStatement",
-            "expression": {
-                "type": "AssignmentExpression",
-                "operator": "=",
-                "left": {
-                    "type": "Identifier",
-                    "name": "a",
-                    "range": [
-                        71,
-                        72
-                    ]
-                },
-                "right": {
-                    "type": "Literal",
-                    "value": 1,
-                    "raw": "1",
-                    "range": [
-                        75,
-                        76
-                    ]
-                },
-                "range": [
-                    71,
-                    76
-                ]
-            },
-            "range": [
-                71,
-                77
-            ]
-        },
-        {
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "a",
+            "type": "TryStatement",
+            "block": {
+                "type": "BlockStatement",
+                "body": [
+                    {
+                        "type": "IfStatement",
+                        "test": {
+                            "type": "CallExpression",
+                            "callee": {
+                                "type": "MemberExpression",
+                                "computed": false,
+                                "object": {
+                                    "type": "Identifier",
+                                    "name": "fs",
+                                    "range": [
+                                        837,
+                                        839
+                                    ]
+                                },
+                                "property": {
+                                    "type": "Identifier",
+                                    "name": "existsSync",
+                                    "range": [
+                                        840,
+                                        850
+                                    ]
+                                },
+                                "range": [
+                                    837,
+                                    850
+                                ]
+                            },
+                            "arguments": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "filepath",
+                                    "range": [
+                                        851,
+                                        859
+                                    ]
+                                }
+                            ],
+                            "range": [
+                                837,
+                                860
+                            ]
+                        },
+                        "consequent": {
+                            "type": "BlockStatement",
+                            "body": [
+                                {
+                                    "type": "VariableDeclaration",
+                                    "declarations": [
+                                        {
+                                            "type": "VariableDeclarator",
+                                            "id": {
+                                                "type": "Identifier",
+                                                "name": "stat",
+                                                "range": [
+                                                    877,
+                                                    881
+                                                ]
+                                            },
+                                            "init": {
+                                                "type": "CallExpression",
+                                                "callee": {
+                                                    "type": "MemberExpression",
+                                                    "computed": false,
+                                                    "object": {
+                                                        "type": "Identifier",
+                                                        "name": "fs",
+                                                        "range": [
+                                                            884,
+                                                            886
+                                                        ]
+                                                    },
+                                                    "property": {
+                                                        "type": "Identifier",
+                                                        "name": "statSync",
+                                                        "range": [
+                                                            887,
+                                                            895
+                                                        ]
+                                                    },
+                                                    "range": [
+                                                        884,
+                                                        895
+                                                    ]
+                                                },
+                                                "arguments": [
+                                                    {
+                                                        "type": "Identifier",
+                                                        "name": "filepath",
+                                                        "range": [
+                                                            896,
+                                                            904
+                                                        ]
+                                                    }
+                                                ],
+                                                "range": [
+                                                    884,
+                                                    905
+                                                ]
+                                            },
+                                            "range": [
+                                                877,
+                                                905
+                                            ]
+                                        }
+                                    ],
+                                    "kind": "let",
+                                    "range": [
+                                        873,
+                                        906
+                                    ]
+                                },
+                                {
+                                    "type": "IfStatement",
+                                    "test": {
+                                        "type": "CallExpression",
+                                        "callee": {
+                                            "type": "MemberExpression",
+                                            "computed": false,
+                                            "object": {
+                                                "type": "Identifier",
+                                                "name": "stat",
+                                                "range": [
+                                                    919,
+                                                    923
+                                                ]
+                                            },
+                                            "property": {
+                                                "type": "Identifier",
+                                                "name": "isFile",
+                                                "range": [
+                                                    924,
+                                                    930
+                                                ]
+                                            },
+                                            "range": [
+                                                919,
+                                                930
+                                            ]
+                                        },
+                                        "arguments": [],
+                                        "range": [
+                                            919,
+                                            932
+                                        ]
+                                    },
+                                    "consequent": {
+                                        "type": "BlockStatement",
+                                        "body": [
+                                            {
+                                                "type": "VariableDeclaration",
+                                                "declarations": [
+                                                    {
+                                                        "type": "VariableDeclarator",
+                                                        "id": {
+                                                            "type": "Identifier",
+                                                            "name": "code",
+                                                            "range": [
+                                                                953,
+                                                                957
+                                                            ]
+                                                        },
+                                                        "init": {
+                                                            "type": "CallExpression",
+                                                            "callee": {
+                                                                "type": "MemberExpression",
+                                                                "computed": false,
+                                                                "object": {
+                                                                    "type": "CallExpression",
+                                                                    "callee": {
+                                                                        "type": "MemberExpression",
+                                                                        "computed": false,
+                                                                        "object": {
+                                                                            "type": "Identifier",
+                                                                            "name": "fs",
+                                                                            "range": [
+                                                                                960,
+                                                                                962
+                                                                            ]
+                                                                        },
+                                                                        "property": {
+                                                                            "type": "Identifier",
+                                                                            "name": "readFileSync",
+                                                                            "range": [
+                                                                                963,
+                                                                                975
+                                                                            ]
+                                                                        },
+                                                                        "range": [
+                                                                            960,
+                                                                            975
+                                                                        ]
+                                                                    },
+                                                                    "arguments": [
+                                                                        {
+                                                                            "type": "Identifier",
+                                                                            "name": "filepath",
+                                                                            "range": [
+                                                                                976,
+                                                                                984
+                                                                            ]
+                                                                        }
+                                                                    ],
+                                                                    "range": [
+                                                                        960,
+                                                                        985
+                                                                    ]
+                                                                },
+                                                                "property": {
+                                                                    "type": "Identifier",
+                                                                    "name": "toString",
+                                                                    "range": [
+                                                                        986,
+                                                                        994
+                                                                    ]
+                                                                },
+                                                                "range": [
+                                                                    960,
+                                                                    994
+                                                                ]
+                                                            },
+                                                            "arguments": [],
+                                                            "range": [
+                                                                960,
+                                                                996
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            953,
+                                                            996
+                                                        ]
+                                                    }
+                                                ],
+                                                "kind": "let",
+                                                "range": [
+                                                    949,
+                                                    997
+                                                ]
+                                            },
+                                            {
+                                                "type": "ExpressionStatement",
+                                                "expression": {
+                                                    "type": "CallExpression",
+                                                    "callee": {
+                                                        "type": "MemberExpression",
+                                                        "computed": false,
+                                                        "object": {
+                                                            "type": "Identifier",
+                                                            "name": "console",
+                                                            "range": [
+                                                                1011,
+                                                                1018
+                                                            ]
+                                                        },
+                                                        "property": {
+                                                            "type": "Identifier",
+                                                            "name": "log",
+                                                            "range": [
+                                                                1019,
+                                                                1022
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            1011,
+                                                            1022
+                                                        ]
+                                                    },
+                                                    "arguments": [
+                                                        {
+                                                            "type": "Identifier",
+                                                            "name": "filepath",
+                                                            "range": [
+                                                                1023,
+                                                                1031
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "range": [
+                                                        1011,
+                                                        1032
+                                                    ]
+                                                },
+                                                "range": [
+                                                    1011,
+                                                    1033
+                                                ]
+                                            },
+                                            {
+                                                "type": "VariableDeclaration",
+                                                "declarations": [
+                                                    {
+                                                        "type": "VariableDeclarator",
+                                                        "id": {
+                                                            "type": "Identifier",
+                                                            "name": "engine",
+                                                            "range": [
+                                                                1051,
+                                                                1057
+                                                            ]
+                                                        },
+                                                        "init": {
+                                                            "type": "NewExpression",
+                                                            "callee": {
+                                                                "type": "Identifier",
+                                                                "name": "StaticEngine",
+                                                                "range": [
+                                                                    1064,
+                                                                    1076
+                                                                ]
+                                                            },
+                                                            "arguments": [
+                                                                {
+                                                                    "type": "Identifier",
+                                                                    "name": "code",
+                                                                    "range": [
+                                                                        1077,
+                                                                        1081
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "range": [
+                                                                1060,
+                                                                1082
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            1051,
+                                                            1082
+                                                        ]
+                                                    }
+                                                ],
+                                                "kind": "let",
+                                                "range": [
+                                                    1047,
+                                                    1083
+                                                ]
+                                            },
+                                            {
+                                                "type": "VariableDeclaration",
+                                                "declarations": [
+                                                    {
+                                                        "type": "VariableDeclarator",
+                                                        "id": {
+                                                            "type": "Identifier",
+                                                            "name": "result",
+                                                            "range": [
+                                                                1101,
+                                                                1107
+                                                            ]
+                                                        },
+                                                        "init": {
+                                                            "type": "CallExpression",
+                                                            "callee": {
+                                                                "type": "MemberExpression",
+                                                                "computed": false,
+                                                                "object": {
+                                                                    "type": "Identifier",
+                                                                    "name": "engine",
+                                                                    "range": [
+                                                                        1110,
+                                                                        1116
+                                                                    ]
+                                                                },
+                                                                "property": {
+                                                                    "type": "Identifier",
+                                                                    "name": "analyze",
+                                                                    "range": [
+                                                                        1117,
+                                                                        1124
+                                                                    ]
+                                                                },
+                                                                "range": [
+                                                                    1110,
+                                                                    1124
+                                                                ]
+                                                            },
+                                                            "arguments": [],
+                                                            "range": [
+                                                                1110,
+                                                                1126
+                                                            ]
+                                                        },
+                                                        "range": [
+                                                            1101,
+                                                            1126
+                                                        ]
+                                                    }
+                                                ],
+                                                "kind": "let",
+                                                "range": [
+                                                    1097,
+                                                    1127
+                                                ]
+                                            }
+                                        ],
+                                        "range": [
+                                            934,
+                                            1206
+                                        ]
+                                    },
+                                    "alternate": {
+                                        "type": "IfStatement",
+                                        "test": {
+                                            "type": "CallExpression",
+                                            "callee": {
+                                                "type": "MemberExpression",
+                                                "computed": false,
+                                                "object": {
+                                                    "type": "Identifier",
+                                                    "name": "stat",
+                                                    "range": [
+                                                        1224,
+                                                        1228
+                                                    ]
+                                                },
+                                                "property": {
+                                                    "type": "Identifier",
+                                                    "name": "isDirectory",
+                                                    "range": [
+                                                        1229,
+                                                        1240
+                                                    ]
+                                                },
+                                                "range": [
+                                                    1224,
+                                                    1240
+                                                ]
+                                            },
+                                            "arguments": [],
+                                            "range": [
+                                                1224,
+                                                1242
+                                            ]
+                                        },
+                                        "consequent": {
+                                            "type": "ExpressionStatement",
+                                            "expression": {
+                                                "type": "CallExpression",
+                                                "callee": {
+                                                    "type": "Identifier",
+                                                    "name": "walk",
+                                                    "range": [
+                                                        1258,
+                                                        1262
+                                                    ]
+                                                },
+                                                "arguments": [
+                                                    {
+                                                        "type": "Identifier",
+                                                        "name": "filepath",
+                                                        "range": [
+                                                            1263,
+                                                            1271
+                                                        ]
+                                                    }
+                                                ],
+                                                "range": [
+                                                    1258,
+                                                    1272
+                                                ]
+                                            },
+                                            "range": [
+                                                1258,
+                                                1273
+                                            ]
+                                        },
+                                        "alternate": null,
+                                        "range": [
+                                            1221,
+                                            1273
+                                        ]
+                                    },
+                                    "range": [
+                                        916,
+                                        1273
+                                    ]
+                                }
+                            ],
+                            "range": [
+                                862,
+                                1280
+                            ]
+                        },
+                        "alternate": null,
                         "range": [
-                            82,
-                            83
+                            834,
+                            1280
                         ]
-                    },
-                    "init": null,
-                    "range": [
-                        82,
-                        83
-                    ]
-                }
-            ],
-            "kind": "var",
-            "range": [
-                78,
-                84
-            ]
-        },
-        {
-            "type": "ExpressionStatement",
-            "expression": {
-                "type": "AssignmentExpression",
-                "operator": "=",
-                "left": {
+                    }
+                ],
+                "range": [
+                    827,
+                    1283
+                ]
+            },
+            "handler": {
+                "type": "CatchClause",
+                "param": {
                     "type": "Identifier",
-                    "name": "a",
+                    "name": "err",
                     "range": [
-                        85,
-                        86
+                        1290,
+                        1293
                     ]
                 },
-                "right": {
-                    "type": "Literal",
-                    "value": 2,
-                    "raw": "2",
+                "body": {
+                    "type": "BlockStatement",
+                    "body": [
+                        {
+                            "type": "ExpressionStatement",
+                            "expression": {
+                                "type": "CallExpression",
+                                "callee": {
+                                    "type": "MemberExpression",
+                                    "computed": false,
+                                    "object": {
+                                        "type": "Identifier",
+                                        "name": "console",
+                                        "range": [
+                                            1302,
+                                            1309
+                                        ]
+                                    },
+                                    "property": {
+                                        "type": "Identifier",
+                                        "name": "error",
+                                        "range": [
+                                            1310,
+                                            1315
+                                        ]
+                                    },
+                                    "range": [
+                                        1302,
+                                        1315
+                                    ]
+                                },
+                                "arguments": [
+                                    {
+                                        "type": "Identifier",
+                                        "name": "err",
+                                        "range": [
+                                            1316,
+                                            1319
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    1302,
+                                    1320
+                                ]
+                            },
+                            "range": [
+                                1302,
+                                1321
+                            ]
+                        },
+                        {
+                            "type": "ExpressionStatement",
+                            "expression": {
+                                "type": "CallExpression",
+                                "callee": {
+                                    "type": "MemberExpression",
+                                    "computed": false,
+                                    "object": {
+                                        "type": "Identifier",
+                                        "name": "process",
+                                        "range": [
+                                            1327,
+                                            1334
+                                        ]
+                                    },
+                                    "property": {
+                                        "type": "Identifier",
+                                        "name": "exit",
+                                        "range": [
+                                            1335,
+                                            1339
+                                        ]
+                                    },
+                                    "range": [
+                                        1327,
+                                        1339
+                                    ]
+                                },
+                                "arguments": [
+                                    {
+                                        "type": "UnaryExpression",
+                                        "operator": "-",
+                                        "argument": {
+                                            "type": "Literal",
+                                            "value": 1,
+                                            "raw": "1",
+                                            "range": [
+                                                1341,
+                                                1342
+                                            ]
+                                        },
+                                        "prefix": true,
+                                        "range": [
+                                            1340,
+                                            1342
+                                        ]
+                                    }
+                                ],
+                                "range": [
+                                    1327,
+                                    1343
+                                ]
+                            },
+                            "range": [
+                                1327,
+                                1344
+                            ]
+                        }
+                    ],
                     "range": [
-                        89,
-                        90
+                        1295,
+                        1347
                     ]
                 },
                 "range": [
-                    85,
-                    90
+                    1284,
+                    1347
                 ]
             },
+            "finalizer": null,
             "range": [
-                85,
-                91
+                823,
+                1347
             ]
         }
     ],
     "sourceType": "script",
     "range": [
         0,
-        91
+        1347
     ]
 }
