@@ -1,49 +1,12 @@
-const StaticEngine = require('./engine.js').StaticEngine
+const { staticEngine } = require('./engine.js');
 const fs = require('fs');
 const path = require('path');
 
-let filepath = '';
-
-if(process.argv.length == 3) {
-    filepath = process.argv[2];
-}
-else {
-    console.log("npm index.js [input file]")
-}
-function walk(dir) {
-    let list = fs.readdirSync(dir);
-    list.forEach(function(file) {
-        file = path.join(dir, file);
-        let stat = fs.statSync(file);
-        if (stat && stat.isDirectory()) { 
-            walk(file);
-        } else if(stat.isFile()){ 
-            let code = fs.readFileSync(file).toString();
-            console.log(file);
-            let engine = new StaticEngine(code);
-            let result = engine.analyze();
-            //console.log(result);
-            //console.log("");
-        }
-    });
+if (process.argv.length < 3) {
+    console.log("npm index.js [input file]");
+	process.exit('-1');
 }
 
-try {
-    if(fs.existsSync(filepath)) {
-        let stat = fs.statSync(filepath);
-        if(stat.isFile()) {
-            let code = fs.readFileSync(filepath).toString();
-            console.log(filepath);
-            let engine = new StaticEngine(code);
-            let result = engine.analyze();
-            //console.log(result);
-            //console.log("");
-        }
-        else if(stat.isDirectory()) 
-            walk(filepath);
-    }
-} catch(err) {
-    console.error(err);
-    process.exit(-1);
-}
+var source = fs.readFileSync(process.argv[2]);
+staticEngine(source);
 
