@@ -1,36 +1,39 @@
-const esprima = require('esprima');
+const Esprima = require('esprima');
 const esgraph = require('esgraph');
-const fs = require("fs");
+var fs=require("fs");
 
 var variable = [];
-var entire_function = [];
+var entire_function=[];
 
-function scope(range, type){
-    this.range = range;
-    this.type = type;
-    this.child = [];
-    this.variables = [];
-    this.functions = [];
+function scope(range,type){
+    this.range=range;
+    this.type=type;
+    this.child=[];
+    this.variables=[];
+    this.functions=[];
 }
-
 function variable_info(name, scope, type, value, argument, range){
     this.type = type;
     this.name = name;
     this.value = value;
-    this.scope = scope;
+    this.scope=scope;
     this.argument = argument;
-    this.range = range;
+    this.range=range;
 
 }
-function function_info(name, scope, range, type, argument, parent, method_type, function_type){
-    this.name = name;
-    this.scope = scope;
-    this.range = range;
-    this.type = type;
-    this.argument = argument;
-    this.parent = parent;
-    this.method_type = method_type;
-    this.function_type = function_type;
+function function_info(name,scope,range, type, argument, parent, method_type, function_type){
+    this.name=name;
+    this.scope=scope;
+    this.range=range;
+    this.type=type;
+    this.argument=argument;
+    this.parent=parent;
+    this.method_type=method_type;
+    this.function_type=function_type;
+}
+
+function log(...a) {
+    console.log(...a);
 }
 
 class StaticEngine {
@@ -44,17 +47,19 @@ class StaticEngine {
         this.real_func_scope = [];
 
         this.parent_scope_range;
-        this.scope_array = { };
+        this.scope_array={};
 
+        if(options && options.hasOwnProperty('debug') && options.debug === false) {
+            log = ()=>{};
+        }
     }
     
     analyze() {
-	let ret = '';
-        let result = { };
-        //let ast = esprima.parseScript(this.code);
+        let result = {}
+        //let ast = Esprima.parseScript(this.code);
         let ast
         try {
-            ast = esprima.parseScript(this.code, {range : true});
+            ast = Esprima.parseScript(this.code, {range: true});
         }
         catch(e) {
             throw new Error('esprima error');
@@ -63,57 +68,64 @@ class StaticEngine {
         result.ast = ast;
         //result.cfg = cfg;
 
-        ret += JSON.stringify(result.ast, null, 4) + "\n";
-        ret += "#######################################################################\n";
-	
-        var self = this;
+        let str_ast = JSON.stringify(result.ast, null, 4);
+        fs.writeFile('result_ast.txt', str_ast, function (err) {
+            if (err) throw err;
+        }); 
+        log(str_ast);
+        log("#######################################################################");
+        log("");
+        let rslt = JSON.parse(str_ast); //only for debugging purpose
 
-        self.traverse(ast, (node, parent_node) => {
+        var self = this;
+        self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
                 self.make_scope(node, parent_node);
             }
-        }, ast);
+        },ast);
         
-        self.traverse(ast, (node, parent_node) => {
+        self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
                 self.get_variable_declaration(node, parent_node);
                 self.get_function(node, parent_node);
             }
-        }, ast);
+        },ast);
 
         this.get_parameter();
 
-        self.traverse(ast, (node, parent_node) => {
+        self.traverse(ast, function (node, parent_node) {
             if (node.type){ //range -> undefined
                 self.get_variable_assignment(node, parent_node);
             }
-        }, ast);
+        },ast);
 
-        ret += "#######################################################################\n";
-        ret += JSON.stringify(this.scope_array, { }, '  ') + '\n';
-        ret += "#######################################################################\n";
+        log("#######################################################################");
+        log("");
+        log(this.scope_array);
+        log("#######################################################################");
+        log("");
         let variable_num = 0;
-        for (let i of variable) {
+        for (let i of variable){
             variable_num++;
-            ret += `**********  ${variable_num}  Variable Info*************\n`;
-            Object.keys(i).forEach(item => {
-                ret += `${item} : ${JSON.stringify(i.item)}\n`;
+            log("**********  "+variable_num+"  Variable Info*************");
+            Object.keys(i).forEach(item =>{
+                log(item, ":", i[item]);
             })
-            ret += "\n";
+            log("");
         }
-        ret += "#######################################################################\n";
+        log("#######################################################################");
+        log("");
         let function_num=0;
-        for (let i of entire_function) {
+        for (let i of entire_function){
             function_num++;
-            ret += `**********  ${function_num}  Function Info*************`;
+            log("**********  "+function_num+"  Function Info*************");
             Object.keys(i).forEach(item => {
-                if(item != 'parent') {
-                    ret += `${JSON.stringify(item)} : ${JSON.stringify(i.item)}\n`;
+                if(item!='parent'){
+                    log(item, ":", i[item]);
                 }
             })
-            ret += "\n";
+            log("");
         }
-	result.res = ret;
         return result;
     }
 
@@ -126,7 +138,6 @@ class StaticEngine {
             range: [],
             argument: []
         };
-
         for (let i of entire_function){
             for (let j in i.argument){
                 if (i.argument[j].type == 'Identifier'){
@@ -251,10 +262,17 @@ class StaticEngine {
             if(parent_node.type=='MethodDefinition'){
                 data.name=parent_node.key.name;
                 data.method_type=parent_node.kind;
+                data.scope=found_scope.range;
+            }
+            if(parent_node.type=='CallExpression'){
+                if(node.id)data.name=node.id.name;
+                else data.name=node.id;
+                data.scope=node.range;
             }
             else{
                 if(node.id)data.name=node.id.name;
                 else data.name=node.id;
+                data.scope=found_scope.range;
             }
             if(node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
                 variable.filter((item)=>{
@@ -264,8 +282,7 @@ class StaticEngine {
                     }
                 })
             }
-
-            data.scope=found_scope.range;
+            
             data.range=node.range;
             data.type=node.type;
             data.argument=node.params;
@@ -280,13 +297,12 @@ class StaticEngine {
     
     find_scope(parent_scope, target_range, last_function_scope, scope_type){
         for (let children of parent_scope.child){
-            if(children.range[0]<=target_range[0]&&children.range[1]>=target_range[1])
+            if(children.range[0]<target_range[0]&&children.range[1]>target_range[1])
             {
                 if (children.type != 1){ // not BlockStatement
                     last_function_scope = children;
                 }
                 return(this.find_scope(children, target_range, last_function_scope, scope_type));
-                
             }
         }
         if (scope_type == 'block') return parent_scope;
@@ -368,10 +384,19 @@ class StaticEngine {
             }
             else target_type=1;
         }
+        
+        if(node.type=='ArrowFunctionExpression'|| node.type=='FunctionDeclaration' || node.type=='FunctionExpression'){
+            if(node.body.type=='BlockStatement'){
+                target_range=node.range;
+                scope_flag=true;
+                target_type=3;
+            }
+        }
+        
         if(node.type=='ClassBody'){
             target_range=node.range;
             scope_flag=true;
-            if(parent_node.type=='ClassDeclaration')target_type=3;
+            if(parent_node.type=='ClassDeclaration')target_type=4;
         }
         if(node.type=="Program"){
             target_range=node.range;
@@ -426,4 +451,4 @@ class StaticEngine {
     
 }
 
-exports.staticEngine = StaticEngine;
+exports.StaticEngine = StaticEngine;
