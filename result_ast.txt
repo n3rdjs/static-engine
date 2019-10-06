@@ -4,212 +4,23 @@
         {
             "type": "ExpressionStatement",
             "expression": {
-                "type": "UnaryExpression",
-                "operator": "-",
-                "argument": {
-                    "type": "UnaryExpression",
-                    "operator": "~",
-                    "argument": {
-                        "type": "UnaryExpression",
-                        "operator": "-",
-                        "argument": {
-                            "type": "UnaryExpression",
-                            "operator": "~",
-                            "argument": {
-                                "type": "UnaryExpression",
-                                "operator": "-",
-                                "argument": {
-                                    "type": "UnaryExpression",
-                                    "operator": "~",
-                                    "argument": {
-                                        "type": "UnaryExpression",
-                                        "operator": "-",
-                                        "argument": {
-                                            "type": "UnaryExpression",
-                                            "operator": "~",
-                                            "argument": {
-                                                "type": "UnaryExpression",
-                                                "operator": "-",
-                                                "argument": {
-                                                    "type": "UnaryExpression",
-                                                    "operator": "~",
-                                                    "argument": {
-                                                        "type": "UnaryExpression",
-                                                        "operator": "-",
-                                                        "argument": {
-                                                            "type": "UnaryExpression",
-                                                            "operator": "~",
-                                                            "argument": {
-                                                                "type": "UnaryExpression",
-                                                                "operator": "-",
-                                                                "argument": {
-                                                                    "type": "UnaryExpression",
-                                                                    "operator": "~",
-                                                                    "argument": {
-                                                                        "type": "UnaryExpression",
-                                                                        "operator": "-",
-                                                                        "argument": {
-                                                                            "type": "UnaryExpression",
-                                                                            "operator": "~",
-                                                                            "argument": {
-                                                                                "type": "UnaryExpression",
-                                                                                "operator": "-",
-                                                                                "argument": {
-                                                                                    "type": "UnaryExpression",
-                                                                                    "operator": "~",
-                                                                                    "argument": {
-                                                                                        "type": "UnaryExpression",
-                                                                                        "operator": "-",
-                                                                                        "argument": {
-                                                                                            "type": "UnaryExpression",
-                                                                                            "operator": "~",
-                                                                                            "argument": {
-                                                                                                "type": "UnaryExpression",
-                                                                                                "operator": "-",
-                                                                                                "argument": {
-                                                                                                    "type": "Literal",
-                                                                                                    "value": 1,
-                                                                                                    "raw": "1",
-                                                                                                    "range": [
-                                                                                                        21,
-                                                                                                        22
-                                                                                                    ]
-                                                                                                },
-                                                                                                "prefix": true,
-                                                                                                "range": [
-                                                                                                    20,
-                                                                                                    22
-                                                                                                ]
-                                                                                            },
-                                                                                            "prefix": true,
-                                                                                            "range": [
-                                                                                                19,
-                                                                                                22
-                                                                                            ]
-                                                                                        },
-                                                                                        "prefix": true,
-                                                                                        "range": [
-                                                                                            18,
-                                                                                            22
-                                                                                        ]
-                                                                                    },
-                                                                                    "prefix": true,
-                                                                                    "range": [
-                                                                                        17,
-                                                                                        22
-                                                                                    ]
-                                                                                },
-                                                                                "prefix": true,
-                                                                                "range": [
-                                                                                    16,
-                                                                                    22
-                                                                                ]
-                                                                            },
-                                                                            "prefix": true,
-                                                                            "range": [
-                                                                                15,
-                                                                                22
-                                                                            ]
-                                                                        },
-                                                                        "prefix": true,
-                                                                        "range": [
-                                                                            14,
-                                                                            22
-                                                                        ]
-                                                                    },
-                                                                    "prefix": true,
-                                                                    "range": [
-                                                                        13,
-                                                                        22
-                                                                    ]
-                                                                },
-                                                                "prefix": true,
-                                                                "range": [
-                                                                    12,
-                                                                    22
-                                                                ]
-                                                            },
-                                                            "prefix": true,
-                                                            "range": [
-                                                                11,
-                                                                22
-                                                            ]
-                                                        },
-                                                        "prefix": true,
-                                                        "range": [
-                                                            10,
-                                                            22
-                                                        ]
-                                                    },
-                                                    "prefix": true,
-                                                    "range": [
-                                                        9,
-                                                        22
-                                                    ]
-                                                },
-                                                "prefix": true,
-                                                "range": [
-                                                    8,
-                                                    22
-                                                ]
-                                            },
-                                            "prefix": true,
-                                            "range": [
-                                                7,
-                                                22
-                                            ]
-                                        },
-                                        "prefix": true,
-                                        "range": [
-                                            6,
-                                            22
-                                        ]
-                                    },
-                                    "prefix": true,
-                                    "range": [
-                                        5,
-                                        22
-                                    ]
-                                },
-                                "prefix": true,
-                                "range": [
-                                    4,
-                                    22
-                                ]
-                            },
-                            "prefix": true,
-                            "range": [
-                                3,
-                                22
-                            ]
-                        },
-                        "prefix": true,
-                        "range": [
-                            2,
-                            22
-                        ]
-                    },
-                    "prefix": true,
-                    "range": [
-                        1,
-                        22
-                    ]
-                },
-                "prefix": true,
+                "type": "Literal",
+                "value": 123,
+                "raw": "123",
                 "range": [
                     0,
-                    22
+                    3
                 ]
             },
             "range": [
                 0,
-                22
+                3
             ]
         }
     ],
     "sourceType": "script",
     "range": [
         0,
-        22
+        3
     ]
 }

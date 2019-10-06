@@ -1,4 +1,5 @@
 const express = require('express');
+const { staticEngine } = require('./engine');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
@@ -16,8 +17,8 @@ app.get('', (req, res) => {
 
 app.post('/test', (req, res) => {
 	var source = req.body.source || '';
-	fs.writeFileSync('/tmp/input.js', source);
-	var result = require('child_process').execSync('node index.js /tmp/input.js');
+	var result = (new staticEngine(source)).analyze();
+	console.log(result);
 	res.render('result', { result, result });
 });
 
