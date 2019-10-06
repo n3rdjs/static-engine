@@ -451,4 +451,4 @@ class StaticEngine {
     
 }
 
-exports.StaticEngine = StaticEngine;
+exports.staticEngine = StaticEngine;
