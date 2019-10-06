@@ -21,4 +21,4 @@ function ax(b=function (){console.log(1)}) {
 }
 a++;
 a = -1;
-console.log((a=1, a=2, a));
+//console.log((a=1, a=2, a));

@@ -143,9 +143,7 @@ class StaticEngine {
                 if (i.argument[j].type == 'Identifier'){
                     data.type = 'function parameter';
                     data.name = i.argument[j].name;
-                    
-                    data.range = i.range;
-                    data.range[0] = data.range[1] - 1;
+                    data.range = i.argument[j].range;
                     
                     data.scope = this.find_scope(this.scope_array[this.parent_scope_range], data.range, this.scope_array[this.parent_scope_range], 'function');
                     
@@ -402,6 +400,21 @@ class StaticEngine {
             target_range=node.range;
             target_type=0;
             this.parent_scope_range=target_range;
+            scope_flag=true;
+        }
+        if(node.type == 'ForStatement'){
+            target_range=node.range;
+            target_type=1; //same as block
+            scope_flag=true;
+        }
+        if (node.type == 'ForOfStatement'){
+            target_range=node.range;
+            target_type=1; //same as block
+            scope_flag=true;
+        }
+        if (node.type == 'ForInStatement'){
+            target_range=node.range;
+            target_type=1; //same as block
             scope_flag=true;
         }
         if(scope_flag==true && !this.scope_array[target_range]){
