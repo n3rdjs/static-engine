@@ -5,7 +5,8 @@
   "main": "engine.js",
   "scripts": {
     "test": "nyc mocha",
-    "test-index": "node index.js"
+    "test-index": "node index.js",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,8 +18,9 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^2.7.1",
-    "esgraph": "^0.3.0",
+    "esgraph": "./esgraph",
     "esprima": "^4.0.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nodemon": "^1.19.3"
   }
 }

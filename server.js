@@ -19,7 +19,7 @@ app.post('/test', (req, res) => {
 	var source = req.body.source || '';
 	var result = (new staticEngine(source)).analyze();
 	console.log(result);
-	res.render('result', { result, result });
+	res.render('result', { result: result });
 });
 
 app.listen(8080);
