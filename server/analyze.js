@@ -2,12 +2,11 @@
 /* eslint-disable no-console */
 const esprima = require('esprima');
 const walkes = require('walkes');
-const esgraph = require('../esgraph');
-const { staticEngine } = require('../engine');
+const esgraph = require('esgraph');
 
 function analyze(code, options) {
-  if(require.cache[require.resolve('../esgraph')]) {
-    delete require.cache[require.resolve('../esgraph')];
+  if(require.cache[require.resolve('esgraph')]) {
+    delete require.cache[require.resolve('esgraph')];
   }
   
   console.log(1);
