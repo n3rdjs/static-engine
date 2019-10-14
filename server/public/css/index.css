@@ -3,8 +3,9 @@ body {
     font-family: Raleway, sans-serif;
 }
 
-body::-webkit-scrollbar { 
-    display: none; /* Chrome Safari */
+body::-webkit-scrollbar {
+    display: none;
+    /* Chrome Safari */
 }
 
 pre {
@@ -26,6 +27,7 @@ svg {
     top: 0;
     left: 0;
     width: 40vw;
+    z-index: 6;
 }
 
 .panel-right {
@@ -34,6 +36,7 @@ svg {
     right: 0;
     bottom: 0;
     left: 40vw;
+    z-index: 5;
 
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
@@ -122,4 +125,10 @@ svg {
 
 #cfg {
     position: relative;
+}
+
+@media (max-width: 700px) {
+    .panel-left {
+        width: 100%;
+    }
 }
