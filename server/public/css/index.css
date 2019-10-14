@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    font-family: Raleway, sans-serif;
+}
+
+.panel-left {
+    position: relative;
+    height: 100vh;
+    width: 40vw;
+}
+
+.panel-right {
+    position: fixed;
+    left: 40vw;
+    top: 56px;
+    width: 60vw;
+    height: calc(100vh - 56px);
+}
+
+.scrollable-view {
+    height: calc(100vh - 56px);
+    max-height: calc(100vh - 56px);
+    overflow: auto;
+}
+
+.CodeMirror {
+	border: 1px solid #ccc;
+    height: 100vh;
+}
+
+#submit {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    margin: 18px 25px;
+}
+
+#source {
+    display: none;
+}
+
+.splitter {
+    flex: 0 0 auto;
+    width: 18px;
+    background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353;
+    height: 100vh;
+    cursor: col-resize;
+}
+
+.viewer {
+    padding: 10px;
+}
+
+.navbar ul {
+    position: relative;
+    width: 100%;
+}
+
+.nav-search {
+    position: absolute;
+    right: 0;
+}
+
+#cfg-view {
+    text-align: center;
+}
+
+.spinner {
+    margin-top: 2px;
+    margin-right: 4px;
+}
+
+.icon-bar {
+    display: block;
+    width: 22px;
+    height: 3px;
+    background: #ccc;
+    border-radius: 1px;
+    margin: 5px 0;
+}
+
+.navbar-toggler {
+    position: absolute;
+    right: 10px;
+}
+
+.nav-link {
+    text-align: center;
+}

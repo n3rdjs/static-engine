@@ -10,8 +10,6 @@ function analyze(code, options) {
     delete require.cache[require.resolve('esgraph')];
   }
   
-  console.log(1);
-  console.log(code);
   let text = '';
   try {
     const fullAst = esprima.parse(code, { range: true });
