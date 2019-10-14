@@ -1,6 +1,12 @@
 $(function () {
 
-  var media = window.matchMedia("(max-width: 700px)");
+  const media = window.matchMedia("(max-width: 700px)");
+
+  const log_viewer = $('#log-view');
+
+  function log(str, color = 'white') {
+    log_viewer.prepend(`<p style="color: ${color};">[${new Date().toLocaleString('en-US')}] : ${str}</p>`);
+  }
 
   // Enable navbar tab
   $('#myTab a').on('click', function (e) {
@@ -50,17 +56,42 @@ $(function () {
   var astviewer = $('#ast-view');
   var cfgviewer = $('#cfg-view');
   var submitbtn = $('#submit');
+  var clearbtn = $('#clear-log');
   var btnEvent;
 
   submitbtn.tooltip({
     boundary: 'window'
-  })
+  });
 
-  $('#submit').on('click', function (e) {
+  clearbtn.tooltip({
+    boundary: 'window'
+  });
+
+  clearbtn.on('click', (e) => {
+    clearbtn.fadeOut();
+    clearbtn.tooltip('hide');
+    clearbtn.tooltip('disable');
+
+    if (confirm('모든 기록을 삭제합니다')) {
+      log_viewer.html('');
+    }
+    setTimeout(() => {
+      clearbtn.fadeIn();
+      submitbtn.tooltip('enable');
+    }, 5000);
+  });
+
+  submitbtn.on('click', (e) => {
 
     submitbtn.attr("disabled", true);
     submitbtn.tooltip('hide');
     submitbtn.tooltip('disable');
+
+    var code = editor.getValue();
+    var hash = md5(code);
+    var color = ((parseInt(hash.substr(0, 6), 16) * 0.3) + 0x222222).toString(16).substr(0, 6)
+
+    log(`New Request Sent (<span style="color: #${color};">${hash}</span>)`);
 
     btnEvent = setTimeout(function () {
       submitbtn.removeClass();
@@ -74,11 +105,16 @@ $(function () {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          code: editor.getValue()
+          code: code
         })
       })
       .then(res => res.json())
       .then((data) => {
+        if (!data.success) {
+          log(`An error occurred ("${data.message}")`, '#ff6b6b');
+          throw new Error('failed');
+        }
+
         astviewer.jsonViewer(JSON.parse(data.ast), {
           collapsed: true,
           rootCollapsable: false
@@ -89,6 +125,7 @@ $(function () {
           .then((element) => {
             cfgviewer.html(element);
 
+            log('Received a normal response', '#46f5af');
             submitbtn.removeClass();
             submitbtn.addClass('btn btn-success');
             submitbtn.html('Success');

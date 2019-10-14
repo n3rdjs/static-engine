@@ -52,12 +52,11 @@
 </nav>
 <div class="panel">
     <div class="panel-left">
-    <button id="submit" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<em>Ctrl + Enter</em> ">
-        Submit
-    </button>
+        <button id="submit" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<em>Ctrl + Enter</em> ">
+            Submit
+        </button>
     <textarea id="source" name="source" style="border: 1px solid #d8d8d8"><%= input %></textarea>
     </div>
-    <!--<div class="splitter" style="touch-action: none;"></div>-->
     <div class="panel-right">
         <div class="viewer">
             <div class="tab-content">
@@ -68,12 +67,14 @@
                 <div id="ast" class="tab-pane fade show active">
                     <pre id="ast-view" class="scrollable-view"></pre>
                 </div>
-                <div id="cfg" class="tab-pane fade">
+               <div id="cfg" class="tab-pane fade">
                     <pre id="cfg-view" class="scrollable-view"></pre>
                 </div>
                 <div id="log" class="tab-pane fade">
-                    <h3>Menu 3</h3>
-                    <p>Some content in menu 3.</p>
+                    <button id="clear-log" class="btn btn-light" type="button" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<em>Clear Log</em> ">
+                        Clear
+                    </button>
+                    <pre id="log-view" class="scrollable-view" readonly="readonly"></pre>
                 </div>
                 </div>
         </div>
@@ -84,6 +85,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/static/js/md5.js"></script>
 <script src="/static/js/codemirror.js"></script>
 <script src="/static/js/javascript.js"></script>
 <script src="/static/js/jquery.json-viewer.js"></script>

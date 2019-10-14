@@ -17,6 +17,10 @@ svg {
     height: 100%;
 }
 
+textarea {
+    border: none;
+}
+
 .panel {
     position: relative;
     height: 100vh;
@@ -67,6 +71,13 @@ svg {
     margin: 18px 25px;
 }
 
+#clear-log {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    margin: 18px 25px;
+}
+
 #source {
     display: none;
 }
@@ -82,7 +93,7 @@ svg {
     left: 40vw;
 }
 
-.viewer {
+.viewer .tab-pane > div {
     padding: 10px;
 }
 
@@ -129,6 +140,24 @@ svg {
 
 #cfg {
     position: relative;
+}
+
+#log {
+    padding: 0;
+}
+
+#log-view {
+    background: #303340;
+    color: white;
+    padding: 15px 10px;
+    font-family: monospace;
+    width: 100%;
+    font-size: 11px;
+    line-height: 1px;
+}
+
+#log-view b {
+    color: #ff2f2f;
 }
 
 .with-media {

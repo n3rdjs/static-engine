@@ -31,7 +31,11 @@ app.post('/', (req, res) => {
 });
 
 app.post('/analyze', (req, res) => {
-	res.send(analyze(req.body.code));
+	try {
+		res.json(analyze(req.body.code));
+	} catch (e) {
+		res.json(e);
+	}
 })
 
 function tryRender(res, filename) {
