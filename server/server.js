@@ -14,16 +14,12 @@ app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/scripts', express.static(path.join(__dirname, 'scripts')))
-app.use('/style', express.static(path.join(__dirname, 'style')))
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('', (req, res) => {
 	res.render('index');
 });
 
-app.get('/view', (req, res) => {
-	res.render('view');
-})
 
 app.post('/test', (req, res) => {
 	var source = req.body.source || '';
