@@ -102,9 +102,8 @@ $(function () {
   $('.CodeMirror').addClass('ui-widget-content');
   $('.CodeMirror').resizable({ resize: ( event, ui ) => {
     var new_width = ui.size.width;
-    console.log(new_width);
     left_panel.width(new_width);
-    right_panel.width($(window).width() - new_width);
+    right_panel.css('left', new_width + 'px');
   }});
 
   $('#input-selector').change((e) => {

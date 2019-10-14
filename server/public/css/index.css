@@ -33,7 +33,7 @@ svg {
     top: 0;
     right: 0;
     bottom: 0;
-    width: calc(60vw - 18px);
+    left: 40vw;
 
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
