@@ -119,3 +119,7 @@ svg {
 .nav-link {
     text-align: center;
 }
+
+#cfg {
+    position: relative;
+}
