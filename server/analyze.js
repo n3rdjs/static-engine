@@ -3,6 +3,7 @@
 const esprima = require('esprima');
 const walkes = require('walkes');
 const esgraph = require('esgraph');
+const { staticEngine } = require('../engine');
 
 function analyze(code, options) {
   if(require.cache[require.resolve('esgraph')]) {
@@ -14,6 +15,7 @@ function analyze(code, options) {
   let text = '';
   try {
     const fullAst = esprima.parse(code, { range: true });
+    const astinfo = (new staticEngine(code)).analyze();
     const functions = findFunctions(fullAst);
 
     text += 'digraph cfg {';
@@ -37,7 +39,7 @@ function analyze(code, options) {
       text += '}';
     });
     text += '}';
-    return { success: true, ast: JSON.stringify(fullAst), cfg: text };
+    return { success: true, info: JSON.stringify(astinfo), ast: JSON.stringify(fullAst), cfg: text };
   } catch (e) {
     console.log(e);
     return { success: false, message: e.message };
