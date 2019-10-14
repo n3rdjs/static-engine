@@ -1,10 +1,41 @@
 $(function () {
 
+  var media = window.matchMedia("(max-width: 700px)");
+
   // Enable navbar tab
   $('#myTab a').on('click', function (e) {
-    e.preventDefault()
+    e.preventDefault();
+    if (this.innerText == 'CODE') {
+      if (media.matches) {
+        right_panel.hide();
+        left_panel.show();
+        right_panel.css('left', '40vw');
+      }
+    } else {
+      if (media.matches) {
+        left_panel.hide();
+        right_panel.show();
+        right_panel.css('left', '0');
+      }
+    }
     $(this).tab('show')
-  })
+  });
+
+  var mobile = media.matches;
+
+  window.onresize = function (ui) {
+    if (media.matches && mobile == false) {
+      mobile = true;
+      left_panel.show();
+      right_panel.hide();
+    } else if (!media.matches && mobile == true) {
+      mobile = false;
+      left_panel.show();
+      right_panel.show();
+      right_panel.css('left', '40vw');
+    }
+  }
+
   // Set editor
   var editor = CodeMirror.fromTextArea(source, {
     mode: 'javascript',
@@ -100,11 +131,13 @@ $(function () {
   var right_panel = $('.panel-right');
 
   $('.CodeMirror').addClass('ui-widget-content');
-  $('.CodeMirror').resizable({ resize: ( event, ui ) => {
-    var new_width = ui.size.width;
-    left_panel.width(new_width);
-    right_panel.css('left', new_width + 'px');
-  }});
+  $('.CodeMirror').resizable({
+    resize: (event, ui) => {
+      var new_width = ui.size.width;
+      left_panel.width(new_width);
+      right_panel.css('left', new_width + 'px');
+    }
+  });
 
   $('#input-selector').change((e) => {
     var form = document.createElement('form');

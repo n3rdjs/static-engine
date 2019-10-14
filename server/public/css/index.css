@@ -123,12 +123,28 @@ svg {
     text-align: center;
 }
 
+#input-selector {
+    margin-left: calc(50% - 100px);
+}
+
 #cfg {
     position: relative;
 }
 
+.with-media {
+    display: none;
+}
+
 @media (max-width: 700px) {
     .panel-left {
-        width: 100%;
+        width: 100% !important;
+    }
+
+    .CodeMirror {
+        width: 100% !important;
+    }
+
+    .with-media {
+        display: block;
     }
 }
