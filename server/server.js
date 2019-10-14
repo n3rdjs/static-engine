@@ -22,41 +22,31 @@ app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-
-	var filename = examples[0];
-
-	try {
-		var basename = path.basename(filename);
-		var fullpath = path.join(__dirname, 'examples', basename);
-
-		if (fs.existsSync(fullpath)) {
-			var input = fs.readFileSync(path.resolve(__dirname, 'examples', filename));
-			res.render('index.html', { input : input, selected : basename, examples : examples.filter(name => name !== basename) });
-		}
-	} catch(e) {
-		throw e;
-	}
+	tryRender(res, examples[0]);
 });
 
 app.post('/', (req, res) => {
 	var { filename } = req.body;
-
-	try {
-		var basename = path.basename(filename);
-		var fullpath = path.join(__dirname, 'examples', basename);
-
-		if (fs.existsSync(fullpath)) {
-			var input = fs.readFileSync(path.resolve(__dirname, 'examples', filename));
-			res.render('index.html', { input : input, selected : basename, examples : examples.filter(name => name !== basename) });
-		}
-
-	} catch(e) {
-		res.redirect('/');
-	}
+	tryRender(res, filename);
 });
 
 app.post('/analyze', (req, res) => {
 	res.send(analyze(req.body.code));
 })
+
+function tryRender(res, filename) {
+    try {
+		var basename = path.basename(filename);
+		var fullpath = path.join(__dirname, 'examples', basename);
+
+		if (fs.existsSync(fullpath)) {
+			var input = fs.readFileSync(path.resolve(__dirname, 'examples', filename));
+			res.render('index.html', { input : input, selected : basename, examples : examples.filter(name => name !== basename) });
+		}
+
+	} catch(e) {
+        throw e;
+	}
+}
 
 app.listen(8080);

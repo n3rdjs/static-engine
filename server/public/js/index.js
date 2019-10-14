@@ -7,12 +7,13 @@ $(function() {
   })
   // Set editor
   var editor = CodeMirror.fromTextArea(source, {
-      mode:  "javascript",
+      mode:  'javascript',
+      theme: 'material-palenight',
       lineNumbers: true,
       viewportMargin: Infinity,
       lineWrapping: true,
       foldGutter: true,
-      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']
   });
 
   var astviewer = $('#ast-view');

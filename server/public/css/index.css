@@ -3,29 +3,48 @@ body {
     font-family: Raleway, sans-serif;
 }
 
-.panel-left {
+body::-webkit-scrollbar { 
+    display: none; /* Chrome Safari */
+}
+
+pre {
+    margin-bottom: 0;
+}
+
+.panel {
     position: relative;
     height: 100vh;
+}
+
+.panel-left {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 40vw;
 }
 
 .panel-right {
-    position: fixed;
-    left: 40vw;
-    top: 56px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
     width: 60vw;
-    height: calc(100vh - 56px);
+}
+
+.panel-right div {
+    height: 100%;
 }
 
 .scrollable-view {
-    height: calc(100vh - 56px);
-    max-height: calc(100vh - 56px);
+    height: 100%;
     overflow: auto;
 }
 
 .CodeMirror {
-	border: 1px solid #ccc;
+    border: 1px solid #ccc;
+    width: 40vw;
     height: 100vh;
+    border: none;
 }
 
 #submit {

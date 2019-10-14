@@ -3,7 +3,8 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,400,600">
-    <link rel="stylesheet" href="/static/css/codemirror.css">
+    <link rel="stylesheet" href="/static/css/codemirror/codemirror.css">
+    <link rel="stylesheet" href="/static/css/codemirror/theme/material-palenight.css">
     <link rel="stylesheet" href="/static/css/jquery.json-viewer.css">
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
@@ -42,35 +43,33 @@
         </div>
     </div>
 </nav>
-<div class="panel-left">
-<button id="submit" class="btn btn-dark" type="button" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<em>Ctrl + Enter</em> ">
-    <span class="spinner-grow spinner spinner-grow-sm" role="status" aria-hidden="true"></span>
-    Loading...
-</button>
-<textarea id="source" name="source" style="border: 1px solid #d8d8d8">
-<%= input %></textarea>
-</div>
-<!--<div class="splitter" style="touch-action: none;"></div>-->
-<div class="panel-right">
-    <div class="viewer">
-        <div class="tab-content">
-            <div id="info" class="tab-pane fade">
-                <h3>HOME</h3>
-                <p>Some content.</p>
-            </div>
-            <div id="ast" class="tab-pane fade show active">
-                <pre id="ast-view" class="scrollable-view"></pre>
-                <p>Some content. ast</p>
-            </div>
-            <div id="cfg" class="tab-pane fade">
-                <pre id="cfg-view" class="scrollable-view"></pre>Z
-                <p>Some content. cfg</p>
-            </div>
-            <div id="log" class="tab-pane fade">
-                <h3>Menu 3</h3>
-                <p>Some content in menu 3.</p>
-            </div>
-            </div>
+<div class="panel">
+    <div class="panel-left">
+    <button id="submit" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<em>Ctrl + Enter</em> ">
+        Submit
+    </button>
+    <textarea id="source" name="source" style="border: 1px solid #d8d8d8"><%= input %></textarea>
+    </div>
+    <!--<div class="splitter" style="touch-action: none;"></div>-->
+    <div class="panel-right">
+        <div class="viewer">
+            <div class="tab-content">
+                <div id="info" class="tab-pane fade">
+                    <h3>HOME</h3>
+                    <p>Some content.</p>
+                </div>
+                <div id="ast" class="tab-pane fade show active">
+                    <pre id="ast-view" class="scrollable-view"></pre>
+                </div>
+                <div id="cfg" class="tab-pane fade">
+                    <pre id="cfg-view" class="scrollable-view"></pre>
+                </div>
+                <div id="log" class="tab-pane fade">
+                    <h3>Menu 3</h3>
+                    <p>Some content in menu 3.</p>
+                </div>
+                </div>
+        </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
