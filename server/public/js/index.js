@@ -155,6 +155,10 @@ $(function () {
               submitbtn.html('Submit');
               submitbtn.attr("disabled", false);
               submitbtn.tooltip('enable');
+
+              var data = $('<div>').append($('svg').clone()).html().replace(/&nbsp;/g, ' ');
+              var dataUrl = 'data:image/svg+xml;base64,' + btoa(data);
+              $('svg').parent().zoom({ url: dataUrl, magnify : 0.8 });
             }, 500);
           });
 
