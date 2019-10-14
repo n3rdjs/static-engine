@@ -55,11 +55,12 @@ $(function () {
 
   var astviewer = $('#ast-view');
   var cfgviewer = $('#cfg-view');
-  var submitbtn = $('#submit');
+  var downloadbtn = $('#download-svg');
   var clearbtn = $('#clear-log');
+  var submitbtn = $('#submit');
   var btnEvent;
 
-  submitbtn.tooltip({
+  downloadbtn.tooltip({
     boundary: 'window'
   });
 
@@ -67,14 +68,31 @@ $(function () {
     boundary: 'window'
   });
 
+  submitbtn.tooltip({
+    boundary: 'window'
+  });
+
+  var prefix = /^[^.]+/.exec($('#input-selector').val())[0];
+
+  downloadbtn.on('click', (e) => {
+    var data = $('<div>').append($('svg').clone()).html().replace(/&nbsp;/g, ' ');
+    var dataUrl = 'data:image/svg+xml;base64,' + btoa(data);
+    
+    var link = $('<a>');
+    link.attr('href', dataUrl);
+    link.attr('download', prefix + '.svg');
+    link.appendTo(document.body);
+    link[0].click();
+    link.remove();
+  });
+
   clearbtn.on('click', (e) => {
     clearbtn.fadeOut();
     clearbtn.tooltip('hide');
     clearbtn.tooltip('disable');
 
-    if (confirm('모든 기록을 삭제합니다')) {
-      log_viewer.html('');
-    }
+    log_viewer.html('');
+
     setTimeout(() => {
       clearbtn.fadeIn();
       submitbtn.tooltip('enable');

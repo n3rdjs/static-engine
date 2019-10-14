@@ -78,6 +78,13 @@ textarea {
     margin: 18px 25px;
 }
 
+#download-svg {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    margin: 18px 25px;
+}
+
 #source {
     display: none;
 }

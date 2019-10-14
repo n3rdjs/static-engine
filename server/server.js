@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-	tryRender(res, examples[0]);
+	tryRender(res, 'untitled.js');
 });
 
 app.post('/', (req, res) => {
