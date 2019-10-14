@@ -156,11 +156,11 @@ textarea {
 #log-view {
     background: #303340;
     color: white;
-    padding: 15px 10px;
+    padding: 10px;
     font-family: monospace;
     width: 100%;
     font-size: 11px;
-    line-height: 1px;
+    white-space: pre-wrap;
 }
 
 #log-view b {

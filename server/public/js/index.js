@@ -5,7 +5,7 @@ $(function () {
   const log_viewer = $('#log-view');
 
   function log(str, color = 'white') {
-    log_viewer.prepend(`<p style="color: ${color};">[${new Date().toLocaleString('en-US')}] : ${str}</p>`);
+    log_viewer.prepend(`<span style="color: ${color};">[${new Date().toLocaleString('en-US')}] : ${str}</span><br>`);
   }
 
   // Enable navbar tab
