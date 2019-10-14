@@ -37,11 +37,11 @@ function analyze(code, options) {
       text += '}';
     });
     text += '}';
+    return { success: true, ast: JSON.stringify(fullAst), cfg: text };
   } catch (e) {
     console.log(e);
     return { success: false, message: e.message };
   }
-  return { success: true, cfg: text };
 }
 
 function findFunctions(ast) {

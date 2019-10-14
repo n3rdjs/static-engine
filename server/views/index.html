@@ -3,6 +3,7 @@
 <head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="/static/css/codemirror.css">
+<link rel="stylesheet" href="/static/css/jquery.json-viewer.css">
 <style>
 
 body {
@@ -22,6 +23,13 @@ body {
     left: 40vw;
     top: 0;
     width: 60vw;
+    height: 100vh;
+}
+
+.scrollable-view {
+    height: calc(100vh - 56px);
+    max-height: calc(100vh - 56px);
+    overflow: auto;
 }
 
 .CodeMirror {
@@ -69,11 +77,10 @@ function func() {
                   <p>Some content.</p>
                 </div>
                 <div id="ast" class="tab-pane fade">
-                  <h3>Menu 1</h3>
-                  <p>Some content in menu 1.</p>
+                  <pre id="ast-view" class="scrollable-view"></pre>
                 </div>
                 <div id="cfg" class="tab-pane fade">
-                    <div id="cfg-draw"></div>
+                    <div id="cfg-view" class="scrollable-view"></div>
                 </div>
                 <div id="log" class="tab-pane fade">
                   <h3>Menu 3</h3>
@@ -86,6 +93,7 @@ function func() {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="/static/js/codemirror.js"></script>
 <script src="/static/js/javascript.js"></script>
+<script src="/static/js/jquery.json-viewer.js"></script>
 <script src="/static/js/viz.js"></script>
 <script src="/static/js/full.render.js"></script>
 <script>
@@ -118,10 +126,11 @@ $('#calc').on('click', function (e) {
         response.json().then((data) => {
             console.log(data);
             if(data.success) {
+                $('#ast-view').jsonViewer(JSON.parse(data.ast));
                 let viz = new Viz();
                 viz.renderSVGElement(data.cfg)
                 .then((element) => {
-                    let area = document.getElementById("cfg-draw");
+                    let area = document.getElementById("cfg-view");
                     area.innerHTML = ''
                     area.appendChild(element);
                 })
@@ -129,6 +138,7 @@ $('#calc').on('click', function (e) {
                     viz = new Viz();
                     alert(error);
                 })
+                
             }
             else {
                 alert(data.message);
