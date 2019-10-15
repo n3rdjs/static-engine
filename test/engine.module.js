@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert');
-const StaticEngine = require('../engine.js').StaticEngine;
+const StaticEngine = require('../engine.js').staticEngine;
 
 describe('module time test', ()=> {
     const dir = path.join(__dirname, 'resource', 'modules');
