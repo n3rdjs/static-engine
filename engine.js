@@ -389,6 +389,11 @@ class StaticEngine {
                 scope_flag=true;
                 target_type=3;
             }
+            if (parent_node.type == 'CallExpression'){
+                target_range=node.range;
+                scope_flag=true;
+                target_type=4;
+            }
         }
         
         if(node.type=='ClassBody'){
