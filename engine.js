@@ -2,9 +2,6 @@ const Esprima = require('esprima');
 const esgraph = require('esgraph');
 var fs=require("fs");
 
-var variable = [];
-var entire_function=[];
-
 function scope(range,type){
     this.range=range;
     this.type=type;
@@ -48,6 +45,9 @@ class StaticEngine {
 
         this.parent_scope_range;
         this.scope_array={};
+        
+        this.variable = [];
+        this.entire_function=[];
 
         if(options) {
             if(options.hasOwnProperty('debug')) {
@@ -110,7 +110,7 @@ class StaticEngine {
         //log("#######################################################################");
         //log("");
         let variable_num = 0;
-        for (let i of variable){
+        for (let i of this.variable){
             variable_num++;
             log("**********  "+variable_num+"  Variable Info*************");
             Object.keys(i).forEach(item =>{
@@ -121,7 +121,7 @@ class StaticEngine {
         log("#######################################################################");
         log("");
         let function_num=0;
-        for (let i of entire_function){
+        for (let i of this.entire_function){
             function_num++;
             log("**********  "+function_num+"  Function Info*************");
             Object.keys(i).forEach(item => {
@@ -131,8 +131,8 @@ class StaticEngine {
             })
             log("");
         }
-        result.variable = variable;
-        result.function = entire_function;
+        result.variable = this.variable;
+        result.function = this.entire_function;
         return result;
     }
 
@@ -145,7 +145,7 @@ class StaticEngine {
             range: [],
             argument: []
         };
-        for (let i of entire_function){
+        for (let i of this.entire_function){
             for (let j in i.argument){
                 if (i.argument[j].type == 'Identifier'){
                     data.type = 'function parameter';
@@ -156,7 +156,7 @@ class StaticEngine {
                     
                     data.range = [];
                     
-                    variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                    this.variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
                     this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
                 }
             }
@@ -214,7 +214,7 @@ class StaticEngine {
             if (data.type == 'var') data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             else data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
             
-            variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+            this.variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
             this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
         }      
     }
@@ -243,7 +243,7 @@ class StaticEngine {
                 data.scope = this.scope_array[this.parent_scope_range]
                 data.value = node.right.type;
                 data.range = [];//node.right.range;
-                variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                this.variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
                 this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
             }
         }        
@@ -280,7 +280,7 @@ class StaticEngine {
                 data.scope=found_scope.range;
             }
             if(node.type=='ArrowFunctionExpression'||node.type=='FunctionExpression'){
-                variable.filter((item)=>{
+                this.variable.filter((item)=>{
                     if((node.type==item.value)&&(node.range==item.range)){
                         data.function_type=item.type;
                         data.name=item.name;
@@ -295,7 +295,7 @@ class StaticEngine {
             
             var tmp_function=new function_info(data.name, data.scope, data.range, data.type, data.argument, data.parent, data.method_type, data.function_type);
             this.scope_array[data.scope].functions.push(tmp_function);
-            entire_function.push(tmp_function);
+            this.entire_function.push(tmp_function);
         }
         
     }
@@ -316,7 +316,7 @@ class StaticEngine {
 
     var_if_declared(node){
         let found = 0;
-        for (let i of variable){
+        for (let i of this.variable){
             if (i.name == node.left.name){
                 if (node.range[0] >= i.scope[0] && i.scope[1] >= node.range[1]){
                     found = i;
@@ -362,7 +362,7 @@ class StaticEngine {
                     }
     
                     i.scope = data.scope.range;
-                    for (let j of variable){ // assume no duplicates
+                    for (let j of this.variable){ // assume no duplicates
                         if (j.name == node2.id.name && j.type == 'global'){
                             j.type = node.kind;
                             j.scope = data.scope.range;

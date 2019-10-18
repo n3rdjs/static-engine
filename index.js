@@ -11,5 +11,5 @@ var source = fs.readFileSync(process.argv[2]).toString();
 var engine_inst = new staticEngine(source);
 var result = engine_inst.analyze();
 
-console.log(result.res);
+//console.log(result.res);
 
