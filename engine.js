@@ -49,15 +49,20 @@ class StaticEngine {
         this.parent_scope_range;
         this.scope_array={};
 
-        if(options && options.hasOwnProperty('debug') && options.debug === false) {
-            log = ()=>{};
+        if(options) {
+            if(options.hasOwnProperty('debug')) {
+                if(options.debug === false)
+                    log = ()=> {};
+            }
+            if(options.hasOwnProperty('customlog'))
+                log = options.customlog;
         }
     }
     
     analyze() {
         let result = {}
         //let ast = Esprima.parseScript(this.code);
-        let ast
+        let ast;
         try {
             ast = Esprima.parseScript(this.code, {range: true});
         }
@@ -65,16 +70,16 @@ class StaticEngine {
             throw new Error('esprima error');
         }
         //let cfg = esgraph(ast);
-        result.ast = ast;
+        //result.ast = ast;
         //result.cfg = cfg;
 
-        let str_ast = JSON.stringify(result.ast, null, 4);
+        let str_ast = JSON.stringify(ast, null, 4);
         fs.writeFile('result_ast.txt', str_ast, function (err) {
             if (err) throw err;
         }); 
-        log(str_ast);
-        log("#######################################################################");
-        log("");
+        //log(str_ast);
+        //log("#######################################################################");
+        //log("");
         let rslt = JSON.parse(str_ast); //only for debugging purpose
 
         var self = this;
@@ -99,11 +104,11 @@ class StaticEngine {
             }
         },ast);
 
-        log("#######################################################################");
-        log("");
-        log(this.scope_array);
-        log("#######################################################################");
-        log("");
+        //log("#######################################################################");
+        //log("");
+        //log(this.scope_array);
+        //log("#######################################################################");
+        //log("");
         let variable_num = 0;
         for (let i of variable){
             variable_num++;
@@ -126,6 +131,8 @@ class StaticEngine {
             })
             log("");
         }
+        result.variable = variable;
+        result.function = entire_function;
         return result;
     }
 

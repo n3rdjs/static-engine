@@ -11,9 +11,10 @@ function analyze(code, options) {
   }
   
   let text = '';
+  let infotext = ''
   try {
     const fullAst = esprima.parse(code, { range: true });
-    const astinfo = (new staticEngine(code)).analyze();
+    const astinfo = (new staticEngine(code, {customlog: (...a) => { a.forEach((b)=>{infotext += b;}); infotext += '\n' }})).analyze();
     const functions = findFunctions(fullAst);
 
     text += 'digraph cfg {';
@@ -37,7 +38,7 @@ function analyze(code, options) {
       text += '}';
     });
     text += '}';
-    return { success: true, info: JSON.stringify(astinfo), ast: JSON.stringify(fullAst), cfg: text };
+    return { success: true, info: JSON.stringify(astinfo), ast: JSON.stringify(fullAst), cfg: text, infotext: infotext };
   } catch (e) {
     console.log(e);
     return { success: false, message: e.message };

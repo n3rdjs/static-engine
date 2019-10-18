@@ -175,6 +175,20 @@ textarea {
     color: #ff2f2f;
 }
 
+#info-view b {
+    color: #ff2f2f;
+}
+
+#info-view {
+    background: white;
+    color: #303340;
+    padding: 10px;
+    font-family: monospace;
+    width: 100%;
+    font-size: 11px;
+    white-space: pre-wrap;
+}
+
 .with-media {
     display: none;
 }

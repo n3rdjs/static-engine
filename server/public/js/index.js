@@ -3,6 +3,7 @@ $(function () {
   const media = window.matchMedia("(max-width: 700px)");
 
   const log_viewer = $('#log-view');
+  const info_viewer = $('#info-view');
 
   function log(str, color = 'white') {
     log_viewer.prepend(`<span style="color: ${color};">[${new Date().toLocaleString('en-US')}] : ${str}</span><br>`);
@@ -132,9 +133,9 @@ $(function () {
           log(`An error occurred ("${data.message}")`, '#ff6b6b');
           throw new Error('failed');
         }
+        info_viewer.text(data.infotext);
 
         astviewer.jsonViewer(JSON.parse(data.ast), {
-          collapsed: true,
           rootCollapsable: false
         });
 
