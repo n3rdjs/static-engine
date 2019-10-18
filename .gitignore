@@ -107,3 +107,4 @@ typings/
 package-lock.json
 
 .DS_Store
+result_ast.txt
