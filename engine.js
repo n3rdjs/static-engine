@@ -69,9 +69,9 @@ class StaticEngine {
         catch(e) {
             throw new Error('esprima error');
         }
-        //let cfg = esgraph(ast);
-        //result.ast = ast;
-        //result.cfg = cfg;
+        let cfg = esgraph(ast);
+        result.ast = ast;
+        result.cfg = cfg;
 
         let str_ast = JSON.stringify(ast, null, 4);
         fs.writeFile('result_ast.txt', str_ast, function (err) {
@@ -134,6 +134,13 @@ class StaticEngine {
         result.variable = this.variable;
         result.function = this.entire_function;
         return result;
+    }
+
+    isFlowNode(astnode){
+        if (astnode.cfg){
+            return true;
+        }
+        else return false;
     }
 
     get_parameter(){
