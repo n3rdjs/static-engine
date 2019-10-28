@@ -3,6 +3,7 @@
 const esprima = require('esprima');
 const walkes = require('walkes');
 const esgraph = require('esgraph');
+const util = require('util');
 const { staticEngine } = require('../engine');
 
 function analyze(code, options) {
@@ -14,22 +15,26 @@ function analyze(code, options) {
   let infotext = ''
   try {
     const fullAst = esprima.parse(code, { range: true });
-    const astinfo = (new staticEngine(code, {customlog: (...a) => { a.forEach((b)=>{infotext += b;}); infotext += '\n' }})).analyze();
-    const functions = findFunctions(fullAst);
-
+    const astinfo = (new staticEngine(code, {customlog: (...a) => { a.forEach((b)=>{
+      if(typeof b === 'string')
+        infotext += b;
+      else
+        infotext += util.inspect(b);
+      infotext += ' ';
+    }); infotext += '\n' }})).analyze();
+    
+    const cfgs = esgraph(fullAst);
     text += 'digraph cfg {';
     text += 'node [shape="box"]';
     const dotOptions = { counter: 0, source: code };
-    functions.concat(fullAst).forEach((ast, i) => {
-      let cfg;
+    cfgs.forEach((cfg, i) => {
       let label = '[[main]]';
+      console.log(cfg);
+      const ast = cfg[0].astNode;
       if (ast.type.includes('Function')) {
-        cfg = esgraph(ast.body);
         const name = (ast.id && ast.id.name) || '';
         const params = ast.params.map(p => p.name);
         label = `function ${name}(${params})`;
-      } else {
-        cfg = esgraph(ast);
       }
 
       text += `subgraph cluster_${i}{`;
@@ -38,7 +43,12 @@ function analyze(code, options) {
       text += '}';
     });
     text += '}';
-    return { success: true, info: JSON.stringify(astinfo), ast: JSON.stringify(fullAst), cfg: text, infotext: infotext };
+    console.log('wow');
+    a = JSON.stringify(astinfo);
+    console.log('wow');
+    b = JSON.stringify(fullAst);
+    console.log('wow');
+    return { success: true, info: a, ast: b, cfg: text, infotext: infotext };
   } catch (e) {
     console.log(e);
     return { success: false, message: e.message };
