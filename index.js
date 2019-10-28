@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 if (process.argv.length < 3) {
-    console.log("npm index.js [input file]");
+    console.log("node index.js [input file]");
 	process.exit('-1');
 }
 

@@ -1,0 +1,47 @@
+{
+"type": "ExpressionStatement",
+"expression": {
+    "type": "AssignmentExpression",
+    "operator": "=",
+    "left": {
+        "type": "MemberExpression",
+        "computed": true,
+        "object": {
+            "type": "Identifier",
+            "name": "object",
+            "range": [
+                285,
+                291
+            ]
+        },
+        "property": {
+            "type": "Identifier",
+            "name": "key",
+            "range": [
+                292,
+                295
+            ]
+        },
+        "range": [
+            285,
+            296
+        ]
+    },
+    "right": {
+        "type": "Identifier",
+        "name": "value",
+        "range": [
+            299,
+            304
+        ]
+    },
+    "range": [
+        285,
+        304
+    ]
+},
+"range": [
+    285,
+    305
+]
+}

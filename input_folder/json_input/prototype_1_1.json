@@ -1,0 +1,47 @@
+{
+    "type": "ExpressionStatement",
+    "expression": {
+        "type": "AssignmentExpression",
+        "operator": "=",
+        "left": {
+            "type": "Identifier",
+            "name": "nested",
+            "range": [
+                776,
+                782
+            ]
+        },
+        "right": {
+            "type": "MemberExpression",
+            "computed": true,
+            "object": {
+                "type": "Identifier",
+                "name": "nested",
+                "range": [
+                    785,
+                    791
+                ]
+            },
+            "property": {
+                "type": "Identifier",
+                "name": "key",
+                "range": [
+                    792,
+                    795
+                ]
+            },
+            "range": [
+                785,
+                796
+            ]
+        },
+        "range": [
+            776,
+            796
+        ]
+    },
+    "range": [
+        776,
+        797
+    ]
+    }
