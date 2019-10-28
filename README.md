@@ -7,5 +7,6 @@
 ```
 $npm test
 $npm install
+$npm install esgraph --update
 $git submodule update --init // TOP 1000 modules in test/resource/modules
 ```
