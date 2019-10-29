@@ -55,11 +55,15 @@ engine_inst.traverse(result.ast, function (node, parent_node) {
 },result.ast);
 
 for (i of statement1){
-    console.log(JSON.stringify(i, null, 4));
+    console.log(i.range, i.expression.left.name,'=',i.expression.left.name, '[',i.expression.right.property.name,']')
+  
+  //  console.log(JSON.stringify(i, null, 4));
 }
 
 console.log("=========================================")
 for (i of statement2){
-    console.log(JSON.stringify(i, null, 4));
+    console.log(i.range, i.expression.left.object.name, '[',i.expression.left.property.name,']=', i.expression.right.name)
+  
+    //console.log(JSON.stringify(i, null, 4));
 }
 console.log(statement1.length, statement2.length);
