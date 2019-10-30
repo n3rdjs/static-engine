@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const assert = require('assert');
 const StaticEngine = require('../engine.js').staticEngine;
+const analyzer = require('../analyzer.js');
 const pattern1=require('../patterns/prototype_pollution_v1.js');
 describe('module time test', ()=> {
     const dir = path.join(__dirname, 'resource', 'modules');
@@ -35,6 +36,7 @@ describe('module time test', ()=> {
                     
                     console.log(statement1.length, statement2.length);
                     
+                    let scc = analyzer.scc(result.ast, result.cfg, result.nodenum);
                 }
                 catch(e) {
                     if(e.message !== 'esprima error') {
@@ -47,3 +49,4 @@ describe('module time test', ()=> {
         }
     })
 })
+
