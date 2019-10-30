@@ -9,7 +9,7 @@ if (process.argv.length < 3) {
 }
 
 var source = fs.readFileSync(process.argv[2]).toString();
-var engine_inst = new staticEngine(source);
+var engine_inst = new staticEngine(source, {'debug' : false});
 var result = engine_inst.analyze();
 
 var statement1=[];

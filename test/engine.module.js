@@ -23,13 +23,13 @@ describe('module time test', ()=> {
                     },result.ast);
                     
                     for (i of statement1){
-                        console.log(i.range, i.expression.left.name,'=',i.expression.left.name, '[',i.expression.right.property.name,']')
+                        //console.log(i.range, i.expression.left.name,'=',i.expression.left.name, '[',i.expression.right.property.name,']')
   
                        // console.log(JSON.stringify(i, null, 4));
                     }
                     console.log("===================================================")
                     for (i of statement2){
-                        console.log(i.range, i.expression.left.object.name, '[',i.expression.left.property.name,']=', i.expression.right.name)
+                        //console.log(i.range, i.expression.left.object.name, '[',i.expression.left.property.name,']=', i.expression.right.name)
   
                         //console.log(JSON.stringify(i, null, 4));
                     }
@@ -50,7 +50,7 @@ describe('module time test', ()=> {
                             }
                         }
                         let scc = analyzer.scc(result.ast, result.cfg);
-                    
+                        console.log("scc generation complete");
                         var found1 = [];
                         var found2 = [];
                         for (let i = 0; i < scc.length; i++){
