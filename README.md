@@ -7,6 +7,6 @@
 ```
 $ npm test
 $ npm install
-$ npm install esgraph --update
+$ npm install --update
 $ git submodule update --init // TOP 1000 modules in test/resource/modules
 ```

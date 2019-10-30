@@ -20,5 +20,19 @@ function set(object, path, value) {
     object = object[p];
   }
 
+  p = 0;
+  object = object[p];
   return root;
+}
+
+function a(){
+  let n = 0;
+  while (n<1){
+    n++;
+  }
+  return 1;
+}
+
+function b(){
+  return 1 + 2;
 }

@@ -35,8 +35,41 @@ describe('module time test', ()=> {
                     }
                     
                     console.log(statement1.length, statement2.length);
+                    /*
+                    if (statement1.length > 0 && statement2.length > 0){
+                        id1 = [];
+                        id2 = [];
+                        for (let i in statement1){
+                            id1.push(statement1[i].expression.cfg.id);
+                        }
+                        for (let j in statement2){
+                            id2.push(statement2[j].expression.cfg.id);
+                        }
+                        let scc = analyzer.scc(result.ast, result.cfg);
                     
-                    let scc = analyzer.scc(result.ast, result.cfg, result.nodenum);
+                        var found1 = [];
+                        for (let i = 0; i < scc.length; i++){
+                            found1[i] = [];
+                        }
+                        for (let i in scc){
+                            for (let j of scc[i]){
+                                for (let k in id1){
+                                    if (id1[k] == j) found1[i].push(k);
+                                }
+                            }
+                        }
+                        for (let i in scc){
+                            for (let j of scc[i]){
+                                for (let k in id2){
+                                    if (id2[k] == j && found1[i].length > 0){
+                                        console.log("Connected components found!");
+                                        console.log(statement1[found1[i][k]].range, statement1[found1[i][k]].expression.left.name,'=', statement1[found1[i][k]].expression.left.name, '[',statement1[found1[i][k]].expression.right.property.name,']')
+                                        console.log(statement2[k].range, statement2[k].expression.left.object.name, '[',statement2[k].expression.left.property.name,']=', statement2[k].expression.right.name)
+                                    }
+                                }
+                            }
+                        }
+                    }*/
                 }
                 catch(e) {
                     if(e.message !== 'esprima error') {

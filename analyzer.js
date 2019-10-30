@@ -21,36 +21,43 @@ function traverseCFG(node, func) {
 
 }
 
-function scc(ast, cfg, nodenum){
+function scc(ast, cfg){
     var scc = [];
     var vt = [];
     var rvt = [];
     var visited = [];
     var st = [];
-    var nextnode = ['normal', 'true', 'false']; //...
-    for (let i = 0; i < nodenum; i++){
-        vt[i] = [];
-        rvt[i] = [];
-        scc[i] = [];
-        visited[i] = false;
+    var nextnode = ['normal', 'true', 'false']; //...exception
+    for (let i = 0 ; i < cfg.length; i++){
+        make_adjarray(cfg[i][2][0]);
     }
-    make_adjarray(main);
-    //make_adjarray(functions...);
 
     function make_adjarray(flownode){
         visited[flownode.id] = true;
         for (let i = 0; i < nextnode.length; i++){
             if (flownode.hasOwnProperty(nextnode[i])){ //if next exists
-                vt[flownode.id] = flownode.nextnode[i].id;
-                rvt[flownode.nextnode[i].id] = flownode.id;
-                if (visited[flownode.nextnode[i].id] == false){
-                    make_adjarray(flownode.nextnode[i]);
+                if (vt[flownode.id]){
+                    vt[flownode.id].push(flownode[nextnode[i]].id);
+                }
+                else{
+                    vt[flownode.id] = [];
+                    vt[flownode.id].push(flownode[nextnode[i]].id);
+                }
+                if (rvt[flownode[nextnode[i]].id]){
+                    rvt[flownode[nextnode[i]].id].push(flownode.id);
+                }
+                else {
+                    rvt[flownode[nextnode[i]].id] = []
+                    rvt[flownode[nextnode[i]].id].push(flownode.id);
+                }
+                if (visited[flownode[nextnode[i]].id] !== true){
+                    make_adjarray(flownode[nextnode[i]]);
                 }
             }
         }
     }
 
-    var v = nodenum;
+    var v = Object.keys(visited).length;
     var r = 0;
     /*vt[1].push(4)
     vt[4].push(5)
@@ -70,15 +77,18 @@ function scc(ast, cfg, nodenum){
     rvt[3].push(7)
     rvt[7].push(3)
     rvt[2].push(7)*/
-    console.log(vt);
-    console.log(rvt);
-    for (let i = 1; i <= v; i++){
-        if (visited[i]==true) continue;
-        dfs(i);
+    //console.log(vt);
+    //console.log(rvt);
+    for (let i = 0; i < v; i++){
+        visited[Object.keys(visited)[i]] = false;
     }
-    console.log(st);
+    for (let i = 0; i < v; i++){
+        if (visited[Object.keys(visited)[i]]==true) continue;
+        dfs(Object.keys(visited)[i]);
+    }
+    //console.log(st);
     for (let i = 1; i <= v; i++){
-        visited[i] = false;
+        visited[Object.keys(visited)[i]] = false;
     }
     while(st.length != 0){
         let here = st[st.length - 1]
@@ -87,22 +97,32 @@ function scc(ast, cfg, nodenum){
         r+=1;
         func(here, r - 1)
     }
-    console.log(scc);
+    //console.log(scc);
     
     function dfs(v){
         visited[v] = true;
-        for (let i of vt[v]){
-            if (visited[i]==true) continue;
-            dfs(i);
+        if (vt[v]){
+            for (let i of vt[v]){
+                if (visited[i]==true) continue;
+                dfs(i);
+            }
         }
         st.push(v);
     }
     function func(v, c){
         visited[v] = true;
-        scc[c].push(v);
-        for (let i of rvt[v]){
-            if (visited[i]==true) continue;
-            func(i, c);
+        if (scc[c]){
+            scc[c].push(v);
+        }
+        else{
+            scc[c] = [];
+            scc[c].push(v);
+        }
+        if (rvt[v]){
+            for (let i of rvt[v]){
+                if (visited[i]==true) continue;
+                func(i, c);
+            }
         }
     }
     return scc;
