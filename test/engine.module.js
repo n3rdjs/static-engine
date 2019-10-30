@@ -13,10 +13,10 @@ describe('module time test', ()=> {
                 this.timeout(600000);
                 const contents = fs.readFileSync(path.join(dir, file), 'utf8');
                 /**** make length limit ****/
-                if (contents.length > 2000000){
+                /*if (contents.length > 2000000){
                     console.log("too long");
                     assert()
-                } 
+                } */
                 try {
                     let engine = new StaticEngine(contents, {debug : false});
                     let result = engine.analyze();
@@ -90,7 +90,7 @@ describe('module time test', ()=> {
                 }
                 catch(e) {
                     if(e.message !== 'esprima error') {
-                        console.log(e);
+                        //console.log(e);
                         assert()
                     }
                 }
