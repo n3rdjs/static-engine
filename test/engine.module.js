@@ -12,6 +12,11 @@ describe('module time test', ()=> {
             it(`Module test ${file}`, function (done) {
                 this.timeout(10000);
                 const contents = fs.readFileSync(path.join(dir, file), 'utf8');
+                /**** make length limit ****/
+                if (contents.length > 200000){
+                    console.log("too long");
+                    assert()
+                } 
                 try {
                     let engine = new StaticEngine(contents, {debug : false});
                     let result = engine.analyze();
