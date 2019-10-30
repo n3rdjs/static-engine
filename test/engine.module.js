@@ -10,10 +10,10 @@ describe('module time test', ()=> {
     files.forEach((file)=> {
         if(/.js$/.test(file)) {
             it(`Module test ${file}`, function (done) {
-                this.timeout(10000);
+                this.timeout(600000);
                 const contents = fs.readFileSync(path.join(dir, file), 'utf8');
                 /**** make length limit ****/
-                if (contents.length > 200000){
+                if (contents.length > 2000000){
                     console.log("too long");
                     assert()
                 } 

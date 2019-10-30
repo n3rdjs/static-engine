@@ -28,12 +28,20 @@ function scc(ast, cfg){
     var visited = [];
     var st = [];
     var nextnode = ['normal', 'true', 'false']; //...exception
+    
+    var num = 0;
+    var visit_ptr = [];
+    
+    //console.time('make_adjarray');
     for (let i = 0 ; i < cfg.length; i++){
         make_adjarray(cfg[i][2][0]);
     }
+    //console.timeEnd('make_adjarray');
 
     function make_adjarray(flownode){
         visited[flownode.id] = true;
+        visit_ptr[num] = flownode.id;
+        num++;
         for (let i = 0; i < nextnode.length; i++){
             if (flownode.hasOwnProperty(nextnode[i])){ //if next exists
                 if (vt[flownode.id]){
@@ -58,6 +66,16 @@ function scc(ast, cfg){
     }
 
     var v = Object.keys(visited).length;
+    /*console.time('test');
+    for (let i = 0; i < v; i++){
+        visit_ptr[i] = Object.keys(visited)[i];
+    }
+    console.timeEnd('test');
+    console.time('test2');
+    for (let i = 0; i < v; i++){
+        const p = visited[visit_ptr[i]];
+    }
+    console.timeEnd('test2');*/
     var r = 0;
     /*vt[1].push(4)
     vt[4].push(5)
@@ -79,16 +97,21 @@ function scc(ast, cfg){
     rvt[2].push(7)*/
     //console.log(vt);
     //console.log(rvt);
+
+    //console.time('dfs');
     for (let i = 0; i < v; i++){
-        visited[Object.keys(visited)[i]] = false;
+        visited[visit_ptr[i]] = false;
     }
     for (let i = 0; i < v; i++){
-        if (visited[Object.keys(visited)[i]]==true) continue;
-        dfs(Object.keys(visited)[i]);
+        if (visited[visit_ptr[i]]==true) continue;
+        dfs(visit_ptr[i]);
     }
+    //console.timeEnd('dfs');
+
     //console.log(st);
+    //console.time('reverse dfs');
     for (let i = 1; i <= v; i++){
-        visited[Object.keys(visited)[i]] = false;
+        visited[visit_ptr[i]] = false;
     }
     while(st.length != 0){
         let here = st[st.length - 1]
@@ -98,7 +121,8 @@ function scc(ast, cfg){
         func(here, r - 1)
     }
     //console.log(scc);
-    
+    //console.timeEnd('reverse dfs');
+
     function dfs(v){
         visited[v] = true;
         if (vt[v]){
