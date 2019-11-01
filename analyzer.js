@@ -17,8 +17,35 @@ function traverseAST(node, func) {
     }
 }
 
-function traverseCFG(node, func) {
 
+function traverseCFG(node, options, func) {
+    func(node);
+    const nextList = ['normal', 'true', 'false', 'exception'];
+    for(const next of nextList) {
+        const nextNode = node[next];
+        if (nextNode !== undefined) {
+            traverseCFG(nextNode, options, func);
+        }
+    }
+}
+
+function isInScope(parentScope, childScope) {
+    if (parentScope[0] <= childScope[0] && childScope[1] <= parentScope[1])
+        return true;
+    return false;
+}
+
+function findCallExpressionReference(context, node) {
+    console.log(node.callee.type);
+    for (const func of context.function) {
+        if (node.callee.type === 'Identifier') {
+            console.log(func.name);
+            if (func.name === node.callee.name && isInScope(func.scope, node.callee.range)) {
+                console.log(func.name);
+                return func;
+            }
+        }
+    }
 }
 
 function scc(ast, cfg){
@@ -151,5 +178,9 @@ function scc(ast, cfg){
     }
     return scc;
 }
-exports.traverseAST = traverseAST;
-exports.scc = scc;
+module.exports = {
+    scc: scc,
+    traverseAST: traverseAST,
+    traverseCFG: traverseCFG,
+    findCallExpressionReference: findCallExpressionReference,
+}
