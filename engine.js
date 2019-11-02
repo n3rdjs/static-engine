@@ -137,7 +137,7 @@ class StaticEngine {
     }
 
     isFlowNode(astnode){
-        if (astnode.cfg){
+        if (astnode.cfg) {
             return true;
         }
         else return false;
@@ -484,3 +484,4 @@ class StaticEngine {
 }
 
 exports.staticEngine = StaticEngine;
+exports.analyzer = require('./analyzer');
