@@ -24,7 +24,9 @@ engine_inst.traverse(result.ast, function (node, parent_node) {
                         if(Object.keys(node.expression.right).includes('computed')&&Object.keys(node.expression.right).includes('object')&&Object.keys(node.expression.right).includes('property')){
                             if(node.expression.right.computed==true && node.expression.right.object.type=='Identifier'&&node.expression.right.property.type=='Identifier'){
                                 if(node.expression.left.name==node.expression.right.object.name){
-                                    statement1.push(node)
+                                    if (node.expression.cfg){
+                                        statement1.push(node)
+                                    }
                                 }
                             }
                         }
@@ -41,7 +43,9 @@ engine_inst.traverse(result.ast, function (node, parent_node) {
                     if(node.expression.operator=='=' && node.expression.left.type=='MemberExpression' && node.expression.right.type=='Identifier'){                        
                         if(Object.keys(node.expression.left).includes('computed')&&Object.keys(node.expression.left).includes('object')&&Object.keys(node.expression.left).includes('property')){
                             if(node.expression.left.computed==true && node.expression.left.object.type=='Identifier'&&node.expression.left.property.type=='Identifier'){
-                                statement2.push(node)
+                                if (node.expression.cfg){
+                                    statement2.push(node)
+                                }
                             }
                         }
                     }
@@ -49,21 +53,17 @@ engine_inst.traverse(result.ast, function (node, parent_node) {
             }
         }
     }
-
-    if (engine_inst.isFlowNode(node)){ //if ast node is included in cfg
-        
-    }
 },result.ast);
 
 for (i of statement1){
-    console.log(i.range, i.expression.left.name,'=',i.expression.left.name, '[',i.expression.right.property.name,']')
+    console.log(i.range, i.expression.left.name,'=',i.expression.left.name, '[',i.expression.right.property.name,']', i.expression.cfg.id)
   
   //  console.log(JSON.stringify(i, null, 4));
 }
 
 console.log("=========================================")
 for (i of statement2){
-    console.log(i.range, i.expression.left.object.name, '[',i.expression.left.property.name,']=', i.expression.right.name)
+    console.log(i.range, i.expression.left.object.name, '[',i.expression.left.property.name,']=', i.expression.right.name, i.expression.cfg.id)
   
     //console.log(JSON.stringify(i, null, 4));
 }
@@ -89,6 +89,7 @@ if (statement1.length > 0 && statement2.length > 0){
         found1[i] = [];
         found2[i] = [];
     }
+    //console.dir( scc, {'maxArrayLength': null} );
     for (let i in scc){
         for (let j of scc[i]){
             for (let k in id1){
