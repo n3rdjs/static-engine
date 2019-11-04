@@ -8,7 +8,9 @@ obj.prototype_pollution_statement1=function(node, result_array){
                         if(Object.keys(node.expression.right).includes('computed')&&Object.keys(node.expression.right).includes('object')&&Object.keys(node.expression.right).includes('property')){
                             if(node.expression.right.computed==true && node.expression.right.object.type=='Identifier'&&node.expression.right.property.type=='Identifier'){
                                 if(node.expression.left.name==node.expression.right.object.name){
-                                    result_array.push(node)
+                                    if (node.expression.cfg){
+                                        result_array.push(node)
+                                    }
                                 }
                             }
                         }
@@ -26,7 +28,9 @@ obj.prototype_pollution_statement2 = function(node, result_array) {
                     if(node.expression.operator=='=' && node.expression.left.type=='MemberExpression' && node.expression.right.type=='Identifier'){                        
                         if(Object.keys(node.expression.left).includes('computed')&&Object.keys(node.expression.left).includes('object')&&Object.keys(node.expression.left).includes('property')){
                             if(node.expression.left.computed==true && node.expression.left.object.type=='Identifier'&&node.expression.left.property.type=='Identifier'){
-                                result_array.push(node)
+                                if (node.expression.cfg){
+                                    result_array.push(node)
+                                }
                             }
                         }
                     }
