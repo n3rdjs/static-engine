@@ -10,12 +10,12 @@ class scope {
         this.range = range;
         this.type = type;
         this.child = [];
-        this.variabless = [];
+        this.variables = [];
         this.functions = [];
     }
 }
 
-class variables_info {
+class variable_info {
     constructor(name, scope, type, value, argument, range) {
         this.type = type;
         this.name = name;
@@ -151,8 +151,8 @@ class StaticEngine {
                     data.scope = this.find_scope(this.scope_array[this.parent_scope_range], data.range, this.scope_array[this.parent_scope_range], 'function');
                     data.range = [];
 
-                    this.variables.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
-                    this.scope_array[data.scope.range].variabless.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                    this.variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                    this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
                 }
             });
         })
@@ -207,8 +207,8 @@ class StaticEngine {
             if (data.type == 'var') data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'function');
             else data.scope = this.find_scope(this.scope_array[this.parent_scope_range], node.range, this.scope_array[this.parent_scope_range], 'block');
 
-            this.variables.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
-            this.scope_array[data.scope.range].variabless.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+            this.variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+            this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
         }
     }
     get_variables_assignment(node) {
@@ -235,8 +235,8 @@ class StaticEngine {
                 data.scope = this.scope_array[this.parent_scope_range]
                 data.value = node.right.type;
                 data.range = []; //node.right.range;
-                this.variables.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
-                this.scope_array[data.scope.range].variabless.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                this.variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
             }
         }
     }
@@ -332,13 +332,13 @@ class StaticEngine {
 
         let root = this.scope_array[this.parent_scope_range];
 
-        for (let i of root.variabless) {
+        for (let i of root.variables) {
             if (i.name == node2.id.name && i.type == 'global') {
 
                 if (data.scope.range[0] <= i.range[0] && i.range[1] <= data.scope.range[1]) {
                     i.type = node.kind;
 
-                    root.variabless = root.variabless.filter(function (value) {
+                    root.variables = root.variables.filter(function (value) {
                         return value != i;
                     });
 
@@ -360,7 +360,7 @@ class StaticEngine {
                             j.scope = data.scope.range;
                         }
                     });
-                    this.scope_array[data.scope.range].variabless.push(new variables_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                    this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
                     return data;
                 }
 
