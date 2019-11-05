@@ -1,43 +1,48 @@
 const Esprima = require('esprima');
 const esgraph = require('esgraph');
 const chalk = require('chalk');
-var fs = require("fs");
+const fs = require("fs");
 
-function scope(range, type) {
-    this.range = range;
-    this.type = type;
-    this.child = [];
-    this.variables = [];
-    this.functions = [];
+const BLANK_FUNCION = () => {};
+var log = (...argv) => console.log(...argv);
+
+class scope {
+    constructor(range, type) {
+        this.range = range;
+        this.type = type;
+        this.child = [];
+        this.variables = [];
+        this.functions = [];
+    }
 }
 
-function variable_info(name, scope, type, value, argument, range) {
-    this.type = type;
-    this.name = name;
-    this.value = value;
-    this.scope = scope;
-    this.argument = argument;
-    this.range = range;
-
+class variable_info {
+    constructor(name, scope, type, value, argument, range) {
+        this.type = type;
+        this.name = name;
+        this.value = value;
+        this.scope = scope;
+        this.argument = argument;
+        this.range = range;
+    }
 }
 
-function function_info(name, scope, range, type, argument, parent, method_type, function_type) {
-    this.name = name;
-    this.scope = scope;
-    this.range = range;
-    this.type = type;
-    this.argument = argument;
-    this.parent = parent;
-    this.method_type = method_type;
-    this.function_type = function_type;
-}
-
-function log(...a) {
-    console.log(...a);
+class function_info {
+    constructor(name, scope, range, type, argument, parent, method_type, function_type) {
+        this.name = name;
+        this.scope = scope;
+        this.range = range;
+        this.type = type;
+        this.argument = argument;
+        this.parent = parent;
+        this.method_type = method_type;
+        this.function_type = function_type;
+    }
 }
 
 class StaticEngine {
-    constructor(code, options) {
+    constructor(code, options = {}) {
+
         this.code = code;
         this.options = options;
 
@@ -52,85 +57,79 @@ class StaticEngine {
         this.variable = [];
         this.entire_function = [];
 
-        if (options) {
-            if (options.hasOwnProperty('debug')) {
-                if (options.debug === false)
-                    log = () => {};
-            }
-            if (options.hasOwnProperty('customlog'))
-                log = options.customlog;
+        if (options.debug === false) {
+            log = BLANK_FUNCION;
+        }
+        if (options.customlog) {
+            log = options.customlog;
         }
     }
 
     analyze() {
-        let result = {}
-        //let ast = Esprima.parseScript(this.code);
-        let ast;
         try {
-            ast = Esprima.parseScript(this.code, {
+            var ast = Esprima.parseScript(this.code, {
                 range: true
             });
-        } catch (e) {
-            throw new Error('esprima error');
-        }
-        let cfg = esgraph(ast);
-        result.ast = ast;
-        result.cfg = cfg;
+            var cfg = esgraph(ast);
 
-        let str_ast = JSON.stringify(ast, null, 4);
-        fs.writeFile('result_ast.txt', str_ast, function (err) {
-            if (err) throw err;
-        });
-        //log(str_ast);
-        //log("#######################################################################");
-        //log("");
-        let rslt = JSON.parse(str_ast); //only for debugging purpose
+            fs.writeFileSync('AST.json', JSON.stringify(ast, null, 4));
 
-        var self = this;
-        self.traverse(ast, function (node, parent_node) {
-            if (node.type) { //range -> undefined
-                self.make_scope(node, parent_node);
-            }
-        }, ast);
-
-        self.traverse(ast, function (node, parent_node) {
-            if (node.type) { //range -> undefined
-                self.get_variable_declaration(node, parent_node);
-                self.get_function(node, parent_node);
-            }
-        }, ast);
-
-        this.get_parameter();
-
-        self.traverse(ast, function (node, parent_node) {
-            if (node.type) { //range -> undefined
-                self.get_variable_assignment(node, parent_node);
-            }
-        }, ast);
-
-        let variable_num = 0;
-        for (let i of this.variable) {
-            variable_num++;
-            log(chalk.bgRed(` Variable Info (${variable_num}) `));
-            Object.keys(i).forEach(item => {
-                log(item, ":", i[item]);
-            })
-            log("");
-        }
-        let function_num = 0;
-        for (let i of this.entire_function) {
-            function_num++;
-            log(chalk.bgBlue(` Function Info (${function_num}) `));
-            Object.keys(i).forEach(item => {
-                if (item != 'parent') {
-                    log(item, ":", i[item]);
+            var self = this;
+            self.traverse(ast, function (node, parent_node) {
+                if (node.type) {
+                    self.make_scope(node, parent_node);
                 }
-            })
-            log("");
+            }, ast);
+
+            self.traverse(ast, function (node, parent_node) {
+                if (node.type) {
+                    self.get_variable_declaration(node, parent_node);
+                    self.get_function(node, parent_node);
+                }
+            }, ast);
+
+            this.get_parameter();
+
+            self.traverse(ast, function (node, parent_node) {
+                if (node.type) { //range -> undefined
+                    self.get_variable_assignment(node, parent_node);
+                }
+            }, ast);
+
+            let variable_num = 0;
+            for (let i of this.variable) {
+                variable_num++;
+                log(chalk.bgRed(` Variable Info (${variable_num}) `));
+                Object.keys(i).forEach(item => {
+                    log(item, ":", i[item]);
+                })
+                log("");
+            }
+            let function_num = 0;
+            for (let i of this.entire_function) {
+                function_num++;
+                log(chalk.bgBlue(` Function Info (${function_num}) `));
+                Object.keys(i).forEach(item => {
+                    if (item != 'parent') {
+                        log(item, ":", i[item]);
+                    }
+                })
+                log("");
+            }
+
+            var result = {
+                'variable': this.variable,
+                'function': this.entire_function,
+                'ast': ast,
+                'cfg': cfg
+            }
+
+            return result;
+
+        } catch (e) {
+            console.log(e);
+            throw new Error('Error while analyze');
         }
-        result.variable = this.variable;
-        result.function = this.entire_function;
-        return result;
     }
 
     isFlowNode(astnode) {
@@ -156,7 +155,6 @@ class StaticEngine {
                     data.range = i.argument[j].range;
 
                     data.scope = this.find_scope(this.scope_array[this.parent_scope_range], data.range, this.scope_array[this.parent_scope_range], 'function');
-
                     data.range = [];
 
                     this.variable.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
@@ -449,30 +447,25 @@ class StaticEngine {
 
     traverse(node, func, parent_node) {
         func(node, parent_node);
-        for (let key in node) {
-            if (node.hasOwnProperty(key)) {
-                let child = node[key];
 
-                if (typeof child === 'object' && child !== null) {
-                    parent_node = node;
-                    if (Array.isArray(child)) {
-                        for (let idx in child) {
-                            if (typeof child[idx] === 'object' && child[idx] !== null) {
-                                this.traverse(child[idx], func, parent_node);
-                            }
+        for (let key of Object.keys(node)) {
+            let child = node[key];
+
+            if (child && typeof child === 'object') {
+                parent_node = node;
+                if (Array.isArray(child)) {
+                    for (let idx in child) {
+                        if (child[idx] && typeof child[idx] === 'object') {
+                            this.traverse(child[idx], func, parent_node);
                         }
-                    } else {
-                        this.traverse(child, func, parent_node);
                     }
+                } else {
+                    this.traverse(child, func, parent_node);
                 }
             }
+
         }
     }
-
-
 }
 
-module.exports = {
-    staticEngine : StaticEngine,
-    analyzer : require('./analyzer')
-};
+module.exports.staticEngine = StaticEngine;
