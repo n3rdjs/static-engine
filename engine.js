@@ -3,8 +3,7 @@ const esgraph = require('esgraph');
 const chalk = require('chalk');
 const fs = require("fs");
 
-const BLANK_FUNCION = () => {};
-var log = (...argv) => console.log(...argv);
+var log = () => {};
 
 class scope {
     constructor(range, type) {
@@ -57,10 +56,10 @@ class StaticEngine {
         this.variable = [];
         this.entire_function = [];
 
-        if (options.debug === false) {
-            log = BLANK_FUNCION;
+        if (!!options.debug) {
+            log = console.log;
         }
-        if (options.customlog) {
+        if (!!options.customlog) {
             log = options.customlog;
         }
     }
@@ -446,23 +445,13 @@ class StaticEngine {
     }
 
     traverse(node, func, parent_node) {
+        if (!node || typeof node != 'object') return;
         func(node, parent_node);
 
         for (let key of Object.keys(node)) {
-            let child = node[key];
 
-            if (child && typeof child === 'object') {
-                parent_node = node;
-                if (Array.isArray(child)) {
-                    for (let idx in child) {
-                        if (child[idx] && typeof child[idx] === 'object') {
-                            this.traverse(child[idx], func, parent_node);
-                        }
-                    }
-                } else {
-                    this.traverse(child, func, parent_node);
-                }
-            }
+            let child = node[key];
+            this.traverse(child, func, node);
 
         }
     }
