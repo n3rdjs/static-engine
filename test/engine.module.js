@@ -45,14 +45,10 @@ describe('module time test', ()=> {
                         id1 = [];
                         id2 = [];
                         for (let i in statement1){
-                            if (statement1[i].expression.cfg){
-                                id1.push(statement1[i].expression.cfg.id);
-                            }
+                            id1.push(statement1[i].expression.cfg.id);
                         }
                         for (let j in statement2){
-                            if (statement2[j].expression.cfg){
-                                id2.push(statement2[j].expression.cfg.id);
-                            }
+                            id2.push(statement2[j].expression.cfg.id);
                         }
                         let scc = analyzer.scc(result.ast, result.cfg);
                         console.log("scc generation complete");
