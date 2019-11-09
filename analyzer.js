@@ -176,8 +176,15 @@ function scc(ast, cfg){
             }
         }
     }
-    return scc;
+    var result = {};
+    result.scc = scc;
+    result.vt = vt;
+    result.visited = visited;
+    result.v = v;
+    result.visit_ptr = visit_ptr;
+    return result;
 }
+
 module.exports = {
     scc: scc,
     traverseAST: traverseAST,

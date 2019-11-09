@@ -39,4 +39,5 @@ obj.prototype_pollution_statement2 = function(node, result_array) {
         }
     }
 };
+
 module.exports = obj;
