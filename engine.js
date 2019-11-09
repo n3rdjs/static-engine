@@ -2,6 +2,7 @@ const Esprima = require('esprima');
 const esgraph = require('esgraph');
 const chalk = require('chalk');
 const fs = require("fs");
+const analyzer = require('./analyzer');
 
 var log = () => {};
 
@@ -450,4 +451,7 @@ class StaticEngine {
     }
 }
 
-module.exports.staticEngine = StaticEngine;
+module.exports = {
+    staticEngine : StaticEngine,
+    analyzer : analyzer
+};
