@@ -44,7 +44,7 @@ function analyze(code, options) {
     });
     text += '}';
     console.log('wow');
-    a = JSON.stringify(astinfo);
+    a = JSON.stringify(astinfo, (key, value) => (key === 'cfg') ? undefined: value);
     console.log('wow');
     b = JSON.stringify(fullAst);
     console.log('wow');
