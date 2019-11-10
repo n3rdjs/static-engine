@@ -48,6 +48,36 @@ function findCallExpressionReference(context, node) {
     }
 }
 
+function checkASTPattern(astNode, pattern) {
+    if (astNode === undefined)
+        return false;
+    for (const property in pattern) {
+        if (pattern.hasOwnProperty(pattern, property)) {
+            if (typeof pattern[property] === "string") {
+                if (astNode[property] !== pattern[property]) {
+                    return false;
+                }
+            }
+            else if (typeof pattern[property] === 'object') {
+                if(!checkASTPattern(astNode[property], pattern[property]))
+                    return false;
+            }
+            else {
+                throw "Wrong pattern";
+            }
+        }
+    }
+    return true;
+}
+
+function findExportedFunctions(context) {
+    for (const node of context.cfg[0][2]) {
+        if (node.astNode !== undefined && node.astNode.type === 'AssignmentExpression') {
+        }
+    }
+    
+}
+
 function scc(ast, cfg){
     var scc = [];
     var vt = [];
@@ -190,4 +220,5 @@ module.exports = {
     traverseAST: traverseAST,
     traverseCFG: traverseCFG,
     findCallExpressionReference: findCallExpressionReference,
+    checkASTPattern: checkASTPattern
 }
