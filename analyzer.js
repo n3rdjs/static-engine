@@ -35,19 +35,6 @@ function isInScope(parentScope, childScope) {
     return false;
 }
 
-function findCallExpressionReference(context, node) {
-    console.log(node.callee.type);
-    for (const func of context.function) {
-        if (node.callee.type === 'Identifier') {
-            console.log(func.name);
-            if (func.name === node.callee.name && isInScope(func.scope, node.callee.range)) {
-                console.log(func.name);
-                return func;
-            }
-        }
-    }
-}
-
 function checkASTPattern(astNode, pattern) {
     if (astNode === undefined)
         return false;
@@ -67,12 +54,32 @@ function checkASTPattern(astNode, pattern) {
     return true;
 }
 
-function findExportedFunctions(context) {
-    for (const node of context.cfg[0][2]) {
-        if (node.astNode !== undefined && node.astNode.type === 'AssignmentExpression') {
+function findFunctionInfoByCallExpression(callExpressionNode, functions) {
+    let node = callExpressionNode;
+    if (node.callee.type === 'Identifier') {
+        for (const func of functions) {
+            if (func.name === node.callee.name && isInScope(func.scope, node.callee.range)) {
+                return func;
+            }
         }
     }
-    
+    else if(node.callee.type === 'FunctionExpression') {
+        for (const func of functions) {
+            if (func.astNode === node.callee && isInScope(func.scope, node.callee.range)) {
+                return func;
+            }
+        }
+    }
+    return null;
+}
+
+function findCFGByEntryASTNode(entryASTNode, cfg) {
+    for(const _cfg of cfg) {
+        if (_cfg[0].astNode === entryASTNode) {
+            return _cfg;
+        }
+    }
+    return null;
 }
 
 function scc(ast, cfg){
@@ -216,6 +223,7 @@ module.exports = {
     scc: scc,
     traverseAST: traverseAST,
     traverseCFG: traverseCFG,
-    findCallExpressionReference: findCallExpressionReference,
+    findFunctionInfoByCallExpression: findFunctionInfoByCallExpression,
+    findCFGByEntryASTNode: findCFGByEntryASTNode,
     checkASTPattern: checkASTPattern
 }

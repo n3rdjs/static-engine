@@ -439,33 +439,7 @@ class StaticEngine {
         return;
     }
 
-    findFunctionInfoByCallReference(node) {
-        if (node.callee.type === 'Identifier') {
-            for (const func of this.functions) {
-                if (func.name === node.callee.name && analyzer.isInScope(func.scope, node.callee.range)) {
-                    return func;
-                }
-            }
-        }
-        else if(node.callee.type === 'FunctionExpression') {
-            for (const func of this.functions) {
-                // console.log(func);
-                if (func.astNode === node.callee && analyzer.isInScope(func.scope, node.callee.range)) {
-                    return func;
-                }
-            }
-        }
-        return null;
-    }
 
-    findCFGByEntryASTNode(cfgs, entryASTNode) {
-        for(const cfg of cfgs) {
-            if (cfg[0].astNode === entryASTNode) {
-                return cfg;
-            }
-        }
-        return null;
-    }
     
     traverse(node, func, parent_node) {
         if (!node || typeof node != 'object') return;
