@@ -28,7 +28,7 @@ class variable_info {
 }
 
 class function_info {
-    constructor(name, scope, range, type, argument, parent, method_type, function_type) {
+    constructor(name, scope, range, type, argument, parent, method_type, function_type, astNode) {
         this.name = name;
         this.scope = scope;
         this.range = range;
@@ -37,6 +37,7 @@ class function_info {
         this.parent = parent;
         this.method_type = method_type;
         this.function_type = function_type;
+        this.astNode = astNode;
     }
 }
 
@@ -285,7 +286,7 @@ class StaticEngine {
             data.argument = node.params;
             data.parent = parent_node;
 
-            var tmp_function = new function_info(data.name, data.scope, data.range, data.type, data.argument, data.parent, data.method_type, data.function_type);
+            var tmp_function = new function_info(data.name, data.scope, data.range, data.type, data.argument, data.parent, data.method_type, data.function_type, node);
             this.scope_array[data.scope].functions.push(tmp_function);
             this.functions.push(tmp_function);
         }
@@ -438,6 +439,34 @@ class StaticEngine {
         return;
     }
 
+    findFunctionInfoByCallReference(node) {
+        if (node.callee.type === 'Identifier') {
+            for (const func of this.functions) {
+                if (func.name === node.callee.name && analyzer.isInScope(func.scope, node.callee.range)) {
+                    return func;
+                }
+            }
+        }
+        else if(node.callee.type === 'FunctionExpression') {
+            for (const func of this.functions) {
+                // console.log(func);
+                if (func.astNode === node.callee && analyzer.isInScope(func.scope, node.callee.range)) {
+                    return func;
+                }
+            }
+        }
+        return null;
+    }
+
+    findCFGByEntryASTNode(cfgs, entryASTNode) {
+        for(const cfg of cfgs) {
+            if (cfg[0].astNode === entryASTNode) {
+                return cfg;
+            }
+        }
+        return null;
+    }
+    
     traverse(node, func, parent_node) {
         if (!node || typeof node != 'object') return;
         func(node, parent_node);
@@ -448,6 +477,10 @@ class StaticEngine {
             this.traverse(child, func, node);
 
         });
+    }
+
+    printSourceByRange(range) {
+        return this.code.slice(range[0], range[1]);
     }
 }
 
