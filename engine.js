@@ -100,7 +100,7 @@ class StaticEngine {
             }, ast);
 
             this.variables.forEach((variables, index) => {
-                log(chalk.bgRed(`        Variable Info (${index + 1})        `));
+                log(chalk.red(`        Variable Info (${index + 1})        `));
                 for (let key of Object.keys(variables)) {
                     log(key.padStart(8), ':', variables[key]);
                 }
@@ -108,7 +108,7 @@ class StaticEngine {
             });
 
             this.functions.forEach((func, index) => {
-                log(chalk.bgBlue(`        Function Info (${index + 1})        `));
+                log(chalk.blue(`        Function Info (${index + 1})        `));
                 for (let key of Object.keys(func)) {
                     log(key, ':', func[key]);
                 }
@@ -310,13 +310,15 @@ class StaticEngine {
     }
 
     is_declared(node) {
+        let flag = 0;
         this.variables.forEach(i => {
             if (i.name == node.left.name) {
                 if (node.range[0] >= i.scope[0] && i.scope[1] >= node.range[1]) {
-                    return true;
+                    flag = 1;
                 }
             }
         });
+        if (flag === 1) return true;
         return false;
     }
 
