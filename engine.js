@@ -100,7 +100,7 @@ class StaticEngine {
             }, ast);
 
             this.variables.forEach((variables, index) => {
-                log(chalk.red(`        Variable Info (${index + 1})        `));
+                log(chalk.bgWhiteBright(`        Variable Info (${index + 1})        `));
                 for (let key of Object.keys(variables)) {
                     log(key.padStart(8), ':', variables[key]);
                 }
@@ -108,7 +108,7 @@ class StaticEngine {
             });
 
             this.functions.forEach((func, index) => {
-                log(chalk.blue(`        Function Info (${index + 1})        `));
+                log(chalk.bgWhiteBright(`        Function Info (${index + 1})        `));
                 for (let key of Object.keys(func)) {
                     log(key, ':', func[key]);
                 }
@@ -174,10 +174,10 @@ class StaticEngine {
                 let node2 = node.declarations[0];
 
                 //already used global(var_hoisting)
-                let found = this.var_hoisting_fromdeclaration(node);
+                /*let found = this.var_hoisting_fromdeclaration(node);
                 if (found != 0) {
                     return;
-                }
+                }*/
 
                 if (node2.init == null) {
                     //"var a1";
@@ -222,15 +222,25 @@ class StaticEngine {
             argument: []
         };
         if (node.type == 'AssignmentExpression') {
-            if (node.left.type != 'MemberExpression') {
+            if (node.left.type == 'MemberExpression') {
                 // if new key:value??
 
                 // this??
-
+                if (node.left.object.type == 'ThisExpression'){
+                    if (!this.is_declared(node.left.property)) {
+                        data.type = 'class parameter';
+                        data.name = node.left.property.name;
+                        data.scope = this.scope_array[this.parent_scope_range]
+                        data.value = node.right.type;
+                        data.range = []; //node.right.range;
+                        this.variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                        this.scope_array[data.scope.range].variables.push(new variable_info(data.name, data.scope.range, data.type, data.value, data.argument, data.range));
+                    }
+                }
                 // if not??
             }
             // check variable already declared
-            if (!this.is_declared(node)) {
+            else if (!this.is_declared(node.left)) {
                 // if doesn't exist
                 data.type = 'global';
                 data.name = node.left.name; //a2
@@ -263,7 +273,7 @@ class StaticEngine {
                 data.method_type = parent_node.kind;
                 data.scope = found_scope.range;
             }
-            if (parent_node.type == 'CallExpression') {
+            else if (parent_node.type == 'CallExpression') {
                 if (node.id) data.name = node.id.name;
                 else data.name = node.id; // what does it mean?
                 data.scope = node.range;
@@ -293,9 +303,27 @@ class StaticEngine {
 
     }
 
+    /*
+    usage:
+    find_variable(this.scope_array[this.parent_scope_range], identifier.range, null, identifier.name) 
+    */
+    find_variable(parent_scope, target_range, last_variable_found, name){
+        for (let v of parent_scope.variables){
+            if (v.name == name && v.scope[0] < target_range[0] && target_range[1] < v.scope[1]){
+                last_variable_found = v;
+            }
+        }
+        for (let children of parent_scope.child){
+            if (children.range[0] < target_range[0] && target_range[1] < children.range[1]) {
+                return (this.find_variable(children, target_range, last_variable_found, name));
+            }
+        }
+        return last_variable_found;
+    }
+
     find_scope(parent_scope, target_range, last_function_scope, scope_type) {
         for (let children of parent_scope.child) {
-            if (children.range[0] < target_range[0] && children.range[1] > target_range[1]) {
+            if (children.range[0] < target_range[0] && target_range[1] < children.range[1]) {
                 if (children.type != 1) { // not BlockStatement
                     last_function_scope = children;
                 }
@@ -312,7 +340,7 @@ class StaticEngine {
     is_declared(node) {
         let flag = 0;
         this.variables.forEach(i => {
-            if (i.name == node.left.name) {
+            if (i.name == node.name) {
                 if (node.range[0] >= i.scope[0] && i.scope[1] >= node.range[1]) {
                     flag = 1;
                 }
@@ -441,8 +469,6 @@ class StaticEngine {
         return;
     }
 
-
-    
     traverse(node, func, parent_node) {
         if (!node || typeof node != 'object') return;
         func(node, parent_node);
