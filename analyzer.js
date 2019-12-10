@@ -42,18 +42,23 @@ function isInScope(parentScope, childScope) {
 function checkASTPattern(astNode, pattern) {
     if (astNode === undefined)
         return false;
-    for (const property in pattern) {
-        if (pattern.hasOwnProperty(property)) {
-            if (typeof pattern[property] !== "object") {
-                if (astNode[property] !== pattern[property]) {
-                    return false;
+    try {
+        for (const property in pattern) {
+            if (pattern.hasOwnProperty(property)) {
+                if (typeof pattern[property] !== "object") {
+                    if (astNode[property] !== pattern[property]) {
+                        return false;
+                    }
+                }
+                else {
+                    if(!checkASTPattern(astNode[property], pattern[property]))
+                        return false;
                 }
             }
-            else {
-                if(!checkASTPattern(astNode[property], pattern[property]))
-                    return false;
-            }
         }
+    }
+    catch(e) {
+        return false;
     }
     return true;
 }
