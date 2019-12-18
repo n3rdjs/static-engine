@@ -384,7 +384,7 @@ class TaintAnalysis {
 
     }
 
-    computeTaintAnalysisContext(cfg, firstContext=new Map()) {
+    computeTaintAnalysisContext(cfg, firstContext=new Map(), callback=()=>{}) {
         let rpo = this.getRPO(cfg);
         let contexts = new Map();
         let outerscope_variables = new Map();
@@ -625,7 +625,7 @@ class TaintAnalysis {
                                                 }
                                             }
                                         }
-                                        ret = ret.union(this.computeTaintAnalysisContext(cfg, context).return_candidate);
+                                        ret = ret.union(this.computeTaintAnalysisContext(cfg, context, callback).return_candidate);
                                         found = true;
                                     }
                                 }
@@ -655,6 +655,7 @@ class TaintAnalysis {
                 expressionValue: getCandidate(astNode),
                 allprevcalculated: allprevcalculated
             });
+            callback(flowNode, contexts);
         }
         return {
             contexts,
