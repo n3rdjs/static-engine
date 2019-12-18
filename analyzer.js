@@ -367,11 +367,12 @@ class Candidate {
 }
 
 class TaintAnalysis {
-    constructor(engineResult) {
+    constructor(engineResult, options={}) {
         this.engineResult = engineResult;
         this.cfgCache = [];
         this.contextCache = new Map();
         this.dominators = new Map();
+        this.options = options;
 
         // Fast cfg search
         for (const cfg of this.engineResult.cfg) {
@@ -383,11 +384,12 @@ class TaintAnalysis {
 
     }
 
-    computeTaintAnalysisContext(cfg) {
+    computeTaintAnalysisContext(cfg, firstContext=new Map()) {
         let rpo = this.getRPO(cfg);
         let contexts = new Map();
         let outerscope_variables = new Map();
         let unknown_variables = new Map();
+        let return_candidate = new Candidate();
 
         for (let i = 0; i < rpo.length; i++) {
             const flowNode = rpo[i];
@@ -395,17 +397,16 @@ class TaintAnalysis {
             let currentContext;
             let allprevcalculated = true;
             if (flowNode.prev.length === 0) {
-                currentContext = new Map();
+                currentContext = firstContext;
             }
             else {
-                currentContext = new Map();
+                currentContext = firstContext;
                 // Combine prev
                 let combinePrev = (flowNode) => {
                     let allprevcalculated = true;
                     for (const prevNode of flowNode.prev) {
                         if (contexts.has(prevNode)) {
                             if (contexts.get(prevNode).allprevcalculated === false) {
-                                console.log('enter prevcalculated');
                                 contexts.get(prevNode).allprevcalculated = combinePrev(prevNode);
                             }
                             for (const [variable, data] of contexts.get(prevNode).currentContext) {
@@ -425,10 +426,17 @@ class TaintAnalysis {
                 };
                 allprevcalculated = combinePrev(flowNode);
             }
+            const setValue = (astNode, value) => {
+                const node = astNode;
+                if (node.type === 'Identifier') {
+                    const varinfo = findVariableInfoByIdentifier(node, this.engineResult.variables);
+                    currentContext.set(varinfo, value);
+                }
+            };
             const getCandidate = (astNode) => {
                 const node = astNode;
                 if (contexts.has(node.cfg)) {
-                    const tmp = contexts.get(node.cfg);
+                    const tmp = contexts.get(node.cfg).expressionValue;
                     if (tmp instanceof Candidate) {
                         return tmp;
                     }
@@ -437,7 +445,6 @@ class TaintAnalysis {
                 if (node.type === 'Identifier') {
                     const varinfo = findVariableInfoByIdentifier(node, this.engineResult.variables);
                     if (varinfo === null) {
-                        console.log('variable_info not parsed.', node);
                         const dataInfo = new DataInfo();
                         dataInfo.addData(node);
                         dataInfo.setIsDirectAssignment(true);
@@ -474,26 +481,16 @@ class TaintAnalysis {
                     if (astNode.operator === '=') {
                         const rightCandidate = getCandidate(astNode.right);
                         // console.log(rightdatainfo);
-                        if (astNode.left.type === 'Identifier') {
-                            // console.log(2);
-                            const varinfo = findVariableInfoByIdentifier(astNode.left, this.engineResult.variables);
-                            if (varinfo === null) {
-                                console.log('no matching variableinfo', astNode.left);
-                            }
-                            currentContext.set(varinfo, rightCandidate);
-                        }
+                        setValue(astNode.left, rightCandidate);
                         return rightCandidate;
                     }
                     else {
                         const rightCandidate = getCandidate(astNode.right);
                         const varinfo = findVariableInfoByIdentifier(astNode.left, this.engineResult.variables);
-                        if (astNode.left.type === 'Identifier') {
-                            // TODO: Hmm
-                            const leftCandidate = getCandidate(astNode.left);
-                            const ret = leftCandidate.union(rightCandidate).setIsDirectAssignment(false, false);
-                            currentContext.set(varinfo, ret);
-                            return ret;
-                        }
+                        const leftCandidate = getCandidate(astNode.left);
+                        const ret = leftCandidate.union(rightCandidate).setIsDirectAssignment(false, false);
+                        setValue(astNode.left, ret);
+                        return ret;
                     }
                 }
                 else if (astNode.type === 'BinaryExpression') {
@@ -513,6 +510,7 @@ class TaintAnalysis {
                 else if (astNode.type === 'MemberExpression') {
                     const objectCandidate = getCandidate(astNode.object);
                     let ret = new Candidate();
+                    let found = false;
                     if (objectCandidate.referenceInfo instanceof ReferenceInfo && objectCandidate.referenceInfo.isDirectAssignment()) {
                         if (astNode.computed) {
                             const propertyCandidate = getCandidate(astNode.property);
@@ -521,6 +519,7 @@ class TaintAnalysis {
                                     if (propertyNode.type === 'Literal') {
                                         if (objectCandidate.referenceInfo.properties.has(propertyNode.value)) {
                                             ret = ret.union(objectCandidate.referenceInfo.properties.get(propertyNode.value));
+                                            found = true;
                                         }
                                     }
                                 }
@@ -530,9 +529,13 @@ class TaintAnalysis {
                             if (astNode.property.type === 'Identifier') {
                                 if (objectCandidate.referenceInfo.properties.has(astNode.property.name)) {
                                     ret = ret.union(objectCandidate.referenceInfo.properties.get(astNode.property.name));
+                                    found = true;
                                 }
                             }
                         }
+                    }
+                    if (!found && this.options.strongAssumption === true) {
+                        ret = ret.union(objectCandidate);
                     }
                     return ret;
                 }
@@ -546,16 +549,8 @@ class TaintAnalysis {
                     // console.log(rightdatainfo);
                     if (astNode.init !== null) {
                         const initCandidate = getCandidate(astNode.init);
-                        
-                        if (astNode.id.type === 'Identifier') {
-                            // console.log(2);
-                            const varinfo = findVariableInfoByIdentifier(astNode.id, this.engineResult.variables);
-                            if (varinfo === null) {
-                                console.log('no matching variableinfo', astNode.id);
-                            }
-                            currentContext.set(varinfo, initCandidate);
-                            return initCandidate;
-                        }
+                        setValue(astNode.id, initCandidate);
+                        return initCandidate;
                     }
                     return null;
                 }
@@ -604,6 +599,54 @@ class TaintAnalysis {
                     referenceInfo.setIsDirectAssignment(true);
                     return new Candidate(undefined, referenceInfo);
                 }
+                else if (astNode.type === 'CallExpression') {
+                    const calleeCandidate = getCandidate(astNode.callee);
+                    let found = false;
+                    let ret = new Candidate();
+                    if (calleeCandidate.referenceInfo instanceof ReferenceInfo) {
+                        const refInfo = calleeCandidate.referenceInfo;
+                        if (refInfo.isDirectAssignment()) {
+                            const callarguments = [];
+                            for (const argument of astNode.arguments) {
+                                if (argument.type !== 'SpreadElement') {
+                                    callarguments.push(getCandidate(argument));
+                                }
+                            }
+                            for (const reference of refInfo.references) {
+                                if (['FunctionDeclaration', 'FunctionExpression', 'ArrayFunctionExpression'].includes(reference.type)) {
+                                    const cfg = findCFGByEntryASTNode(reference, this.engineResult.cfg);
+                                    if (cfg !== null) {
+                                        const context = currentContext;
+                                        for (let i = 0; i < reference.params.length; i++) {
+                                            if (reference.params[i].type === 'Identifier') {
+                                                const paramInfo = findVariableInfoByIdentifier(reference.params[i], this.engineResult.variables);
+                                                if (i < callarguments.length) {
+                                                    context.set(paramInfo, callarguments[i]);
+                                                }
+                                            }
+                                        }
+                                        ret = ret.union(this.computeTaintAnalysisContext(cfg, context).return_candidate);
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (!found) {
+                            // Simple assumtion -> tainted
+                            for (const argument of astNode.arguments) {
+                                if (argument.type !== 'SpreadElement') {
+                                    ret.union(getCandidate(argument));
+                                }
+                            }
+                            ret.setIsDirectAssignment(false);
+                        }
+                        return ret;
+                        
+                    }
+                }
+                else if (astNode.type === 'ReturnStatement') {
+                    return_candidate = return_candidate.union(getCandidate(astNode.argument));
+                }
                 return new Candidate(undefined, undefined);
             }
             
@@ -617,6 +660,7 @@ class TaintAnalysis {
             contexts,
             outerscope_variables,
             unknown_variables,
+            return_candidate
         };
     }
 
@@ -641,7 +685,7 @@ class TaintAnalysis {
             let latetraverse = new Set();
             for (const prevNode of node.prev) {
                 if (!visited.has(prevNode)) {
-                    const nextList = ['normal', 'true', 'false'];
+                    const nextList = ['normal', 'true', 'false'].reverse();
                     for (const next of nextList) {
                         const nextNode = node[next];
                         if (nextNode !== undefined && !visited.has(nextNode) && dominator.dominates(nextNode, prevNode)) {
@@ -651,7 +695,7 @@ class TaintAnalysis {
                     }
                 }
             }
-            const nextList = ['normal', 'true', 'false'];
+            const nextList = ['normal', 'true', 'false'].reverse();
             for (const next of nextList) {
                 const nextNode = node[next];
                 if (nextNode !== undefined && !visited.has(nextNode) && !latetraverse.has(nextNode)) {
