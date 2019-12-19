@@ -299,6 +299,11 @@ class StaticEngine {
             var tmp_function = new function_info(data.name, data.scope, data.range, data.type, data.argument, data.parent, data.method_type, data.function_type, node);
             this.scope_array[data.scope].functions.push(tmp_function);
             this.functions.push(tmp_function);
+            if (node.type == 'FunctionDeclaration'){
+                var tmp_var = new variable_info(data.name, data.scope, "Function", data.type, data.argument, data.range);
+                this.scope_array[data.scope].variables.push(tmp_var);
+                this.variables.push(tmp_var)
+            }
         }
 
     }
