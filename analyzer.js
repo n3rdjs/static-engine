@@ -286,6 +286,19 @@ class DataInfo {
         this.directAssignment = false;
         this.datas.add(data);
     }
+    isTaintedBy(candidate) {
+        if (candidate instanceof Candidate) {
+            if (candidate.datainfo instanceof DataInfo) {
+                for (const data of candidate.dataInfo.datas) {
+                    if (!this.datas.has(data)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
     union(dataInfo) {
         if (dataInfo instanceof DataInfo)
             return new DataInfo(this.datas.union(dataInfo.datas), this.directAssignment && dataInfo.directAssignment);
@@ -320,6 +333,28 @@ class ReferenceInfo {
     }
     addReference(reference) {
         this.references.add(reference);
+    }
+    isTaintedBy(candidate) {
+        if (candidate instanceof Candidate) {
+            if (candidate.referenceInfo instanceof ReferenceInfo) {
+                let flag = true;
+                for (const reference of candidate.referenceInfo.references) {
+                    if (!this.references.has(reference)) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    return true;
+                }
+            }
+            for (const property of this.properties.values()) {
+                if (property.isTaintedBy(candidate)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     union(referenceInfo) {
         if (referenceInfo instanceof ReferenceInfo) {
@@ -361,6 +396,18 @@ class Candidate {
         }
         return this.clone();
     }
+    isTaintedBy(candidate) {
+        if (this.dataInfo instanceof DataInfo && this.dataInfo.isTaintedBy(candidate)) {
+            return true;
+        }
+        if (this.referenceInfo instanceof ReferenceInfo && this.referenceInfo.isTaintedBy(candidate)) {
+            return true;
+        }
+        return false;
+    }
+    isSame(candidate) {
+
+    }
     clone() {
         return new Candidate((this.dataInfo instanceof DataInfo) ? this.dataInfo.clone() : this.dataInfo, this.referenceInfo);
     }
@@ -378,10 +425,6 @@ class TaintAnalysis {
         for (const cfg of this.engineResult.cfg) {
             this.cfgCache.push(new Set(cfg[2]));
         }
-    }
-
-    findCFGContainingNode(cfgNode) {
-
     }
 
     computeTaintAnalysisContext(cfg, firstContext=new Map(), callback=()=>{}) {
@@ -426,12 +469,21 @@ class TaintAnalysis {
                 };
                 allprevcalculated = combinePrev(flowNode);
             }
-            const setValue = (astNode, value) => {
+            const setValue = (astNode, value, base=undefined) => {
                 const node = astNode;
                 if (node.type === 'Identifier') {
                     const varinfo = findVariableInfoByIdentifier(node, this.engineResult.variables);
                     currentContext.set(varinfo, value);
                 }
+                /** 
+                 * TODO: Implement Assignment on MemberExpression
+                if (node.type === 'MemberExpression') {
+                    membernode === astNode;
+                    if (base === undefined) {
+                        const varinfo = findVariableInfoByIdentifier(node, this.engineResult.variables);
+                    }
+                }
+                */
             };
             const getCandidate = (astNode) => {
                 const node = astNode;
@@ -544,6 +596,13 @@ class TaintAnalysis {
                         getCandidate(declarator);
                     }
                     return null;
+                }
+                else if (astNode.type === 'FunctionDeclaration') {
+                    const referenceInfo = new ReferenceInfo();
+                    referenceInfo.addReference(astNode);
+                    referenceInfo.setIsDirectAssignment(true);
+                    const candidate = new Candidate(undefined, referenceInfo);
+                    setValue(astNode.id, candidate);
                 }
                 else if (astNode.type === 'VariableDeclarator') {
                     // console.log(rightdatainfo);
